@@ -76,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //ersetzt das gerade angezeigte Fragment mithilfe des Fragmentmanagers
+   
+    //ersetzt das gerade angezeigte Fragment durch das Übergebene mithilfe des Fragmentmanagers
     private void replaceFragment(Fragment fragment){
 
         FragmentManager fragmentManager = getSupportFragmentManager();

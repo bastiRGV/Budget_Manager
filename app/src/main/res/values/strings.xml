@@ -14,4 +14,7 @@
     <string name="settings_name_hint">Nutzernamen eingeben</string>
     <string name="settings_currency_headline">Währung:</string>
 
+
+    <string name="currency">€</string>
+
 </resources>

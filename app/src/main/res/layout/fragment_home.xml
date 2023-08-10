@@ -28,14 +28,25 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                xmlns:android="http://schemas.android.com/apk/res/android">
 
-                <TextView
+<!--Chart-->
+                <com.github.mikephil.charting.charts.PieChart
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/body_home"
-                    android:gravity="center"
-                    android:text="home"/>
+                    android:layout_height="350dp"
+                    android:id="@+id/chart">
+
+                </com.github.mikephil.charting.charts.PieChart>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:id="@+id/home_divider_one"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_marginTop="280dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"/>
 
             </RelativeLayout>
 

@@ -7,4 +7,13 @@
     <color name="lightgreen">#8BC34A</color>
     <color name="green">#4CAF50</color>
 
+    <!--graph-->
+    <color name="graph_red">#e60049</color>
+    <color name="graph_blue">#0bb4ff</color>
+    <color name="graph_green">#50e991</color>
+    <color name="graph_orange">#ffa300</color>
+    <color name="graph_purple">#9b19f5</color>
+    <color name="graph_lightblue">#b3d4ff</color>
+    <color name="graph_gray">#989797</color>
+
 </resources>

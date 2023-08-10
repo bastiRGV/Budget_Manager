@@ -94,7 +94,120 @@
                     android:background="@android:color/darker_gray"
                     android:layout_below="@id/currency_dropdown"
                     android:layout_marginRight="10dp"
-                    android:layout_marginTop="20dp"/>
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/income_headline"
+                    android:text="@string/settings_income_headline"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_below="@+id/settings_divider_two"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/income_input"
+                    app:hintAnimationEnabled="false"
+                    android:layout_below="@+id/income_headline"
+                    android:hint="@string/settings_income_hint"
+                    app:endIconMode="clear_text"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:inputType="numberDecimal|numberSigned"
+                        android:layout_marginBottom="20dp"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:id="@+id/settings_divider_three"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_below="@id/income_input"
+                    android:layout_marginRight="10dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/fixed_headline"
+                    android:text="@string/settings_fixed_headline"
+                    android:layout_below="@+id/settings_divider_three"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/fixed_input"
+                    android:layout_below="@+id/fixed_headline"
+                    android:layout_marginLeft="10dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/fixed_name_input"
+                        app:hintAnimationEnabled="false"
+                        android:hint="@string/settings_fixed_name_hint"
+                        android:layout_weight="0.4"
+                        android:layout_marginRight="5dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:inputType="text"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/fixed_amount_input"
+                        app:hintAnimationEnabled="false"
+                        android:hint="@string/settings_fixed_amount_hint"
+                        android:layout_weight="0.4"
+                        android:layout_marginRight="5dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:inputType="numberDecimal|numberSigned"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.2"
+                        android:id="@+id/fixed_button"
+                        android:backgroundTint="@color/lightgreen"
+                        android:text="@string/settings_fixed_button"
+                        android:textStyle="bold"
+                        android:textSize="28sp"
+                        android:layout_marginRight="10dp"/>
+
+                </LinearLayout>
+
+                <ListView
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:id="@+id/list_fixed_input"
+                    android:layout_below="@+id/fixed_input"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"/>
 
             </RelativeLayout>
 

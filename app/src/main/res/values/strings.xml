@@ -12,7 +12,16 @@
 
     <string name="settings_name_headline">Nutzername:</string>
     <string name="settings_name_hint">Nutzernamen eingeben</string>
+
     <string name="settings_currency_headline">Währung:</string>
+
+    <string name="settings_income_headline">monatliches Einkommen:</string>
+    <string name="settings_income_hint">monatliches Einkommen eingeben</string>
+
+    <string name="settings_fixed_headline">monatliche Fixkosten:</string>
+    <string name="settings_fixed_name_hint">Bezeichnung</string>
+    <string name="settings_fixed_amount_hint">Kosten</string>
+    <string name="settings_fixed_button">+</string>
 
 
     <string name="currency">€</string>

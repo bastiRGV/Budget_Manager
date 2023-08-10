@@ -9,11 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class SettingsFragment extends Fragment {
 
     String[] dropdownCurrency = new String[] {"€  Euro", "$  Dollar", "￡  Pfund"};
+    String[] fixedInput = new String[] {"Miete: 900€", "Auto: 200€"};
+
+    private ListView listFixedInput;
+
+    private Button fixedInputButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -23,9 +31,11 @@ public class SettingsFragment extends Fragment {
         Spinner dropdownMenu = view.findViewById(R.id.currency_dropdown);
 
         //läd items aus Array in das Dropdown Menü
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, dropdownCurrency);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dropdownMenu.setAdapter(adapter);
+        ArrayAdapter<String> currencyAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, dropdownCurrency);
+        currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dropdownMenu.setAdapter(currencyAdapter);
+
+        //änderung Währung, je nachdem, welcher Menüpunkt im Dropdown ausgewählt wurde
         dropdownMenu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
             @Override
@@ -51,6 +61,20 @@ public class SettingsFragment extends Fragment {
                 return;
             }
 
+        });
+
+        //Test Fixkostenliste
+        ArrayAdapter fixedAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1 , fixedInput);
+        listFixedInput=view.findViewById(R.id.list_fixed_input);
+        listFixedInput.setAdapter(fixedAdapter);
+
+        fixedInputButton = view.findViewById(R.id.fixed_button);
+
+        fixedInputButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                Toast.makeText(getActivity().getBaseContext(), "input", Toast.LENGTH_SHORT).show();
+            }
         });
 
         return view;

@@ -15,8 +15,8 @@
 
     <string name="settings_currency_headline">Währung:</string>
 
-    <string name="settings_income_headline">monatliches Einkommen:</string>
-    <string name="settings_income_hint">monatliches Einkommen eingeben</string>
+    <string name="settings_income_headline">monatliches Budget:</string>
+    <string name="settings_income_hint">monatliches Budget eingeben</string>
 
     <string name="settings_fixed_headline">monatliche Fixkosten:</string>
     <string name="settings_fixed_name_hint">Bezeichnung</string>

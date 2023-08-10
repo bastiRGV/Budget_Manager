@@ -10,4 +10,8 @@
 
     <string name="export_button">Export selected Data</string>
 
+    <string name="settings_name_headline">Nutzername:</string>
+    <string name="settings_name_hint">Nutzernamen eingeben</string>
+    <string name="settings_currency_headline">Währung:</string>
+
 </resources>

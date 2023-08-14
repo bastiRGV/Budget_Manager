@@ -46,7 +46,7 @@
                     android:background="@android:color/darker_gray"
                     android:layout_marginTop="280dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"/>
+                    android:layout_marginRight="10dp" />
 
             </RelativeLayout>
 

@@ -10,6 +10,8 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -38,24 +40,23 @@ public class HomeFragment extends Fragment {
     float transportGesamt = 47;
     float sonstigesGesamt = 69;
     float budgetGesamt = 2000;
-    float budgetUebrig = budgetGesamt   - fixausgabenGesamt
-                                        - lebensmittelGesamt
-                                        - gebrauchsgegenstaendeGesamt
-                                        - unterhaltungGesamt
-                                        - transportGesamt
-                                        - sonstigesGesamt;
-    /**
-    if(budgetUebrig < 0){
-        budgetUebrig = 0;
-    }
-    **/
+    float ausgaben =    fixausgabenGesamt
+                        + lebensmittelGesamt
+                        + gebrauchsgegenstaendeGesamt
+                        + unterhaltungGesamt
+                        + transportGesamt
+                        + sonstigesGesamt;
+    float budgetUebrigGraph = budgetGesamt - ausgaben;
+
+    float budgetUebrig = budgetGesamt - ausgaben;
+
     float[] chartData = new float[] {   fixausgabenGesamt,
                                         lebensmittelGesamt,
                                         gebrauchsgegenstaendeGesamt,
                                         unterhaltungGesamt,
                                         transportGesamt,
                                         sonstigesGesamt,
-                                        budgetUebrig};
+                                        budgetUebrigGraph};
 
     String[] kategorien = new String[]{ "Fixkosten",
                                         "Lebensmittel",
@@ -74,24 +75,67 @@ public class HomeFragment extends Fragment {
     int graph_lightblue = 0xFFB3D4FF;
     int graph_gray = 0xFF989797;
 
+    String währung = "€";
+
+    //Name, Kategorie, Datum, Betrag,
+    String[] listAusgaben = {"A, a, 01.01.23, 50€", "B, b, 01.01.23, 50€", "C, c, 01.01.23, 50€", "D, d, 01.01.23, 50€"};
+
+    //Views anöegen
+    private ListView listHome;
     private PieChart mChart;
+    private TextView textViewMonth;
+    private TextView textViewBudget;
+    private TextView textViewRemainingBudget;
+    private TextView textViewDifference;
+
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        //aktueller Monat für Homeseite
-        TextView textView = (TextView)view.findViewById(R.id.header_home);
-        textView.setText(getMonth());
+        if(budgetUebrigGraph < 0){
+            budgetUebrigGraph = 0;
+        }
 
+        //Variablen mit fragment_ids verknüpfen
+        textViewMonth = (TextView)view.findViewById(R.id.header_home);
         mChart = (PieChart) view.findViewById(R.id.chart);
-        styleChart();
-        setChartData();
+
+        textViewBudget = (TextView) view.findViewById(R.id.home_budget);
+        textViewRemainingBudget = (TextView) view.findViewById(R.id.home_remaining);
+        textViewDifference = (TextView) view.findViewById(R.id.home_difference);
+
+        listHome = view.findViewById(R.id.list_home);
+
+        setData();
 
         return view;
     }
 
+
+    //Daten des Homefragments aktualisieren
+    public void setData(){
+
+        textViewMonth.setText(getMonth());
+
+        styleChart();
+        setChartData();
+
+        textViewBudget.setText("Budget: " + "\n" + budgetGesamt + währung);
+        textViewRemainingBudget.setText("Monatsausgaben: " + "\n" + ausgaben + währung);
+        textViewDifference.setText("Differenz: " + budgetUebrig + währung);
+
+        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1 , listAusgaben);
+        listHome.setAdapter(adapter);
+
+    }
+
+
+    //aktuellen Monat vom System abfragen
     public String getMonth(){
 
         //abfrage und formatierung des Datums
@@ -100,6 +144,8 @@ public class HomeFragment extends Fragment {
 
         return df.format(c);
     }
+
+
 
     //Daten ins Chart einfügen, stylen
     private void setChartData(){
@@ -120,6 +166,8 @@ public class HomeFragment extends Fragment {
         //refresh des Graphen
         mChart.invalidate();
     }
+
+
 
     //Anpassungen für den Chart
     private void styleChart(){

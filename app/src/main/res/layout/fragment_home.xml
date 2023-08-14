@@ -48,6 +48,87 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp" />
 
+<!--Budgetübersicht-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/home_budgetView"
+                    android:layout_below="@+id/home_divider_one"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/home_budget"
+                        android:layout_weight="0.5"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="10dp"
+                        android:gravity="center"
+                        android:text="Budget here"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/home_remaining"
+                        android:layout_weight="0.5"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="20dp"
+                        android:gravity="center"
+                        android:text="remaining here"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/home_difference"
+                    android:layout_below="@+id/home_budgetView"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:text="difference here"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:id="@+id/home_divider_two"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_below="@id/home_difference"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp" />
+
+<!--Ausgabenliste-->
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/list_home"
+                    android:layout_below="@+id/home_divider_two"
+                    android:layout_marginTop="20dp"/>
+
+<!--ActionButton-->
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/action_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_addchart_24"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:backgroundTint="@color/lightgreen"
+                    android:layout_margin="16dp"/>
+
             </RelativeLayout>
 
         </ScrollView>

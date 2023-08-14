@@ -10,9 +10,13 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -21,6 +25,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.w3c.dom.Text;
 
@@ -80,14 +85,25 @@ public class HomeFragment extends Fragment {
     //Name, Kategorie, Datum, Betrag,
     String[] listAusgaben = {"A, a, 01.01.23, 50€", "B, b, 01.01.23, 50€", "C, c, 01.01.23, 50€", "D, d, 01.01.23, 50€"};
 
-    //Views anöegen
+    String[] dropdownFilter = new String[] {"Datum",
+                                            "Name",
+                                            "Betrag",
+                                            "Kategorie",
+                                            "Fixkosten",
+                                            "Lebensmittel",
+                                            "Gebrauchsgegenstände",
+                                            "Unterhaltung",
+                                            "Transport",
+                                            "Sonstiges"};
+
+    //Views anlegen
     private ListView listHome;
     private PieChart mChart;
     private TextView textViewMonth;
     private TextView textViewBudget;
     private TextView textViewRemainingBudget;
     private TextView textViewDifference;
-
+    private FloatingActionButton actionButton;
 
 
 
@@ -110,6 +126,76 @@ public class HomeFragment extends Fragment {
         textViewDifference = (TextView) view.findViewById(R.id.home_difference);
 
         listHome = view.findViewById(R.id.list_home);
+
+
+        //filtermenü befüllen
+        Spinner dropdownMenuHome = view.findViewById(R.id.ausgaben_sort);
+
+        //läd items aus Array in das Dropdown Menü
+        ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, dropdownFilter);
+        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dropdownMenuHome.setAdapter(filterAdapter);
+
+        //änderung Sortierung, je nachdem, welcher menüpunkt ausgewählt
+        dropdownMenuHome.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+
+                switch (position) {
+                    case 0:
+                        //Datum
+                        break;
+                    case 1:
+                        //Name
+                        break;
+                    case 2:
+                        //Betrag
+                        break;
+                    case 3:
+                        //Kategorie
+                        break;
+                    case 4:
+                        //Fixkosten
+                        break;
+                    case 5:
+                        //Lebensmittel
+                        break;
+                    case 6:
+                        //Gebrauchsgegenstände
+                        break;
+                    case 7:
+                        //Unterhaltung
+                        break;
+                    case 8:
+                        //Transport
+                        break;
+                    case 9:
+                        //sonstiges
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //default nach Datum sotiert
+                return;
+            }
+
+        });
+
+
+
+        actionButton = view.findViewById(R.id.action_button);
+        actionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity().getBaseContext(), "Actionbutton pressed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
 
         setData();
 

@@ -28,15 +28,15 @@ public class SettingsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        Spinner dropdownMenu = view.findViewById(R.id.currency_dropdown);
+        Spinner dropdownMenuSettings = view.findViewById(R.id.currency_dropdown);
 
         //läd items aus Array in das Dropdown Menü
         ArrayAdapter<String> currencyAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, dropdownCurrency);
         currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dropdownMenu.setAdapter(currencyAdapter);
+        dropdownMenuSettings.setAdapter(currencyAdapter);
 
         //änderung Währung, je nachdem, welcher Menüpunkt im Dropdown ausgewählt wurde
-        dropdownMenu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        dropdownMenuSettings.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
             @Override
             public void onItemSelected(AdapterView<?> adapterView,View view,int position, long id){

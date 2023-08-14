@@ -109,14 +109,41 @@
 
 <!--Ausgabenliste-->
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/home_filter"
+                    android:layout_below="@+id/home_divider_two">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="15dp"
+                        android:text="@string/home_filter_tag"/>
+
+                    <Spinner
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.8"
+                        android:id="@+id/ausgaben_sort"
+                        android:layout_below="@+id/home_divider_two"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"/>
+
+                </LinearLayout>
+
                 <ListView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
                     android:id="@+id/list_home"
-                    android:layout_below="@+id/home_divider_two"
-                    android:layout_marginTop="20dp"/>
+                    android:layout_below="@+id/home_filter"
+                    android:layout_marginTop="10dp"/>
 
 <!--ActionButton-->
 

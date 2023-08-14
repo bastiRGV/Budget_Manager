@@ -23,6 +23,7 @@
     <string name="settings_fixed_amount_hint">Kosten</string>
     <string name="settings_fixed_button">+</string>
 
+    <string name="home_filter_tag">Filter: </string>
 
     <string name="currency">€</string>
 

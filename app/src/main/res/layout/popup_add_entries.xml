@@ -121,7 +121,8 @@
         android:layout_below="@+id/popup_add_datum_input"
         android:text="@string/home_popup_button"
         android:textSize="15sp"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/lightgreen"/>
 
 
 </RelativeLayout>

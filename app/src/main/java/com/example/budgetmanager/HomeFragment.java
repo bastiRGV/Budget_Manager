@@ -64,6 +64,11 @@ public class HomeFragment extends Fragment {
                                         sonstigesGesamt,
                                         budgetUebrigGraph};
 
+
+
+
+
+
     //Kategorien im Graphen
     String[] kategorien = new String[]{ "Fixkosten",
                                         "Lebensmittel",
@@ -87,6 +92,9 @@ public class HomeFragment extends Fragment {
     //Name, Kategorie, Datum, Betrag,
     String[] listAusgaben = {"A, a, 01.01.23, 50€", "B, b, 01.01.23, 50€", "C, c, 01.01.23, 50€", "D, d, 01.01.23, 50€"};
 
+
+
+
     //Menüeinträge für Filter der Ausgaben auf Homepage
     String[] dropdownFilter = new String[] {"Datum",
                                             "Bezeichnung",
@@ -102,6 +110,8 @@ public class HomeFragment extends Fragment {
 
 
 
+
+
     //Ausgewählte Kategorie im Eintragspopup
     String chosenCategory;
     //Ausgewählte Bezeichnung im Eintragspopup
@@ -110,6 +120,7 @@ public class HomeFragment extends Fragment {
     float chosenAmount = 0;
     //Datum der Ausgabe im Eintragspopup
     String chosenDate = "";
+
 
 
 
@@ -128,6 +139,13 @@ public class HomeFragment extends Fragment {
     private EditText popupAddIdentifier;
     private EditText popupAddAmount;
     private DatePicker popupAddDate;
+
+
+
+
+
+
+
 
 
 
@@ -228,6 +246,13 @@ public class HomeFragment extends Fragment {
     }
 
 
+
+
+
+
+
+
+
     //Daten des Homefragments aktualisieren
     public void setData(){
 
@@ -246,6 +271,12 @@ public class HomeFragment extends Fragment {
     }
 
 
+
+
+
+
+
+
     //aktuellen Monat vom System abfragen
     public String getMonth(){
 
@@ -255,6 +286,12 @@ public class HomeFragment extends Fragment {
 
         return df.format(c);
     }
+
+
+
+
+
+
 
 
 
@@ -281,6 +318,11 @@ public class HomeFragment extends Fragment {
 
 
 
+
+
+
+
+
     //Anpassungen für den Chart
     private void styleChart(){
 
@@ -304,6 +346,14 @@ public class HomeFragment extends Fragment {
         legend.setYOffset(55f);
 
     }
+
+
+
+
+
+
+
+
 
 
 

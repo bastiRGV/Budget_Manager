@@ -27,4 +27,14 @@
 
     <string name="currency">€</string>
 
+    <string name="home_popup_add_header">Ausgaben hinzufügen</string>
+    <string name="home_popup_add_kategorien_header">Kategorie:</string>
+    <string name="home_popup_add_bezeichnung_header">Bezeichnung:</string>
+    <string name="home_popup_add_bezeichnung_hint">Bezeichnung eingeben</string>
+    <string name="home_popup_add_betrag_header">Betrag:</string>
+    <string name="home_popup_add_betrag_hint">Betrag eingeben</string>
+    <string name="home_popup_add_datum_header">Datum:</string>
+    <string name="home_popup_button">Eintrag anlegen</string>
+
+
 </resources>

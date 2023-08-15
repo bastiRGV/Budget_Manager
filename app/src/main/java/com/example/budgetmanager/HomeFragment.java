@@ -1,19 +1,21 @@
 package com.example.budgetmanager;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,17 +26,13 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Random;
 
 public class HomeFragment extends Fragment {
 
@@ -86,15 +84,9 @@ public class HomeFragment extends Fragment {
     String[] listAusgaben = {"A, a, 01.01.23, 50€", "B, b, 01.01.23, 50€", "C, c, 01.01.23, 50€", "D, d, 01.01.23, 50€"};
 
     String[] dropdownFilter = new String[] {"Datum",
-                                            "Name",
+                                            "Bezeichnung",
                                             "Betrag",
-                                            "Kategorie",
-                                            "Fixkosten",
-                                            "Lebensmittel",
-                                            "Gebrauchsgegenstände",
-                                            "Unterhaltung",
-                                            "Transport",
-                                            "Sonstiges"};
+                                            "Kategorie"};
 
     //Views anlegen
     private ListView listHome;
@@ -104,6 +96,9 @@ public class HomeFragment extends Fragment {
     private TextView textViewRemainingBudget;
     private TextView textViewDifference;
     private FloatingActionButton actionButton;
+    private PopupWindow popupWindowAddEntries;
+    private LayoutInflater loadPopupWindow;
+    private FrameLayout homeFragment;
 
 
 
@@ -155,24 +150,6 @@ public class HomeFragment extends Fragment {
                     case 3:
                         //Kategorie
                         break;
-                    case 4:
-                        //Fixkosten
-                        break;
-                    case 5:
-                        //Lebensmittel
-                        break;
-                    case 6:
-                        //Gebrauchsgegenstände
-                        break;
-                    case 7:
-                        //Unterhaltung
-                        break;
-                    case 8:
-                        //Transport
-                        break;
-                    case 9:
-                        //sonstiges
-                        break;
                 }
 
             }
@@ -188,9 +165,30 @@ public class HomeFragment extends Fragment {
 
 
         actionButton = view.findViewById(R.id.action_button);
+        homeFragment = view.findViewById(R.id.home_fragment);
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //läd die popup_add_text in einen Container
+                loadPopupWindow = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                ViewGroup container = (ViewGroup) loadPopupWindow.inflate(R.layout.popup_add_entries, null);
+
+                //läd oben erstellten Container in ein Popup Window
+                //true lässt  es zu, das Fenster zu schliessen, wenn auserhalb des Fensters gedrückt wird
+                popupWindowAddEntries = new PopupWindow(container, 1200, 2200, true);
+                popupWindowAddEntries.showAtLocation(homeFragment, Gravity.CENTER, 0, 0);
+
+                //fenster Schliesst, wenn auserhalb des Fensters berührt wird
+                container.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        popupWindowAddEntries.dismiss();
+                        return true;
+                    }
+                });
+
+
                 Toast.makeText(getActivity().getBaseContext(), "Actionbutton pressed", Toast.LENGTH_SHORT).show();
             }
         });
@@ -276,6 +274,11 @@ public class HomeFragment extends Fragment {
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setDrawInside(true);
         legend.setYOffset(55f);
+
+    }
+
+
+    private void showPopupWindow(){
 
     }
 

@@ -13,6 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -61,6 +64,7 @@ public class HomeFragment extends Fragment {
                                         sonstigesGesamt,
                                         budgetUebrigGraph};
 
+    //Kategorien im Graphen
     String[] kategorien = new String[]{ "Fixkosten",
                                         "Lebensmittel",
                                         "Gebrauchsgegenstände",
@@ -83,10 +87,31 @@ public class HomeFragment extends Fragment {
     //Name, Kategorie, Datum, Betrag,
     String[] listAusgaben = {"A, a, 01.01.23, 50€", "B, b, 01.01.23, 50€", "C, c, 01.01.23, 50€", "D, d, 01.01.23, 50€"};
 
+    //Menüeinträge für Filter der Ausgaben auf Homepage
     String[] dropdownFilter = new String[] {"Datum",
                                             "Bezeichnung",
                                             "Betrag",
                                             "Kategorie"};
+
+    //Menüeinträge für Kategorien auf im Hinzufügen Popupfenster
+    String[] kategorienAddEntries = new String[] {  "Lebensmittel",
+                                                    "Gebrauchsgegenstände",
+                                                    "Unterhaltung",
+                                                    "Transport",
+                                                    "Sonstiges"};
+
+
+
+    //Ausgewählte Kategorie im Eintragspopup
+    String chosenCategory;
+    //Ausgewählte Bezeichnung im Eintragspopup
+    String chosenIdentifier = "";
+    //Betrag der Ausgabe im Eintragspopup
+    float chosenAmount = 0;
+    //Datum der Ausgabe im Eintragspopup
+    String chosenDate = "";
+
+
 
     //Views anlegen
     private ListView listHome;
@@ -99,6 +124,10 @@ public class HomeFragment extends Fragment {
     private PopupWindow popupWindowAddEntries;
     private LayoutInflater loadPopupWindow;
     private FrameLayout homeFragment;
+    private Button popupAddButton;
+    private EditText popupAddIdentifier;
+    private EditText popupAddAmount;
+    private DatePicker popupAddDate;
 
 
 
@@ -179,7 +208,7 @@ public class HomeFragment extends Fragment {
                 popupWindowAddEntries = new PopupWindow(container, 1200, 2200, true);
                 popupWindowAddEntries.showAtLocation(homeFragment, Gravity.CENTER, 0, 0);
 
-                //fenster Schliesst, wenn auserhalb des Fensters berührt wird
+                //fenster Schliesst, wenn außerhalb des Fensters berührt wird
                 container.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
@@ -188,12 +217,10 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
+                logicPopupWindow();
 
-                Toast.makeText(getActivity().getBaseContext(), "Actionbutton pressed", Toast.LENGTH_SHORT).show();
             }
         });
-
-
 
         setData();
 
@@ -247,6 +274,7 @@ public class HomeFragment extends Fragment {
         data.setValueTextColor(Color.WHITE);
 
         mChart.setData(data);
+
         //refresh des Graphen
         mChart.invalidate();
     }
@@ -278,7 +306,84 @@ public class HomeFragment extends Fragment {
     }
 
 
-    private void showPopupWindow(){
+
+    //PopupWindow Eingabenlogik
+    private void logicPopupWindow(){
+
+        //Eingabeknopf für Eingabe neuer Ausgaben
+        popupAddButton = popupWindowAddEntries.getContentView().findViewById(R.id.popup_add_button);
+        popupAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //Liest Bezeichner aus der Eingabe im Popup window
+                popupAddIdentifier = popupWindowAddEntries.getContentView().findViewById(R.id.popup_add_bezeichnung_input);
+                chosenIdentifier = popupAddIdentifier.getText().toString();
+
+
+                //Liest Betrag aus der Eingabe im Popup window
+                popupAddAmount = popupWindowAddEntries.getContentView().findViewById(R.id.popup_add_betrag_input);
+                chosenAmount = Float.valueOf(popupAddAmount.getText().toString());
+
+
+                //Liest Datum aus dem Datepicker im Popup window un konvertiert zu String
+                popupAddDate = popupWindowAddEntries.getContentView().findViewById(R.id.popup_add_datum_input);
+                chosenDate = popupAddDate.getDayOfMonth() +  "." + popupAddDate.getMonth() +  "." + popupAddDate.getYear();
+
+
+                //schreibt Eintrag und schließt Popup Window
+                Toast.makeText(getActivity().getBaseContext(), chosenCategory + " " + chosenIdentifier + " " + chosenAmount +  " " + chosenDate, Toast.LENGTH_SHORT).show();
+                popupWindowAddEntries.dismiss();
+            }
+        });
+
+
+        //Kategoriemenü des Popupwindows befüllen
+        Spinner dropdownMenuAddKategorie = popupWindowAddEntries.getContentView().findViewById(R.id.popup_add_kategorie_dropdown);
+
+        //läd items aus Array in das Dropdown Menü
+        ArrayAdapter<String> kategorieAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, kategorienAddEntries);
+        kategorieAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dropdownMenuAddKategorie.setAdapter(kategorieAdapter);
+
+        //Auswahl der kategorien
+        dropdownMenuAddKategorie.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+
+                switch (position) {
+                    case 0:
+                        //Lebensmittel
+                        chosenCategory = "Lebensmittel";
+                        break;
+                    case 1:
+                        //Gebrauchsgegenstände
+                        chosenCategory = "Gebrauchsgegenstände";
+                        break;
+                    case 2:
+                        //Unterhaltung
+                        chosenCategory = "Unterhaltung";
+                        break;
+                    case 3:
+                        //Transport
+                        chosenCategory = "Transport";
+                        break;
+                    case 4:
+                        //Sonstiges
+                        chosenCategory = "Sonstiges";
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                chosenCategory = "Lebensmittel";
+                return;
+            }
+
+        });
 
     }
 

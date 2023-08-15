@@ -46,7 +46,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/popup_add_bezeichnung_input"
+        android:id="@+id/popup_add_bezeichnung_input_container"
         app:hintAnimationEnabled="false"
         android:layout_below="@+id/popup_add_bezeichnung_header"
         android:hint="@string/home_popup_add_bezeichnung_hint"
@@ -58,6 +58,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/popup_add_bezeichnung_input"
             android:singleLine="true"/>
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -67,7 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/popup_add_betrag_header"
-        android:layout_below="@+id/popup_add_bezeichnung_input"
+        android:layout_below="@+id/popup_add_bezeichnung_input_container"
         android:layout_marginTop="20dp"
         android:text="@string/home_popup_add_betrag_header"
         android:textSize="15sp"/>
@@ -75,7 +76,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/popup_add_betrag_input"
+        android:id="@+id/popup_add_betrag_input_container"
         app:hintAnimationEnabled="false"
         android:layout_below="@+id/popup_add_betrag_header"
         android:hint="@string/home_popup_add_betrag_hint"
@@ -87,6 +88,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/popup_add_betrag_input"
             android:inputType="numberDecimal|numberSigned"
             android:singleLine="true"/>
 
@@ -97,7 +99,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/popup_add_datum_header"
-        android:layout_below="@+id/popup_add_betrag_input"
+        android:layout_below="@+id/popup_add_betrag_input_container"
         android:layout_marginTop="20dp"
         android:text="@string/home_popup_add_datum_header"
         android:textSize="15sp"/>

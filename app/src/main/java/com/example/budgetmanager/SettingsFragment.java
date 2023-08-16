@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +25,9 @@ public class SettingsFragment extends Fragment {
     float fixedAmount = 0;
 
     private ListView listFixedInput;
-
     private Button fixedInputButton;
+    private Button nameButton;
+    private Button budgetButton;
     private EditText fixedInputIdentifier;
     private EditText fixedInputAmount;
 
@@ -33,6 +35,9 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
+
+
+
 
         Spinner dropdownMenuSettings = view.findViewById(R.id.currency_dropdown);
 
@@ -69,6 +74,11 @@ public class SettingsFragment extends Fragment {
 
         });
 
+
+
+        //Eingabe Name
+        nameButton = view.findViewById(R.id.name_button);
+
         //Test Fixkostenliste
         ArrayAdapter fixedAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1 , fixedInput);
         listFixedInput=view.findViewById(R.id.list_fixed_input);
@@ -82,17 +92,28 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v){
 
-                //liest Eingabe name aus Namensfeld und löscht eingabe
                 fixedInputIdentifier = view.findViewById(R.id.fixed_name_input);
-                fixedIdentifier = fixedInputIdentifier.getText().toString();
-                fixedInputIdentifier.setText("");
-
-                //liest Betrag aus Betragsfeld und löscht eingabe
                 fixedInputAmount = view.findViewById(R.id.fixed_amount_input);
-                fixedAmount = Float.valueOf(fixedInputAmount.getText().toString());
-                fixedInputAmount.setText("");
 
-                Toast.makeText(getActivity().getBaseContext(), fixedIdentifier + " " + fixedAmount, Toast.LENGTH_SHORT).show();
+                //check,ob alle felder ausgefüllt sind
+                if(TextUtils.isEmpty(fixedInputIdentifier.getText().toString()) || TextUtils.isEmpty(fixedInputAmount.getText().toString())){
+
+                    Toast.makeText(getActivity().getBaseContext(), "Bitte alle benötigten Felder ausfüllen", Toast.LENGTH_SHORT).show();
+
+                }else{
+
+                    //liest Eingabe name aus Namensfeld und löscht eingabe
+                    fixedIdentifier = fixedInputIdentifier.getText().toString();
+                    fixedInputIdentifier.setText("");
+
+                    //liest Betrag aus Betragsfeld und löscht eingabe
+                    fixedAmount = Float.valueOf(fixedInputAmount.getText().toString());
+                    fixedInputAmount.setText("");
+
+                    Toast.makeText(getActivity().getBaseContext(), fixedIdentifier + " " + fixedAmount, Toast.LENGTH_SHORT).show();
+
+                }
+
             }
         });
 

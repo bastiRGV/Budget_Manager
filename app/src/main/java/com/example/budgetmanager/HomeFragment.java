@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -366,24 +367,35 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                //Liest Bezeichner aus der Eingabe im Popup window
                 popupAddIdentifier = popupWindowAddEntries.getContentView().findViewById(R.id.popup_add_bezeichnung_input);
-                chosenIdentifier = popupAddIdentifier.getText().toString();
-
-
-                //Liest Betrag aus der Eingabe im Popup window
                 popupAddAmount = popupWindowAddEntries.getContentView().findViewById(R.id.popup_add_betrag_input);
-                chosenAmount = Float.valueOf(popupAddAmount.getText().toString());
-
-
-                //Liest Datum aus dem Datepicker im Popup window un konvertiert zu String
                 popupAddDate = popupWindowAddEntries.getContentView().findViewById(R.id.popup_add_datum_input);
-                chosenDate = popupAddDate.getDayOfMonth() +  "." + popupAddDate.getMonth() +  "." + popupAddDate.getYear();
+
+                //check, ob Eingabefelder leer sind
+                if(TextUtils.isEmpty(popupAddIdentifier.getText().toString()) || TextUtils.isEmpty(popupAddAmount.getText().toString())){
+
+                    Toast.makeText(getActivity().getBaseContext(), "Bitte alle benötigten Felder ausfüllen", Toast.LENGTH_SHORT).show();
+
+                }else{
+
+                    //Liest Bezeichner aus der Eingabe im Popup window
+                    chosenIdentifier = popupAddIdentifier.getText().toString();
 
 
-                //schreibt Eintrag und schließt Popup Window
-                Toast.makeText(getActivity().getBaseContext(), chosenCategory + " " + chosenIdentifier + " " + chosenAmount +  " " + chosenDate, Toast.LENGTH_SHORT).show();
-                popupWindowAddEntries.dismiss();
+                    //Liest Betrag aus der Eingabe im Popup window
+                    chosenAmount = Float.valueOf(popupAddAmount.getText().toString());
+
+
+                    //Liest Datum aus dem Datepicker im Popup window un konvertiert zu String
+                    chosenDate = popupAddDate.getDayOfMonth() +  "." + popupAddDate.getMonth() +  "." + popupAddDate.getYear();
+
+
+                    //schreibt Eintrag und schließt Popup Window
+                    Toast.makeText(getActivity().getBaseContext(), chosenCategory + " " + chosenIdentifier + " " + chosenAmount +  " " + chosenDate, Toast.LENGTH_SHORT).show();
+                    popupWindowAddEntries.dismiss();
+
+                }
+
             }
         });
 

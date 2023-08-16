@@ -41,32 +41,52 @@
                     android:textSize="20sp"
                     android:textStyle="bold"/>
 
-                <com.google.android.material.textfield.TextInputLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/name_input"
-                    app:hintAnimationEnabled="true"
-                    android:layout_below="@+id/name_headline"
-                    android:hint="@string/settings_name_hint"
-                    app:endIconMode="clear_text"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp">
+                    android:id="@+id/name_input_container"
+                    android:layout_below="@id/name_headline"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="20dp">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:layout_marginBottom="20dp"/>
+                        app:hintAnimationEnabled="true"
+                        android:layout_weight="0.8"
+                        android:hint="@string/settings_name_hint"
+                        app:endIconMode="clear_text"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="5dp">
 
-                </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/name_input"
+                            android:singleLine="true"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        app:cornerRadius="8dp"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.2"
+                        android:id="@+id/name_button"
+                        android:backgroundTint="@color/lightgreen"
+                        android:text="@string/settings_fixed_button"
+                        android:textStyle="bold"
+                        android:textSize="28sp"
+                        android:layout_marginRight="10dp"/>
+
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:id="@+id/settings_divider_one"
                     android:layout_height="1dp"
                     android:background="@android:color/darker_gray"
-                    android:layout_below="@id/name_input"
+                    android:layout_below="@id/name_input_container"
                     android:layout_marginRight="10dp"/>
 
 <!--Währung-->
@@ -103,39 +123,59 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/income_headline"
+                    android:id="@+id/budget_headline"
                     android:text="@string/settings_income_headline"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:layout_below="@+id/settings_divider_two"/>
 
-                <com.google.android.material.textfield.TextInputLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/income_input"
-                    app:hintAnimationEnabled="true"
-                    android:layout_below="@+id/income_headline"
-                    android:hint="@string/settings_income_hint"
-                    app:endIconMode="clear_text"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp">
+                    android:id="@+id/budget_input_container"
+                    android:layout_below="@+id/budget_headline"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="20dp">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:inputType="numberDecimal|numberSigned"
-                        android:layout_marginBottom="20dp"/>
+                        android:layout_weight="0.8"
+                        app:hintAnimationEnabled="true"
+                        android:hint="@string/settings_income_hint"
+                        app:endIconMode="clear_text"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="5dp">
 
-                </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/budget_input"
+                            android:singleLine="true"
+                            android:inputType="numberDecimal|numberSigned"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        app:cornerRadius="8dp"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.2"
+                        android:id="@+id/budget_button"
+                        android:backgroundTint="@color/lightgreen"
+                        android:text="@string/settings_fixed_button"
+                        android:textStyle="bold"
+                        android:textSize="28sp"
+                        android:layout_marginRight="10dp"/>
+
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:id="@+id/settings_divider_three"
                     android:layout_height="1dp"
                     android:background="@android:color/darker_gray"
-                    android:layout_below="@id/income_input"
+                    android:layout_below="@id/budget_input_container"
                     android:layout_marginRight="10dp"/>
 
 <!--monatliche Fixkosten-->
@@ -193,7 +233,7 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.button.MaterialButton
+                    <Button
                         app:cornerRadius="8dp"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"

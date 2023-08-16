@@ -23,6 +23,8 @@ public class SettingsFragment extends Fragment {
 
     String fixedIdentifier = "";
     float fixedAmount = 0;
+    String name = "";
+    float budget = 0;
 
     private ListView listFixedInput;
     private Button fixedInputButton;
@@ -30,6 +32,8 @@ public class SettingsFragment extends Fragment {
     private Button budgetButton;
     private EditText fixedInputIdentifier;
     private EditText fixedInputAmount;
+    private EditText nameInput;
+    private EditText budgetInput;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,6 +82,57 @@ public class SettingsFragment extends Fragment {
 
         //Eingabe Name
         nameButton = view.findViewById(R.id.name_button);
+        nameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                nameInput = view.findViewById(R.id.name_input);
+
+                //check, ob Feld leer
+                if(TextUtils.isEmpty(nameInput.getText().toString())){
+
+                    Toast.makeText(getActivity().getBaseContext(), "Bitte Feld ausfüllen", Toast.LENGTH_SHORT).show();
+
+                }else{
+
+                    name = nameInput.getText().toString();
+                    nameInput.setText("");
+                    Toast.makeText(getActivity().getBaseContext(), name, Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
+
+
+
+
+        //Eingabe Budget
+        budgetButton = view.findViewById(R.id.budget_button);
+        budgetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                budgetInput = view.findViewById(R.id.budget_input);
+
+                //check, ob Feld leer
+                if(TextUtils.isEmpty(budgetInput.getText().toString())){
+
+                    Toast.makeText(getActivity().getBaseContext(), "Bitte Feld ausfüllen", Toast.LENGTH_SHORT).show();
+
+                }else{
+
+                    budget = Float.valueOf(budgetInput.getText().toString());
+                    budgetInput.setText("");
+                    Toast.makeText(getActivity().getBaseContext(), String.valueOf(budget), Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
+
+
+
 
         //Test Fixkostenliste
         ArrayAdapter fixedAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1 , fixedInput);

@@ -12,12 +12,12 @@ import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 
-public class BudgetListAdapter extends ArrayAdapter<String> {
+public class BudgetListAdapter extends ArrayAdapter<Expense> {
 
     private Context mContext;
     private int mResource;
 
-    public BudgetListAdapter(Context context, int resource, ArrayList<String> list){
+    public BudgetListAdapter(Context context, int resource, ArrayList<Expense> list){
         super(context, resource, list);
 
         mContext = context;
@@ -29,7 +29,7 @@ public class BudgetListAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
 
-        String name = getItem(position);
+        Expense expense = getItem(position);
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
@@ -41,7 +41,10 @@ public class BudgetListAdapter extends ArrayAdapter<String> {
 
         Button delete = convertView.findViewById(R.id.delete_button_home);
 
-        listItemOne.setText(name);
+        listItemOne.setText(expense.getName());
+        listItemTwo.setText(expense.getCategory());
+        listItemThree.setText(expense.getDate());
+        listItemFour.setText(String.valueOf(expense.getAmount()));
 
         return convertView;
 

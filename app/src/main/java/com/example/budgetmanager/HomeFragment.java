@@ -90,9 +90,6 @@ public class HomeFragment extends Fragment {
 
     String währung = "€";
 
-    //Name, Kategorie, Datum, Betrag,
-    String[] listAusgaben = {"A, a, 01.01.23, 50€", "B, b, 01.01.23, 50€", "C, c, 01.01.23, 50€", "D, d, 01.01.23, 50€"};
-
 
 
 
@@ -277,15 +274,22 @@ public class HomeFragment extends Fragment {
         textViewRemainingBudget.setText("Monatsausgaben: " + "\n" + ausgaben + währung);
         textViewDifference.setText("Differenz: " + budgetUebrig + währung);
 
+/**
+        ArrayList <Expense> homeExpenses = new ArrayList<>();
+        Expense one = new Expense("Rewe", "Lebensmittel", "2.5.2023", 12);
+        Expense two = new Expense("Edeka", "Lebensmittel", "7.5.2023", 19);
+        Expense three = new Expense("GPU", "Gebrauchsgegenstände", "9.8.2023", 499);
+        Expense four = new Expense("Bus", "Transport", "8.6.2023", 2);
+        Expense five = new Expense("Kino", "Unterhaltung", "6.5.2023", 30);
 
-        ArrayList <String> homeExpenses = new ArrayList<>();
-        homeExpenses.add("one");
-        homeExpenses.add("two");
-        homeExpenses.add("three");
-        homeExpenses.add("four");
+        homeExpenses.add(one);
+        homeExpenses.add(two);
+        homeExpenses.add(three);
+        homeExpenses.add(four);
+        homeExpenses.add(five);
 
-        FixedListAdapter fixedAdapter = new FixedListAdapter(getContext(), R.layout.list_layout_double_line_delete_button, homeExpenses);
-        listHome.setAdapter(fixedAdapter);
+        BudgetListAdapter budgetAdapter = new BudgetListAdapter(getContext(), R.layout.list_layout_double_line_delete_button, homeExpenses);
+        listHome.setAdapter(budgetAdapter);**/
 
     }
 
@@ -538,7 +542,7 @@ public class HomeFragment extends Fragment {
 
 
 
-    //Daten der Monatszusammenfassunf aktualisieren
+    //Daten der Monatszusammenfassung aktualisieren
     public void setSummaryData(){
 
         textViewMonthSummary.setText("letzter Monat");
@@ -549,15 +553,22 @@ public class HomeFragment extends Fragment {
         textViewBudgetSummary.setText("Budget: " + "\n" + budgetGesamt + währung);
         textViewRemainingBudgetSummary.setText("Monatsausgaben: " + "\n" + ausgaben + währung);
         textViewDifferenceSummary.setText("Differenz: " + budgetUebrig + währung);
+/**
+        ArrayList <Expense> homeExpenses = new ArrayList<>();
+        Expense one = new Expense("Rewe", "Lebensmittel", "2.5.2023", 12);
+        Expense two = new Expense("Edeka", "Lebensmittel", "7.5.2023", 19);
+        Expense three = new Expense("GPU", "Gebrauchsgegenstände", "9.8.2023", 499);
+        Expense four = new Expense("Bus", "Transport", "8.6.2023", 2);
+        Expense five = new Expense("Kino", "Unterhaltung", "6.5.2023", 30);
 
-        ArrayList <String> homeExpenses = new ArrayList<>();
-        homeExpenses.add("one");
-        homeExpenses.add("two");
-        homeExpenses.add("three");
-        homeExpenses.add("four");
+        homeExpenses.add(one);
+        homeExpenses.add(two);
+        homeExpenses.add(three);
+        homeExpenses.add(four);
+        homeExpenses.add(five);
 
-        FixedListAdapter fixedAdapter = new FixedListAdapter(getContext(), R.layout.list_layout_double_line_delete_button, homeExpenses);
-        listSummary.setAdapter(fixedAdapter);
+        BudgetListAdapter budgetAdapter = new BudgetListAdapter(getContext(), R.layout.list_layout_double_line_delete_button, homeExpenses);
+        listSummary.setAdapter(budgetAdapter);**/
 
     }
 

@@ -134,7 +134,9 @@ public class HomeFragment extends Fragment {
     private TextView textViewDifference;
     private FloatingActionButton actionButton;
     private PopupWindow popupWindowAddEntries;
-    private LayoutInflater loadPopupWindow;
+    private LayoutInflater loadAddPopupWindow;
+    private PopupWindow popupWindowSummary;
+    private LayoutInflater loadSummaryPopupWindow;
     private FrameLayout homeFragment;
     private Button popupAddButton;
     private EditText popupAddIdentifier;
@@ -219,8 +221,8 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
 
                 //läd die popup_add_text in einen Container
-                loadPopupWindow = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                ViewGroup container = (ViewGroup) loadPopupWindow.inflate(R.layout.popup_add_entries, null);
+                loadAddPopupWindow = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                ViewGroup container = (ViewGroup) loadAddPopupWindow.inflate(R.layout.popup_add_entries, null);
 
                 //läd oben erstellten Container in ein Popup Window
                 //true lässt  es zu, das Fenster zu schliessen, wenn auserhalb des Fensters gedrückt wird
@@ -446,6 +448,21 @@ public class HomeFragment extends Fragment {
             }
 
         });
+
+    }
+
+
+
+
+    private void loadPopupSummary(){
+
+        loadSummaryPopupWindow = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewGroup container = (ViewGroup) loadSummaryPopupWindow.inflate(R.layout.popup_summary, null);
+
+        //läd oben erstellten Container in ein Popup Window
+        //true lässt  es zu, das Fenster zu schliessen, wenn auserhalb des Fensters gedrückt wird
+        popupWindowSummary = new PopupWindow(container, 1200, 2500, true);
+        popupWindowSummary.showAtLocation(homeFragment, Gravity.CENTER, 0, 0);
 
     }
 

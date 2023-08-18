@@ -131,7 +131,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.8"
                         android:id="@+id/ausgaben_sort"
-                        android:layout_below="@+id/home_divider_two"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"/>
 

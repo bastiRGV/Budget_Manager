@@ -1,5 +1,6 @@
 package com.example.budgetmanager;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,11 +11,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class SettingsFragment extends Fragment {
 
@@ -132,15 +138,23 @@ public class SettingsFragment extends Fragment {
         });
 
 
+        //Test Liste 2
+        ArrayList <String> input = new ArrayList<>();
+        input.add("one");
+        input.add("two");
 
-
-        //Test Fixkostenliste
-        ArrayAdapter fixedAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1 , fixedInput);
-        listFixedInput=view.findViewById(R.id.list_fixed_input);
+        FixedListAdapter fixedAdapter = new FixedListAdapter(getContext(), R.layout.list_layout_single_line_delete_button, input);
+        listFixedInput = view.findViewById(R.id.list_fixed_input);
         listFixedInput.setAdapter(fixedAdapter);
 
-        fixedInputButton = view.findViewById(R.id.fixed_button);
 
+        /**Test Fixkostenliste
+        ArrayAdapter fixedAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1 , fixedInput);
+        listFixedInput=view.findViewById(R.id.list_fixed_input);
+        listFixedInput.setAdapter(fixedAdapter);**/
+
+
+        fixedInputButton = view.findViewById(R.id.fixed_button);
 
         //Eingabe Fixkosten
         fixedInputButton.setOnClickListener(new View.OnClickListener() {
@@ -174,8 +188,5 @@ public class SettingsFragment extends Fragment {
 
         return view;
     }
-
-
-
 
 }

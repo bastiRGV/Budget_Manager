@@ -21,7 +21,7 @@
             android:textStyle="bold"
             android:textSize="30sp"/>
 
-        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/header_home"
@@ -30,7 +30,6 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:nestedScrollingEnabled="false">
 
 <!--Chart-->
@@ -151,11 +150,14 @@
                     android:id="@+id/action_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/baseline_addchart_24"
-                    android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
                     android:backgroundTint="@color/lightgreen"
-                    android:layout_margin="16dp"/>
+                    android:src="@drawable/baseline_addchart_24" />
 
             </RelativeLayout>
 

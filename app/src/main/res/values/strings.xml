@@ -5,7 +5,7 @@
     <string name="header_settings">Settings</string>
     <string name="header_export">Export</string>
     <string name="header_history">History</string>
-    <string name="header_about">About</string>
+    <string name="header_about">Über die App</string>
     <string name="header_home">current month here</string>
 
     <string name="export_button">Export selected Data</string>
@@ -35,6 +35,11 @@
     <string name="home_popup_add_betrag_hint">Betrag eingeben</string>
     <string name="home_popup_add_datum_header">Datum:</string>
     <string name="home_popup_button">Eintrag anlegen</string>
+
+    <string name="developer">Bastian Barth</string>
+    <string name="course">Projekt Mobile Computing</string>
+    <string name="university">Hochschule Schmalkalden</string>
+    <string name="github_link">https://github.com/bastiRGV/Budget_Manager</string>
 
 
 </resources>

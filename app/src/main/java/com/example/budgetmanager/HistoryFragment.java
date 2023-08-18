@@ -56,6 +56,12 @@ public class HistoryFragment extends Fragment {
                                         sonstigesGesamt,
                                         budgetUebrigGraph};
 
+    //Menüeinträge für Filter der Ausgaben auf Homepage
+    String[] dropdownFilter = new String[] {"Datum",
+                                            "Bezeichnung",
+                                            "Betrag",
+                                            "Kategorie"};
+
     //Name, Kategorie, Datum, Betrag,
     String[] listAusgaben = {"A, a, 01.01.23, 50€", "B, b, 01.01.23, 50€", "C, c, 01.01.23, 50€", "D, d, 01.01.23, 50€"};
 
@@ -157,6 +163,42 @@ public class HistoryFragment extends Fragment {
         listHistoryPopup = popupWindowHistory.getContentView().findViewById(R.id.list_summary);
 
         dropdownMenuHistory = popupWindowHistory.getContentView().findViewById(R.id.summary_ausgaben_sort);
+
+        //läd items aus Array in das Dropdown Menü
+        ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, dropdownFilter);
+        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dropdownMenuHistory.setAdapter(filterAdapter);
+
+        //änderung Sortierung, je nachdem, welcher menüpunkt ausgewählt
+        dropdownMenuHistory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+
+                switch (position) {
+                    case 0:
+                        //Datum
+                        break;
+                    case 1:
+                        //Name
+                        break;
+                    case 2:
+                        //Betrag
+                        break;
+                    case 3:
+                        //Kategorie
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //default nach Datum sotiert
+                return;
+            }
+
+        });
 
         setHistoryData();
 

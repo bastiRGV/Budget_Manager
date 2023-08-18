@@ -488,6 +488,42 @@ public class HomeFragment extends Fragment {
 
         dropdownMenuSummary = popupWindowSummary.getContentView().findViewById(R.id.summary_ausgaben_sort);
 
+        //läd items aus Array in das Dropdown Menü
+        ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, dropdownFilter);
+        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dropdownMenuSummary.setAdapter(filterAdapter);
+
+        //änderung Sortierung, je nachdem, welcher menüpunkt ausgewählt
+        dropdownMenuSummary.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+
+                switch (position) {
+                    case 0:
+                        //Datum
+                        break;
+                    case 1:
+                        //Name
+                        break;
+                    case 2:
+                        //Betrag
+                        break;
+                    case 3:
+                        //Kategorie
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //default nach Datum sotiert
+                return;
+            }
+
+        });
+
         setSummaryData();
 
     }

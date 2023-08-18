@@ -138,20 +138,14 @@ public class SettingsFragment extends Fragment {
         });
 
 
-        //Test Liste 2
-        ArrayList <String> input = new ArrayList<>();
-        input.add("one");
-        input.add("two");
+        //Test Liste
+        ArrayList <String> fixedInput = new ArrayList<>();
+        fixedInput.add("one");
+        fixedInput.add("two");
 
-        FixedListAdapter fixedAdapter = new FixedListAdapter(getContext(), R.layout.list_layout_single_line_delete_button, input);
+        FixedListAdapter fixedAdapter = new FixedListAdapter(getContext(), R.layout.list_layout_single_line_delete_button, fixedInput);
         listFixedInput = view.findViewById(R.id.list_fixed_input);
         listFixedInput.setAdapter(fixedAdapter);
-
-
-        /**Test Fixkostenliste
-        ArrayAdapter fixedAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1 , fixedInput);
-        listFixedInput=view.findViewById(R.id.list_fixed_input);
-        listFixedInput.setAdapter(fixedAdapter);**/
 
 
         fixedInputButton = view.findViewById(R.id.fixed_button);

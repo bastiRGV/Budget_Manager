@@ -277,11 +277,17 @@ public class HomeFragment extends Fragment {
         textViewRemainingBudget.setText("Monatsausgaben: " + "\n" + ausgaben + währung);
         textViewDifference.setText("Differenz: " + budgetUebrig + währung);
 
-        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1 , listAusgaben);
-        listHome.setAdapter(adapter);
+
+        ArrayList <String> homeExpenses = new ArrayList<>();
+        homeExpenses.add("one");
+        homeExpenses.add("two");
+        homeExpenses.add("three");
+        homeExpenses.add("four");
+
+        FixedListAdapter fixedAdapter = new FixedListAdapter(getContext(), R.layout.list_layout_double_line_delete_button, homeExpenses);
+        listHome.setAdapter(fixedAdapter);
 
     }
-
 
 
 
@@ -544,8 +550,14 @@ public class HomeFragment extends Fragment {
         textViewRemainingBudgetSummary.setText("Monatsausgaben: " + "\n" + ausgaben + währung);
         textViewDifferenceSummary.setText("Differenz: " + budgetUebrig + währung);
 
-        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1 , listAusgaben);
-        listSummary.setAdapter(adapter);
+        ArrayList <String> homeExpenses = new ArrayList<>();
+        homeExpenses.add("one");
+        homeExpenses.add("two");
+        homeExpenses.add("three");
+        homeExpenses.add("four");
+
+        FixedListAdapter fixedAdapter = new FixedListAdapter(getContext(), R.layout.list_layout_double_line_delete_button, homeExpenses);
+        listSummary.setAdapter(fixedAdapter);
 
     }
 

@@ -80,7 +80,7 @@ public class HomeFragment extends Fragment {
                                         "übriges Budget"};
 
     //Farbcodes, welche für Graphen nutzbar sind (nicht aus color.xml in bibliothek importierbar)
-    int graph_red = 0xFFE60049;
+     int graph_red = 0xFFE60049;
     int graph_blue = 0xFF0BB4FF;
     int graph_green = 0xFF50E991;
     int graph_orange = 0xFFFFA300;
@@ -127,11 +127,12 @@ public class HomeFragment extends Fragment {
 
     //Views anlegen
     private ListView listHome;
-    private PieChart mChart;
+    private PieChart chartHome;
     private TextView textViewMonth;
     private TextView textViewBudget;
     private TextView textViewRemainingBudget;
     private TextView textViewDifference;
+    private Spinner dropdownMenuHome;
     private FloatingActionButton actionButton;
     private PopupWindow popupWindowAddEntries;
     private LayoutInflater loadAddPopupWindow;
@@ -142,6 +143,13 @@ public class HomeFragment extends Fragment {
     private EditText popupAddIdentifier;
     private EditText popupAddAmount;
     private DatePicker popupAddDate;
+    private PieChart chartSummary;
+    private ListView listSummary;
+    private TextView textViewMonthSummary;
+    private TextView textViewBudgetSummary;
+    private TextView textViewRemainingBudgetSummary;
+    private TextView textViewDifferenceSummary;
+    private Spinner dropdownMenuSummary;
 
 
 
@@ -163,18 +171,18 @@ public class HomeFragment extends Fragment {
         }
 
         //Variablen mit fragment_ids verknüpfen
-        textViewMonth = (TextView)view.findViewById(R.id.header_home);
-        mChart = (PieChart) view.findViewById(R.id.chart);
+        textViewMonth = view.findViewById(R.id.header_home);
+        chartHome = view.findViewById(R.id.chart);
 
-        textViewBudget = (TextView) view.findViewById(R.id.home_budget);
-        textViewRemainingBudget = (TextView) view.findViewById(R.id.home_remaining);
-        textViewDifference = (TextView) view.findViewById(R.id.home_difference);
+        textViewBudget = view.findViewById(R.id.home_budget);
+        textViewRemainingBudget = view.findViewById(R.id.home_remaining);
+        textViewDifference = view.findViewById(R.id.home_difference);
 
         listHome = view.findViewById(R.id.list_home);
 
 
         //filtermenü befüllen
-        Spinner dropdownMenuHome = view.findViewById(R.id.ausgaben_sort);
+        dropdownMenuHome = view.findViewById(R.id.ausgaben_sort);
 
         //läd items aus Array in das Dropdown Menü
         ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, dropdownFilter);
@@ -193,6 +201,7 @@ public class HomeFragment extends Fragment {
                         break;
                     case 1:
                         //Name
+                        loadPopupSummary();
                         break;
                     case 2:
                         //Betrag
@@ -261,8 +270,8 @@ public class HomeFragment extends Fragment {
 
         textViewMonth.setText(getMonth());
 
-        styleChart();
-        setChartData();
+        styleChart(chartHome);
+        setChartData(chartHome);
 
         textViewBudget.setText("Budget: " + "\n" + budgetGesamt + währung);
         textViewRemainingBudget.setText("Monatsausgaben: " + "\n" + ausgaben + währung);
@@ -299,7 +308,7 @@ public class HomeFragment extends Fragment {
 
 
     //Daten ins Chart einfügen, stylen
-    private void setChartData(){
+    private void setChartData(PieChart chart){
         ArrayList<PieEntry> values = new ArrayList<>();
 
         for (int i = 0; i < chartData.length; i++){
@@ -313,10 +322,10 @@ public class HomeFragment extends Fragment {
         data.setValueTextSize(15f);
         data.setValueTextColor(Color.WHITE);
 
-        mChart.setData(data);
+        chart.setData(data);
 
         //refresh des Graphen
-        mChart.invalidate();
+        chart.invalidate();
     }
 
 
@@ -327,22 +336,22 @@ public class HomeFragment extends Fragment {
 
 
     //Anpassungen für den Chart
-    private void styleChart(){
+    private void styleChart(PieChart chart){
 
-        mChart.setBackgroundColor(Color.WHITE);
+        chart.setBackgroundColor(Color.WHITE);
 
-        mChart.getDescription().setEnabled(false);
-        mChart.setDrawHoleEnabled(true);
-        mChart.setEntryLabelTextSize(0f);
+        chart.getDescription().setEnabled(false);
+        chart.setDrawHoleEnabled(true);
+        chart.setEntryLabelTextSize(0f);
 
-        mChart.setMaxAngle(180);
-        mChart.setRotationAngle(180);
-        mChart.setRotationEnabled(false);
+        chart.setMaxAngle(180);
+        chart.setRotationAngle(180);
+        chart.setRotationEnabled(false);
 
-        mChart.animateY(1500, Easing.EaseInOutCubic);
+        chartHome.animateY(1500, Easing.EaseInOutCubic);
 
         //Anpassung Legende
-        Legend legend = mChart.getLegend();
+        Legend legend = chart.getLegend();
         legend.setWordWrapEnabled(true);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setDrawInside(true);
@@ -459,10 +468,48 @@ public class HomeFragment extends Fragment {
         loadSummaryPopupWindow = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup container = (ViewGroup) loadSummaryPopupWindow.inflate(R.layout.popup_summary, null);
 
+
         //läd oben erstellten Container in ein Popup Window
         //true lässt  es zu, das Fenster zu schliessen, wenn auserhalb des Fensters gedrückt wird
         popupWindowSummary = new PopupWindow(container, 1200, 2500, true);
         popupWindowSummary.showAtLocation(homeFragment, Gravity.CENTER, 0, 0);
+
+
+
+        //Variablen mit IDs verknüpfen Popupfenster Monatszusammenfassung
+        textViewMonthSummary = popupWindowSummary.getContentView().findViewById(R.id.header_summary);
+        chartSummary = popupWindowSummary.getContentView().findViewById(R.id.chart_summary);
+
+        textViewBudgetSummary = popupWindowSummary.getContentView().findViewById(R.id.summary_budget);
+        textViewRemainingBudgetSummary = popupWindowSummary.getContentView().findViewById(R.id.summary_remaining);
+        textViewDifferenceSummary = popupWindowSummary.getContentView().findViewById(R.id.summary_difference);
+
+        listSummary = popupWindowSummary.getContentView().findViewById(R.id.list_summary);
+
+        dropdownMenuSummary = popupWindowSummary.getContentView().findViewById(R.id.summary_ausgaben_sort);
+
+        setSummaryData();
+
+    }
+
+
+
+
+
+    //Daten der Monatszusammenfassunf aktualisieren
+    public void setSummaryData(){
+
+        textViewMonthSummary.setText("letzter Monat");
+
+        styleChart(chartSummary);
+        setChartData(chartSummary);
+
+        textViewBudgetSummary.setText("Budget: " + "\n" + budgetGesamt + währung);
+        textViewRemainingBudgetSummary.setText("Monatsausgaben: " + "\n" + ausgaben + währung);
+        textViewDifferenceSummary.setText("Differenz: " + budgetUebrig + währung);
+
+        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1 , listAusgaben);
+        listSummary.setAdapter(adapter);
 
     }
 

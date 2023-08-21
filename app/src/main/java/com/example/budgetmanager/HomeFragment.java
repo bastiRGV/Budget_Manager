@@ -557,8 +557,8 @@ public class HomeFragment extends Fragment {
         summaryHomeExpenses.add(new Expense(4, "Bus", "Transport", "8. 6. 2023", 2));
         summaryHomeExpenses.add(new Expense(5, "Kino", "Unterhaltung", "6. 5. 2023", 30));
 
-        BudgetListAdapter budgetAdapter = new BudgetListAdapter(getContext(), summaryHomeExpenses);
-        listSummary.setAdapter(budgetAdapter);
+        SummaryListAdapter summaryAdapter = new SummaryListAdapter(getContext(), summaryHomeExpenses);
+        listSummary.setAdapter(summaryAdapter);
 
     }
 

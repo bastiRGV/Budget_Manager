@@ -5,48 +5,48 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
 public class BudgetListAdapter extends ArrayAdapter<Expense> {
 
-    private Context mContext;
-    private int mResource;
+    public BudgetListAdapter(@NonNull Context context, ArrayList<Expense> arraylist){
 
-    public BudgetListAdapter(Context context, int resource, ArrayList<Expense> list){
-        super(context, resource, list);
-
-        mContext = context;
-        mResource = resource;
+        super(context, 0, arraylist);
 
     }
 
     @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
 
-        Expense expense = getItem(position);
+        View currentItemView = convertView;
 
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        convertView = inflater.inflate(mResource, parent, false);
+        if (currentItemView == null){
 
-        TextView listItemOne = convertView.findViewById(R.id.list_item_one);
-        TextView listItemTwo = convertView.findViewById(R.id.list_item_two);
-        TextView listItemThree = convertView.findViewById(R.id.list_item_three);
-        TextView listItemFour = convertView.findViewById(R.id.list_item_four);
+            currentItemView = LayoutInflater.from(getContext()).inflate(R.layout.list_layout_double_line_delete_button, parent, false);
 
-        Button delete = convertView.findViewById(R.id.delete_button_home);
+        }
 
-        listItemOne.setText(expense.getName());
-        listItemTwo.setText(expense.getCategory());
-        listItemThree.setText(expense.getDate());
-        listItemFour.setText(String.valueOf(expense.getAmount()));
+        Expense currentPosition = getItem(position);
 
-        return convertView;
+        TextView name = currentItemView.findViewById(R.id.budget_list_item_name);
+        name.setText(currentPosition.getName());
+
+        TextView category = currentItemView.findViewById(R.id.budget_list_item_category);
+        category.setText(currentPosition.getCategory());
+
+        TextView amount = currentItemView.findViewById(R.id.budget_list_item_amount);
+        amount.setText(currentPosition.getAmount() + "€");
+
+        TextView date = currentItemView.findViewById(R.id.budget_list_item_date);
+        date.setText(currentPosition.getDate());
+
+        return currentItemView;
 
     }
 

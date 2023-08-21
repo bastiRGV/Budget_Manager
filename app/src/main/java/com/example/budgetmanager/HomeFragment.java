@@ -274,22 +274,17 @@ public class HomeFragment extends Fragment {
         textViewRemainingBudget.setText("Monatsausgaben: " + "\n" + ausgaben + währung);
         textViewDifference.setText("Differenz: " + budgetUebrig + währung);
 
-/**
-        ArrayList <Expense> homeExpenses = new ArrayList<>();
-        Expense one = new Expense("Rewe", "Lebensmittel", "2.5.2023", 12);
-        Expense two = new Expense("Edeka", "Lebensmittel", "7.5.2023", 19);
-        Expense three = new Expense("GPU", "Gebrauchsgegenstände", "9.8.2023", 499);
-        Expense four = new Expense("Bus", "Transport", "8.6.2023", 2);
-        Expense five = new Expense("Kino", "Unterhaltung", "6.5.2023", 30);
 
-        homeExpenses.add(one);
-        homeExpenses.add(two);
-        homeExpenses.add(three);
-        homeExpenses.add(four);
-        homeExpenses.add(five);
+        ArrayList <Expense> homeExpenses = new ArrayList<Expense>();
 
-        BudgetListAdapter budgetAdapter = new BudgetListAdapter(getContext(), R.layout.list_layout_double_line_delete_button, homeExpenses);
-        listHome.setAdapter(budgetAdapter);**/
+        homeExpenses.add(new Expense(1, "Rewe", "Lebensmittel", "2. 5. 2023", 12));
+        homeExpenses.add(new Expense(2, "Edeka", "Lebensmittel", "7. 5. 2023", 19));
+        homeExpenses.add(new Expense(3, "GPU", "Gebrauchsgegenstände", "9. 8. 2023", 499));
+        homeExpenses.add(new Expense(4, "Bus", "Transport", "8. 6. 2023", 2));
+        homeExpenses.add(new Expense(5, "Kino", "Unterhaltung", "6. 5. 2023", 30));
+
+        BudgetListAdapter budgetAdapter = new BudgetListAdapter(getContext(), homeExpenses);
+        listHome.setAdapter(budgetAdapter);
 
     }
 
@@ -553,22 +548,17 @@ public class HomeFragment extends Fragment {
         textViewBudgetSummary.setText("Budget: " + "\n" + budgetGesamt + währung);
         textViewRemainingBudgetSummary.setText("Monatsausgaben: " + "\n" + ausgaben + währung);
         textViewDifferenceSummary.setText("Differenz: " + budgetUebrig + währung);
-/**
-        ArrayList <Expense> homeExpenses = new ArrayList<>();
-        Expense one = new Expense("Rewe", "Lebensmittel", "2.5.2023", 12);
-        Expense two = new Expense("Edeka", "Lebensmittel", "7.5.2023", 19);
-        Expense three = new Expense("GPU", "Gebrauchsgegenstände", "9.8.2023", 499);
-        Expense four = new Expense("Bus", "Transport", "8.6.2023", 2);
-        Expense five = new Expense("Kino", "Unterhaltung", "6.5.2023", 30);
 
-        homeExpenses.add(one);
-        homeExpenses.add(two);
-        homeExpenses.add(three);
-        homeExpenses.add(four);
-        homeExpenses.add(five);
+        ArrayList <Expense> summaryHomeExpenses = new ArrayList<Expense>();
 
-        BudgetListAdapter budgetAdapter = new BudgetListAdapter(getContext(), R.layout.list_layout_double_line_delete_button, homeExpenses);
-        listSummary.setAdapter(budgetAdapter);**/
+        summaryHomeExpenses.add(new Expense(1, "Rewe", "Lebensmittel", "2. 5. 2023", 12));
+        summaryHomeExpenses.add(new Expense(2, "Edeka", "Lebensmittel", "7. 5. 2023", 19));
+        summaryHomeExpenses.add(new Expense(3, "GPU", "Gebrauchsgegenstände", "9. 8. 2023", 499));
+        summaryHomeExpenses.add(new Expense(4, "Bus", "Transport", "8. 6. 2023", 2));
+        summaryHomeExpenses.add(new Expense(5, "Kino", "Unterhaltung", "6. 5. 2023", 30));
+
+        BudgetListAdapter budgetAdapter = new BudgetListAdapter(getContext(), summaryHomeExpenses);
+        listSummary.setAdapter(budgetAdapter);
 
     }
 

@@ -62,9 +62,6 @@ public class HistoryFragment extends Fragment {
                                             "Betrag",
                                             "Kategorie"};
 
-    //Name, Kategorie, Datum, Betrag,
-    String[] listAusgaben = {"A, a, 01.01.23, 50€", "B, b, 01.01.23, 50€", "C, c, 01.01.23, 50€", "D, d, 01.01.23, 50€"};
-
 
 
     //Farbcodes, welche für Graphen nutzbar sind (nicht aus color.xml in bibliothek importierbar)
@@ -219,8 +216,16 @@ public class HistoryFragment extends Fragment {
         textViewRemainingBudgetHistory.setText("Monatsausgaben: " + "\n" + ausgaben + währung);
         textViewDifferenceHistory.setText("Differenz: " + budgetUebrig + währung);
 
-        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1 , listAusgaben);
-        listHistoryPopup.setAdapter(adapter);
+        ArrayList <Expense> summaryHomeExpenses = new ArrayList<Expense>();
+
+        summaryHomeExpenses.add(new Expense(1, "Rewe", "Lebensmittel", "2. 5. 2023", 12));
+        summaryHomeExpenses.add(new Expense(2, "Edeka", "Lebensmittel", "7. 5. 2023", 19));
+        summaryHomeExpenses.add(new Expense(3, "GPU", "Gebrauchsgegenstände", "9. 8. 2023", 499));
+        summaryHomeExpenses.add(new Expense(4, "Bus", "Transport", "8. 6. 2023", 2));
+        summaryHomeExpenses.add(new Expense(5, "Kino", "Unterhaltung", "6. 5. 2023", 30));
+
+        BudgetListAdapter budgetAdapter = new BudgetListAdapter(getContext(), summaryHomeExpenses);
+        listHistoryPopup.setAdapter(budgetAdapter);
 
     }
 
@@ -274,6 +279,7 @@ public class HistoryFragment extends Fragment {
 
         //refresh des Graphen
         chartHistory.invalidate();
+
     }
 
 }

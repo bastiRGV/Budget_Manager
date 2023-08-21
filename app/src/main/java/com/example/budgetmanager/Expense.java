@@ -2,18 +2,24 @@ package com.example.budgetmanager;
 
 public class Expense {
 
+    private int id;
     private String name;
     private String category;
     private String date;
     private float amount;
 
-    public Expense(String name, String category, String date, float amount){
+    public Expense(int id, String name, String category, String date, float amount){
 
+        this.id = id;
         this.name = name;
         this.category = category;
         this.date = date;
         this.amount = amount;
 
+    }
+
+    public int getId(){
+        return id;
     }
 
     public String getName(){
@@ -33,6 +39,9 @@ public class Expense {
     }
 
 
+    public void setID(int id){
+        this.id = id;
+    }
     public void setName(String name){
         this.name = name;
     }

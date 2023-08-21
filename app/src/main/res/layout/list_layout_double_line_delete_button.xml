@@ -14,18 +14,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp">
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp">
 
             <TextView
-                android:id="@+id/list_item_one"
+                android:id="@+id/budget_list_item_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
+                android:layout_marginLeft="5dp"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/list_item_two"
+                android:id="@+id/budget_list_item_category"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
@@ -37,10 +39,11 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp">
 
             <TextView
-                android:id="@+id/list_item_three"
+                android:id="@+id/budget_list_item_amount"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
@@ -48,7 +51,7 @@
                 android:layout_marginLeft="30dp"/>
 
             <TextView
-                android:id="@+id/list_item_four"
+                android:id="@+id/budget_list_item_date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"

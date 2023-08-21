@@ -5,45 +5,42 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-
-import org.w3c.dom.Text;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-public class FixedListAdapter extends ArrayAdapter<String> {
+public class FixedListAdapter extends ArrayAdapter<FixedExpense> {
 
-    private Context mContext;
-    private int mResource;
+    public FixedListAdapter(@NonNull Context context, ArrayList<FixedExpense> arrayList){
 
-    public FixedListAdapter(Context context, int resource, ArrayList<String> list){
-        super(context, resource, list);
-
-        mContext = context;
-        mResource = resource;
+        super(context, 0, arrayList);
 
     }
 
     @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
 
-        String name = getItem(position);
+        View currentItemView = convertView;
 
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        convertView = inflater.inflate(mResource, parent, false);
+        if (currentItemView == null){
 
-        TextView listItemOne = convertView.findViewById(R.id.list_item_one);
-        TextView listItemTwo = convertView.findViewById(R.id.list_item_two);
-        Button delete = convertView.findViewById(R.id.delete_button_settings);
+            currentItemView = LayoutInflater.from(getContext()).inflate(R.layout.list_layout_single_line_delete_button, parent, false);
 
-        listItemOne.setText(name);
+        }
 
-        return convertView;
+        FixedExpense currentPosition = getItem(position);
+
+        TextView name = currentItemView.findViewById(R.id.fixed_list_item_name);
+        name.setText(currentPosition.getName());
+
+        TextView amount = currentItemView.findViewById(R.id.fixed_list_item_amount);
+        amount.setText(String.valueOf(currentPosition.getAmount()) + "€");
+
+        return currentItemView;
 
     }
 

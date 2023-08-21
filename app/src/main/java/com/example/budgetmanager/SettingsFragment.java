@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class SettingsFragment extends Fragment {
 
     String[] dropdownCurrency = new String[] {"€  Euro", "$  Dollar", "￡  Pfund"};
-    String[] fixedInput = new String[] {"Miete: 900€", "Auto: 200€"};
+    //String[] fixedInput = new String[] {"Miete: 900€", "Auto: 200€"};
 
     String fixedIdentifier = "";
     float fixedAmount = 0;
@@ -139,13 +139,17 @@ public class SettingsFragment extends Fragment {
 
 
         //Test Liste
-        ArrayList <String> fixedInput = new ArrayList<>();
-        fixedInput.add("one");
-        fixedInput.add("two");
+        ArrayList <FixedExpense> fixedInput = new ArrayList<FixedExpense>();
+        fixedInput.add(new FixedExpense(1, "Miete", 300));
+        fixedInput.add(new FixedExpense(2, "Auto", 70));
 
-        FixedListAdapter fixedAdapter = new FixedListAdapter(getContext(), R.layout.list_layout_single_line_delete_button, fixedInput);
+        FixedListAdapter fixedListAdapter = new FixedListAdapter(getContext(), fixedInput);
         listFixedInput = view.findViewById(R.id.list_fixed_input);
-        listFixedInput.setAdapter(fixedAdapter);
+        listFixedInput.setAdapter(fixedListAdapter);
+        /**
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.list_layout_single_line_delete_button, R.id.list_item_one, fixedInput);
+        listFixedInput = view.findViewById(R.id.list_fixed_input);
+        listFixedInput.setAdapter(adapter);**/
 
 
         fixedInputButton = view.findViewById(R.id.fixed_button);

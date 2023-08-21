@@ -16,17 +16,26 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class ExportFragment extends Fragment {
 
     private ListView listExport;
     private Button exportButton;
-    String[] export = {"May 2023", "April 2023", "June 2023", "July 2023", "August 2023"};
-    String[] exportItems;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_export, container, false);
+
+
+        ArrayList<String> export = new ArrayList<String>();
+
+        export.add("May 2023");
+        export.add("Juny 2023");
+        export.add("July 2023");
+        export.add("August 2023");
+        export.add("September 2023");
 
         //befüllen Exportliste
         ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_multiple_choice, export);

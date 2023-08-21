@@ -31,8 +31,6 @@ import java.util.List;
 
 public class HistoryFragment extends Fragment {
 
-    String[] history = {"May 2023", "April 2023", "June 2023", "July 2023", "August 2023"};
-
     float fixausgabenGesamt = 900;
     float lebensmittelGesamt = 300;
     float gebrauchsgegenstaendeGesamt = 150;
@@ -111,6 +109,16 @@ public class HistoryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_history, container, false);
 
         historyFragment = view.findViewById(R.id.history_fragment);
+
+
+        ArrayList <String> history = new ArrayList<String>();
+
+        history.add("May 2023");
+        history.add("Juny 2023");
+        history.add("July 2023");
+        history.add("August 2023");
+        history.add("September 2023");
+
 
         //befüllen Historyliste
         ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1 , history);

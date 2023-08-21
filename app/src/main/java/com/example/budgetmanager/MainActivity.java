@@ -14,9 +14,12 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.navigation_view);
+
 
         //setzen des Standardfragments
         replaceFragment(new HomeFragment());
@@ -75,6 +79,11 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        //Änderund des Nutzernamens
+        View header = navigationView.getHeaderView(0);
+        TextView username = header.findViewById(R.id.nav_header_username);
+        username.setText("Basti");
 
     }
 

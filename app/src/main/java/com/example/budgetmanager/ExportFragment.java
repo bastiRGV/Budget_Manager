@@ -32,7 +32,7 @@ public class ExportFragment extends Fragment {
         ArrayList<String> export = new ArrayList<String>();
 
         export.add("May 2023");
-        export.add("Juny 2023");
+        export.add("June 2023");
         export.add("July 2023");
         export.add("August 2023");
         export.add("September 2023");

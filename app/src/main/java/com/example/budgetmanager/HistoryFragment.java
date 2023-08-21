@@ -114,7 +114,7 @@ public class HistoryFragment extends Fragment {
         ArrayList <String> history = new ArrayList<String>();
 
         history.add("May 2023");
-        history.add("Juny 2023");
+        history.add("June 2023");
         history.add("July 2023");
         history.add("August 2023");
         history.add("September 2023");

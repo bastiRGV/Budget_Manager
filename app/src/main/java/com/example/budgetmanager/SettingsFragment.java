@@ -146,11 +146,6 @@ public class SettingsFragment extends Fragment {
         FixedListAdapter fixedListAdapter = new FixedListAdapter(getContext(), fixedInput);
         listFixedInput = view.findViewById(R.id.list_fixed_input);
         listFixedInput.setAdapter(fixedListAdapter);
-        /**
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.list_layout_single_line_delete_button, R.id.list_item_one, fixedInput);
-        listFixedInput = view.findViewById(R.id.list_fixed_input);
-        listFixedInput.setAdapter(adapter);**/
-
 
         fixedInputButton = view.findViewById(R.id.fixed_button);
 

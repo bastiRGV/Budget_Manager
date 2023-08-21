@@ -1,11 +1,15 @@
 package com.example.budgetmanager;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +24,7 @@ public class FixedListAdapter extends ArrayAdapter<FixedExpense> {
 
     }
 
+    @SuppressLint("SetTextI18n")
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
@@ -38,7 +43,16 @@ public class FixedListAdapter extends ArrayAdapter<FixedExpense> {
         name.setText(currentPosition.getName());
 
         TextView amount = currentItemView.findViewById(R.id.fixed_list_item_amount);
-        amount.setText(String.valueOf(currentPosition.getAmount()) + "€");
+        amount.setText(currentPosition.getAmount() + "€");
+
+        ImageButton delete = currentItemView.findViewById(R.id.fixed_list_delete_button);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                name.setText("deleted");
+            }
+        });
+
 
         return currentItemView;
 

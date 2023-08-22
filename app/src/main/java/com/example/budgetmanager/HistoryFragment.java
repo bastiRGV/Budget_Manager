@@ -241,11 +241,11 @@ public class HistoryFragment extends Fragment {
         //Testeingaben für monatszusammenfassung
         ArrayList <Expense> summaryHistoryExpenses = new ArrayList<Expense>();
 
-        summaryHistoryExpenses.add(new Expense(1, "Rewe", "Lebensmittel", "2. 5. 2023", 12));
-        summaryHistoryExpenses.add(new Expense(2, "Edeka", "Lebensmittel", "7. 5. 2023", 19));
-        summaryHistoryExpenses.add(new Expense(3, "GPU", "Gebrauchsgegenstände", "9. 8. 2023", 499));
-        summaryHistoryExpenses.add(new Expense(4, "Bus", "Transport", "8. 6. 2023", 2));
-        summaryHistoryExpenses.add(new Expense(5, "Kino", "Unterhaltung", "6. 5. 2023", 30));
+        summaryHistoryExpenses.add(new Expense(1, "Rewe", "Lebensmittel", "2. 5. 2023", 12.00f));
+        summaryHistoryExpenses.add(new Expense(2, "Edeka", "Lebensmittel", "7. 5. 2023", 19.00f));
+        summaryHistoryExpenses.add(new Expense(3, "GPU", "Gebrauchsgegenstände", "9. 8. 2023", 499.00f));
+        summaryHistoryExpenses.add(new Expense(4, "Bus", "Transport", "8. 6. 2023", 2.00f));
+        summaryHistoryExpenses.add(new Expense(5, "Kino", "Unterhaltung", "6. 5. 2023", 30.00f));
 
         SummaryListAdapter summaryAdapter = new SummaryListAdapter(getContext(), summaryHistoryExpenses);
         listHistoryPopup.setAdapter(summaryAdapter);

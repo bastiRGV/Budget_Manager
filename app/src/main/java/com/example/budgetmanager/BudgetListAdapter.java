@@ -22,9 +22,13 @@ import java.util.ArrayList;
 
 public class BudgetListAdapter extends ArrayAdapter<Expense> {
 
+    private static SharedPreferences sharedPreferences;
+    private final Context context;
+
     public BudgetListAdapter(@NonNull Context context, ArrayList<Expense> arraylist){
 
         super(context, 0, arraylist);
+        this.context = context;
 
     }
 
@@ -40,6 +44,9 @@ public class BudgetListAdapter extends ArrayAdapter<Expense> {
 
         }
 
+        //initialisiert sharedReferences um Persistente Daten zu lesen
+        sharedPreferences = context.getSharedPreferences("prefBudgetManager", 0);
+
         Expense currentPosition = getItem(position);
 
         TextView name = currentItemView.findViewById(R.id.budget_list_item_name);
@@ -49,7 +56,7 @@ public class BudgetListAdapter extends ArrayAdapter<Expense> {
         category.setText(currentPosition.getCategory());
 
         TextView amount = currentItemView.findViewById(R.id.budget_list_item_amount);
-        amount.setText(currentPosition.getAmount() + "€");
+        amount.setText(currentPosition.getAmount() + sharedPreferences.getString("Currency", null));
 
         TextView date = currentItemView.findViewById(R.id.budget_list_item_date);
         date.setText(currentPosition.getDate());

@@ -2,6 +2,7 @@ package com.example.budgetmanager;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +22,13 @@ import java.util.ArrayList;
 
 public class FixedListAdapter extends ArrayAdapter<FixedExpense> {
 
+    private static SharedPreferences sharedPreferences;
+    private final Context context;
+
     public FixedListAdapter(@NonNull Context context, ArrayList<FixedExpense> arrayList){
 
         super(context, 0, arrayList);
+        this.context = context;
 
     }
 
@@ -40,13 +45,16 @@ public class FixedListAdapter extends ArrayAdapter<FixedExpense> {
 
         }
 
+        //initialisiert sharedReferences um Persistente Daten zu lesen
+        sharedPreferences = context.getSharedPreferences("prefBudgetManager", 0);
+
         FixedExpense currentPosition = getItem(position);
 
         TextView name = currentItemView.findViewById(R.id.fixed_list_item_name);
         name.setText(currentPosition.getName());
 
         TextView amount = currentItemView.findViewById(R.id.fixed_list_item_amount);
-        amount.setText(currentPosition.getAmount() + "€");
+        amount.setText(currentPosition.getAmount() + sharedPreferences.getString("Currency", null));
 
         ImageButton delete = currentItemView.findViewById(R.id.fixed_list_delete_button);
         delete.setOnClickListener(new View.OnClickListener() {

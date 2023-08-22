@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/popup_background">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/popup_setup_header"
+        android:gravity="center_horizontal"
+        android:text="@string/setup_header"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/popup_setup_name_header"
+        android:layout_below="@+id/popup_setup_header"
+        android:text="@string/setup_username"
+        android:layout_marginTop="20dp"
+        android:textSize="15sp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/popup_setup_name_input_container"
+        app:hintAnimationEnabled="true"
+        android:layout_below="@+id/popup_setup_name_header"
+        android:hint="@string/setup_username_hint"
+        app:endIconMode="clear_text"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/popup_setup_name_input"
+            android:singleLine="true"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/popup_setup_budget_header"
+        android:layout_below="@+id/popup_setup_name_input_container"
+        android:text="@string/setup_budget"
+        android:layout_marginTop="20dp"
+        android:textSize="15sp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/popup_setup_budget_input_container"
+        app:hintAnimationEnabled="true"
+        android:layout_below="@+id/popup_setup_budget_header"
+        android:hint="@string/setup_budget_hint"
+        app:endIconMode="clear_text"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/popup_setup_budget_input"
+            android:singleLine="true"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/popup_add_button"
+        android:layout_below="@+id/popup_setup_budget_input_container"
+        android:text="@string/setup_button"
+        android:textSize="15sp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/lightgreen"/>
+
+
+</RelativeLayout>

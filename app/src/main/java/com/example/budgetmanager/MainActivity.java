@@ -9,11 +9,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -84,6 +89,13 @@ public class MainActivity extends AppCompatActivity {
         View header = navigationView.getHeaderView(0);
         TextView username = header.findViewById(R.id.nav_header_username);
         username.setText("Basti");
+
+        LayoutInflater loadSetupPopupWindow = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewGroup container = (ViewGroup) loadSetupPopupWindow.inflate(R.layout.popup_setup, null);
+
+
+        PopupWindow popupWindowSetup = new PopupWindow(container, 1200, 1200, true);
+        popupWindowSetup.showAtLocation(drawerLayout, Gravity.CENTER, 0, 0);
 
     }
 

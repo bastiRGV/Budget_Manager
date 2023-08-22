@@ -8,7 +8,7 @@
     <string name="header_about">Über die App</string>
     <string name="header_home">current month here</string>
 
-    <string name="export_button">Export selected Data</string>
+    <string name="export_button">Export ausgewählter Daten</string>
 
     <string name="settings_name_headline">Nutzername:</string>
     <string name="settings_name_hint">Nutzernamen eingeben</string>
@@ -41,5 +41,12 @@
     <string name="university">Hochschule Schmalkalden</string>
     <string name="github_link">https://github.com/bastiRGV/Budget_Manager</string>
 
+    <string name="setup_username">Nutzernamen:</string>
+    <string name="setup_username_hint">Nutzernamen eingeben</string>
+
+    <string name="setup_header">Nutzerdaten eingeben</string>
+    <string name="setup_budget">monatliches Budget:</string>
+    <string name="setup_budget_hint">monatliches Budget eingeben</string>
+    <string name="setup_button">Eingaben festlegen</string>
 
 </resources>

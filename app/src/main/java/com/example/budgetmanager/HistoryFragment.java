@@ -125,6 +125,16 @@ public class HistoryFragment extends Fragment {
         String currency =  sharedPreferences.getString("Currency", null);
 
 
+        //Testeingaben für monatszusammenfassung
+        ArrayList <Expense> expenses = new ArrayList<Expense>();
+
+        expenses.add(new Expense(1, "Rewe", "Lebensmittel", "2. 5. 2023", 12.00f));
+        expenses.add(new Expense(2, "Edeka", "Lebensmittel", "7. 5. 2023", 19.00f));
+        expenses.add(new Expense(3, "GPU", "Gebrauchsgegenstände", "9. 8. 2023", 499.00f));
+        expenses.add(new Expense(4, "Bus", "Transport", "8. 6. 2023", 2.00f));
+        expenses.add(new Expense(5, "Kino", "Unterhaltung", "6. 5. 2023", 30.00f));
+
+
         historyFragment = view.findViewById(R.id.history_fragment);
 
 
@@ -148,7 +158,7 @@ public class HistoryFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = (String) parent.getItemAtPosition(position);
                 Toast.makeText(getActivity().getBaseContext(), selectedItem, Toast.LENGTH_SHORT).show();
-                loadPopupHistory(budgetGesamt, budgetUebrig, ausgaben, currency, chartData);
+                loadPopupHistory(budgetGesamt, budgetUebrig, ausgaben, currency, chartData, expenses);
             }
         });
 
@@ -162,7 +172,7 @@ public class HistoryFragment extends Fragment {
 
 
     //läd das Popup fenster, welches die Monatszusammenfassung anzeigt
-    private void loadPopupHistory(float budgetGesamt, float budgetUebrig, float ausgaben, String currency, float[] chartData){
+    private void loadPopupHistory(float budgetGesamt, float budgetUebrig, float ausgaben, String currency, float[] chartData, ArrayList<Expense> arrayList){
 
         loadHistoryPopupWindow = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup container = (ViewGroup) loadHistoryPopupWindow.inflate(R.layout.popup_summary, null);
@@ -223,7 +233,7 @@ public class HistoryFragment extends Fragment {
 
         });
 
-        setHistoryData(budgetGesamt, budgetUebrig, ausgaben, currency, chartData);
+        setHistoryData(budgetGesamt, budgetUebrig, ausgaben, currency, chartData, arrayList);
 
     }
 
@@ -231,7 +241,7 @@ public class HistoryFragment extends Fragment {
 /**----------------------------------------------------------------------------------------**/
 
 
-    public void setHistoryData(float budgetGesamt, float budgetUebrig, float ausgaben, String currency, float[] chartData){
+    public void setHistoryData(float budgetGesamt, float budgetUebrig, float ausgaben, String currency, float[] chartData, ArrayList<Expense> arraylist){
 
         textViewMonthHistory.setText("Month");
 
@@ -242,17 +252,7 @@ public class HistoryFragment extends Fragment {
         textViewRemainingBudgetHistory.setText("Monatsausgaben: " + "\n" + decimalFormat.format(ausgaben) + currency);
         textViewDifferenceHistory.setText("Differenz: " + decimalFormat.format(budgetUebrig) + currency);
 
-
-        //Testeingaben für monatszusammenfassung
-        ArrayList <Expense> summaryHistoryExpenses = new ArrayList<Expense>();
-
-        summaryHistoryExpenses.add(new Expense(1, "Rewe", "Lebensmittel", "2. 5. 2023", 12.00f));
-        summaryHistoryExpenses.add(new Expense(2, "Edeka", "Lebensmittel", "7. 5. 2023", 19.00f));
-        summaryHistoryExpenses.add(new Expense(3, "GPU", "Gebrauchsgegenstände", "9. 8. 2023", 499.00f));
-        summaryHistoryExpenses.add(new Expense(4, "Bus", "Transport", "8. 6. 2023", 2.00f));
-        summaryHistoryExpenses.add(new Expense(5, "Kino", "Unterhaltung", "6. 5. 2023", 30.00f));
-
-        SummaryListAdapter summaryAdapter = new SummaryListAdapter(getContext(), summaryHistoryExpenses);
+        SummaryListAdapter summaryAdapter = new SummaryListAdapter(getContext(), arraylist);
         listHistoryPopup.setAdapter(summaryAdapter);
 
     }

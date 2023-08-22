@@ -30,6 +30,8 @@ import com.google.android.material.navigation.NavigationView;
 
 import org.w3c.dom.Text;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -114,12 +116,16 @@ public class MainActivity extends AppCompatActivity {
                 //läd setup nur, wenn flag nicht gesetzt ist
                 if(sharedPreferences.contains("SetupDone") == false){
 
-                    runSetup();
+                    try {
+                        runSetup();
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
 
                 }
 
             }
-        }, 1000);
+        }, 300);
 
     }
 
@@ -167,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     //läd Setup, nur wenn setupDone flag in sharedPreferneces nicht existiert
-    public void runSetup(){
+    public void runSetup() throws FileNotFoundException {
 
         LayoutInflater loadSetupPopupWindow = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup containerSetup = (ViewGroup) loadSetupPopupWindow.inflate(R.layout.popup_setup, null);
@@ -186,8 +192,12 @@ public class MainActivity extends AppCompatActivity {
         referenceEditor.putFloat("Budget", 2000.00f);
         referenceEditor.putString("Currency", "€");
         referenceEditor.putBoolean("SetupDone", true);
+        referenceEditor.putString("LastLogin", getCurrentMonth("MMMM_yy"));
         referenceEditor.commit();
 
+        //erstellen der Dateien für den jetzigen Monat und für die Fixkosten in den privaten Appspeicher
+        FileOutputStream fOut = openFileOutput(getCurrentMonth("MMMM_yy") + ".xml", Context.MODE_PRIVATE);
+        fOut = openFileOutput("fixedCosts.xml", Context.MODE_PRIVATE);
 
         Button setupButton = popupWindowSetup.getContentView().findViewById(R.id.popup_setup_button);
 
@@ -235,7 +245,17 @@ public class MainActivity extends AppCompatActivity {
         View header = navigationView.getHeaderView(0);
         TextView username = header.findViewById(R.id.nav_header_username);
         username.setText(sharedPreferences.getString("Username", null));
-        //username.setText("Basti");
+
+    }
+
+
+    public String getCurrentMonth(String patern){
+
+        //abfrage und formatierung des Datums
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(patern, Locale.getDefault());
+
+        return dateFormat.format(date);
 
     }
 

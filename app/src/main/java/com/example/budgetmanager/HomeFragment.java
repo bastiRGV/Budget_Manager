@@ -141,7 +141,7 @@ public class HomeFragment extends Fragment {
         //Test, ob neuer Monat begonnen hat
         //abgleich lastLogin aus sharedPreferneces mit jetzigem Datum
         //wenn neuer monat, dann läd Monatszusammenfassung vom letzten monat
-        //check, ob setup abgeschlossen, um zu verhindern, das vor dem setup die leere Monatszusammenfassung geladen wird
+        //check, ob setup abgeschlossen, um zu verhindern, das vor dem setup die leere Monatszusammenfassung geladen wir
         if (!getCurrentMonth("MMMM_yy").equals(sharedPreferences.getString("LastLogin", null))
                 && sharedPreferences.contains("SetupDone")){
 

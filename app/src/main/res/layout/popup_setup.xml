@@ -68,14 +68,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/popup_setup_budget_input"
-            android:singleLine="true"/>
+            android:singleLine="true"
+            android:inputType="numberDecimal|numberSigned"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/popup_add_button"
+        android:id="@+id/popup_setup_button"
         android:layout_below="@+id/popup_setup_budget_input_container"
         android:text="@string/setup_button"
         android:textSize="15sp"

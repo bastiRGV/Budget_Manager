@@ -1,5 +1,6 @@
 package com.example.budgetmanager;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -51,6 +52,10 @@ public class SettingsFragment extends Fragment {
         currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dropdownMenuSettings.setAdapter(currencyAdapter);
 
+        //initialisiert sharedReferences um Persistente Daten zu speichern
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("prefBudgetManager", 0);
+        SharedPreferences.Editor referenceEditor = sharedPreferences.edit();
+
         //änderung Währung, je nachdem, welcher Menüpunkt im Dropdown ausgewählt wurde
         dropdownMenuSettings.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
@@ -59,13 +64,16 @@ public class SettingsFragment extends Fragment {
 
                 switch (position){
                     case 0:
-                        //Euro
+                        //Setzt Appwährung in den sharedPreferences zu Euro
+                        referenceEditor.putString("Currency", "€");
                         break;
                     case 1:
-                        //Dollar
+                        //Setzt Appwährung in den sharedPreferences zu Dollar
+                        referenceEditor.putString("Currency", "$");
                         break;
                     case 2:
-                        //Pfund
+                        //Setzt Appwährung in den sharedPreferences zu Pfund
+                        referenceEditor.putString("Currency", "£");
                         break;
                 }
 

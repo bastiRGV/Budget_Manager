@@ -1,6 +1,7 @@
 package com.example.budgetmanager;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -40,36 +41,6 @@ import java.util.Locale;
 
 public class HomeFragment extends Fragment {
 
-    float fixausgabenGesamt = 900;
-    float lebensmittelGesamt = 300;
-    float gebrauchsgegenstaendeGesamt = 150;
-    float unterhaltungGesamt = 199;
-    float transportGesamt = 47;
-    float sonstigesGesamt = 69;
-    float budgetGesamt = 2000;
-    float ausgaben =    fixausgabenGesamt
-                        + lebensmittelGesamt
-                        + gebrauchsgegenstaendeGesamt
-                        + unterhaltungGesamt
-                        + transportGesamt
-                        + sonstigesGesamt;
-    float budgetUebrigGraph = budgetGesamt - ausgaben;
-
-    float budgetUebrig = budgetGesamt - ausgaben;
-
-    float[] chartData = new float[] {   fixausgabenGesamt,
-                                        lebensmittelGesamt,
-                                        gebrauchsgegenstaendeGesamt,
-                                        unterhaltungGesamt,
-                                        transportGesamt,
-                                        sonstigesGesamt,
-                                        budgetUebrigGraph};
-
-
-
-
-
-
     //Kategorien im Graphen
     String[] kategorien = new String[]{ "Fixkosten",
                                         "Lebensmittel",
@@ -87,9 +58,6 @@ public class HomeFragment extends Fragment {
     int graph_purple = 0xFF9B19F5;
     int graph_lightblue = 0xFFB3D4FF;
     int graph_gray = 0xFF989797;
-
-    String währung = "€";
-
 
 
 
@@ -115,7 +83,7 @@ public class HomeFragment extends Fragment {
     //Ausgewählte Bezeichnung im Eintragspopup
     String chosenIdentifier = "";
     //Betrag der Ausgabe im Eintragspopup
-    float chosenAmount = 0;
+    float chosenAmount = 0.00f;
     //Datum der Ausgabe im Eintragspopup
     String chosenDate = "";
 
@@ -153,19 +121,46 @@ public class HomeFragment extends Fragment {
 
 
 
-
-
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        //initialisiert sharedReferences um Persistente Daten zu lesen
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("prefBudgetManager", Context.MODE_PRIVATE);
+
+        float fixausgabenGesamt = 900.00f;
+        float lebensmittelGesamt = 300.00f;
+        float gebrauchsgegenstaendeGesamt = 150.00f;
+        float unterhaltungGesamt = 199.00f;
+        float transportGesamt = 47.00f;
+        float sonstigesGesamt = 69.00f;
+        float budgetGesamt = sharedPreferences.getFloat("Budget", 0.00f);
+        float ausgaben =    fixausgabenGesamt
+                            + lebensmittelGesamt
+                            + gebrauchsgegenstaendeGesamt
+                            + unterhaltungGesamt
+                            + transportGesamt
+                            + sonstigesGesamt;
+
+        float budgetUebrigGraph = budgetGesamt - ausgaben;
+
         if(budgetUebrigGraph < 0){
-            budgetUebrigGraph = 0;
+            budgetUebrigGraph = 0.00f;
         }
+
+        float budgetUebrig = budgetGesamt - ausgaben;
+
+        float[] chartData = new float[] {   fixausgabenGesamt,
+                                            lebensmittelGesamt,
+                                            gebrauchsgegenstaendeGesamt,
+                                            unterhaltungGesamt,
+                                            transportGesamt,
+                                            sonstigesGesamt,
+                                            budgetUebrigGraph};
+
+        String currency =  sharedPreferences.getString("Currency", null);
+
 
         //Views mit fragment_ids verknüpfen
         textViewMonth = view.findViewById(R.id.header_home);
@@ -198,7 +193,7 @@ public class HomeFragment extends Fragment {
                         break;
                     case 1:
                         //Name
-                        loadPopupSummary();
+                        loadPopupSummary(budgetGesamt, budgetUebrig, ausgaben, currency, chartData);
                         break;
                     case 2:
                         //Betrag
@@ -249,7 +244,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        setData();
+        setData(budgetGesamt, budgetUebrig, ausgaben, currency, chartData);
 
         return view;
     }
@@ -264,25 +259,25 @@ public class HomeFragment extends Fragment {
 
 
     //Daten des Homefragments aktualisieren
-    public void setData(){
+    public void setData(float budgetGesamt, float budgetUebrig, float ausgaben, String currency, float[] chartData){
 
         textViewMonth.setText(getMonth());
 
         styleChart(chartHome);
-        setChartData(chartHome);
+        setChartData(chartHome, chartData);
 
-        textViewBudget.setText("Budget: " + "\n" + budgetGesamt + währung);
-        textViewRemainingBudget.setText("Monatsausgaben: " + "\n" + ausgaben + währung);
-        textViewDifference.setText("Differenz: " + budgetUebrig + währung);
+        textViewBudget.setText("Budget: " + "\n" + budgetGesamt + currency);
+        textViewRemainingBudget.setText("Monatsausgaben: " + "\n" + ausgaben + currency);
+        textViewDifference.setText("Differenz: " + budgetUebrig + currency);
 
 
         ArrayList <Expense> homeExpenses = new ArrayList<Expense>();
 
-        homeExpenses.add(new Expense(1, "Rewe", "Lebensmittel", "2. 5. 2023", 12));
-        homeExpenses.add(new Expense(2, "Edeka", "Lebensmittel", "7. 5. 2023", 19));
-        homeExpenses.add(new Expense(3, "GPU", "Gebrauchsgegenstände", "9. 8. 2023", 499));
-        homeExpenses.add(new Expense(4, "Bus", "Transport", "8. 6. 2023", 2));
-        homeExpenses.add(new Expense(5, "Kino", "Unterhaltung", "6. 5. 2023", 30));
+        homeExpenses.add(new Expense(1, "Rewe", "Lebensmittel", "2. 5. 2023", 12.00f));
+        homeExpenses.add(new Expense(2, "Edeka", "Lebensmittel", "7. 5. 2023", 19.00f));
+        homeExpenses.add(new Expense(3, "GPU", "Gebrauchsgegenstände", "9. 8. 2023", 499.00f));
+        homeExpenses.add(new Expense(4, "Bus", "Transport", "8. 6. 2023", 2.00f));
+        homeExpenses.add(new Expense(5, "Kino", "Unterhaltung", "6. 5. 2023", 30.00f));
 
         BudgetListAdapter budgetAdapter = new BudgetListAdapter(getContext(), homeExpenses);
         listHome.setAdapter(budgetAdapter);
@@ -314,7 +309,7 @@ public class HomeFragment extends Fragment {
 
 
     //Daten ins Chart einfügen, stylen
-    private void setChartData(PieChart chart){
+    private void setChartData(PieChart chart, float[] chartData){
         ArrayList<PieEntry> values = new ArrayList<>();
 
         for (int i = 0; i < chartData.length; i++){
@@ -470,7 +465,7 @@ public class HomeFragment extends Fragment {
 /**-------------------------------------------------------------------------------**/
 
 
-    private void loadPopupSummary(){
+    private void loadPopupSummary(float budgetGesamt, float budgetUebrig, float ausgaben, String currency, float[] chartData){
 
         loadSummaryPopupWindow = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup container = (ViewGroup) loadSummaryPopupWindow.inflate(R.layout.popup_summary, null);
@@ -531,7 +526,7 @@ public class HomeFragment extends Fragment {
 
         });
 
-        setSummaryData();
+        setSummaryData(budgetGesamt, budgetUebrig, ausgaben, currency, chartData);
 
     }
 
@@ -540,26 +535,26 @@ public class HomeFragment extends Fragment {
 
 
     //Daten der Monatszusammenfassung aktualisieren
-    public void setSummaryData(){
+    public void setSummaryData(float budgetGesamt, float budgetUebrig, float ausgaben, String currency, float[] chartData){
 
         textViewMonthSummary.setText("letzter Monat");
 
         styleChart(chartSummary);
-        setChartData(chartSummary);
+        setChartData(chartSummary, chartData);
 
-        textViewBudgetSummary.setText("Budget: " + "\n" + budgetGesamt + währung);
-        textViewRemainingBudgetSummary.setText("Monatsausgaben: " + "\n" + ausgaben + währung);
-        textViewDifferenceSummary.setText("Differenz: " + budgetUebrig + währung);
+        textViewBudgetSummary.setText("Budget: " + "\n" + budgetGesamt + currency);
+        textViewRemainingBudgetSummary.setText("Monatsausgaben: " + "\n" + ausgaben + currency);
+        textViewDifferenceSummary.setText("Differenz: " + budgetUebrig + currency);
 
 
         //Test Liste Ausgaben Zusammenfassung
         ArrayList <Expense> summaryHomeExpenses = new ArrayList<Expense>();
 
-        summaryHomeExpenses.add(new Expense(1, "Rewe", "Lebensmittel", "2. 5. 2023", 12));
-        summaryHomeExpenses.add(new Expense(2, "Edeka", "Lebensmittel", "7. 5. 2023", 19));
-        summaryHomeExpenses.add(new Expense(3, "GPU", "Gebrauchsgegenstände", "9. 8. 2023", 499));
-        summaryHomeExpenses.add(new Expense(4, "Bus", "Transport", "8. 6. 2023", 2));
-        summaryHomeExpenses.add(new Expense(5, "Kino", "Unterhaltung", "6. 5. 2023", 30));
+        summaryHomeExpenses.add(new Expense(1, "Rewe", "Lebensmittel", "2. 5. 2023", 12.00f));
+        summaryHomeExpenses.add(new Expense(2, "Edeka", "Lebensmittel", "7. 5. 2023", 19.00f));
+        summaryHomeExpenses.add(new Expense(3, "GPU", "Gebrauchsgegenstände", "9. 8. 2023", 499.00f));
+        summaryHomeExpenses.add(new Expense(4, "Bus", "Transport", "8. 6. 2023", 2.00f));
+        summaryHomeExpenses.add(new Expense(5, "Kino", "Unterhaltung", "6. 5. 2023", 30.00f));
 
         //läd Custom adapter, welcher die liste im Popup erstellt
         SummaryListAdapter summaryAdapter = new SummaryListAdapter(getContext(), summaryHomeExpenses);

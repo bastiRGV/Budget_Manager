@@ -1,6 +1,7 @@
 package com.example.budgetmanager;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -30,29 +31,6 @@ import java.util.ArrayList;
 
 public class HistoryFragment extends Fragment {
 
-    float fixausgabenGesamt = 900;
-    float lebensmittelGesamt = 300;
-    float gebrauchsgegenstaendeGesamt = 150;
-    float unterhaltungGesamt = 199;
-    float transportGesamt = 47;
-    float sonstigesGesamt = 69;
-    float budgetGesamt = 2000;
-    float ausgaben =    fixausgabenGesamt
-                        + lebensmittelGesamt
-                        + gebrauchsgegenstaendeGesamt
-                        + unterhaltungGesamt
-                        + transportGesamt
-                        + sonstigesGesamt;
-    float budgetUebrigGraph = budgetGesamt - ausgaben;
-    float budgetUebrig = budgetGesamt - ausgaben;
-    float[] chartData = new float[] {   fixausgabenGesamt,
-                                        lebensmittelGesamt,
-                                        gebrauchsgegenstaendeGesamt,
-                                        unterhaltungGesamt,
-                                        transportGesamt,
-                                        sonstigesGesamt,
-                                        budgetUebrigGraph};
-
     //Menüeinträge für Filter der Ausgaben auf Homepage
     String[] dropdownFilter = new String[] {"Datum",
                                             "Bezeichnung",
@@ -69,8 +47,6 @@ public class HistoryFragment extends Fragment {
     int graph_purple = 0xFF9B19F5;
     int graph_lightblue = 0xFFB3D4FF;
     int graph_gray = 0xFF989797;
-
-    String währung = "€";
 
     String[] kategorien = new String[]{ "Fixkosten",
                                         "Lebensmittel",
@@ -107,6 +83,43 @@ public class HistoryFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_history, container, false);
 
+
+        //initialisiert sharedReferences um Persistente Daten zu lesen
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("prefBudgetManager", Context.MODE_PRIVATE);
+
+        float fixausgabenGesamt = 900.00f;
+        float lebensmittelGesamt = 300.00f;
+        float gebrauchsgegenstaendeGesamt = 150.00f;
+        float unterhaltungGesamt = 199.00f;
+        float transportGesamt = 47.00f;
+        float sonstigesGesamt = 69.00f;
+        float budgetGesamt = sharedPreferences.getFloat("Budget", 0.00f);
+        float ausgaben =    fixausgabenGesamt
+                + lebensmittelGesamt
+                + gebrauchsgegenstaendeGesamt
+                + unterhaltungGesamt
+                + transportGesamt
+                + sonstigesGesamt;
+
+        float budgetUebrigGraph = budgetGesamt - ausgaben;
+
+        if(budgetUebrigGraph < 0){
+            budgetUebrigGraph = 0.00f;
+        }
+
+        float budgetUebrig = budgetGesamt - ausgaben;
+
+        float[] chartData = new float[] {   fixausgabenGesamt,
+                lebensmittelGesamt,
+                gebrauchsgegenstaendeGesamt,
+                unterhaltungGesamt,
+                transportGesamt,
+                sonstigesGesamt,
+                budgetUebrigGraph};
+
+        String currency =  sharedPreferences.getString("Currency", null);
+
+
         historyFragment = view.findViewById(R.id.history_fragment);
 
 
@@ -130,7 +143,7 @@ public class HistoryFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = (String) parent.getItemAtPosition(position);
                 Toast.makeText(getActivity().getBaseContext(), selectedItem, Toast.LENGTH_SHORT).show();
-                loadPopupHistory();
+                loadPopupHistory(budgetGesamt, budgetUebrig, ausgaben, currency, chartData);
             }
         });
 
@@ -144,7 +157,7 @@ public class HistoryFragment extends Fragment {
 
 
     //läd das Popup fenster, welches die Monatszusammenfassung anzeigt
-    private void loadPopupHistory(){
+    private void loadPopupHistory(float budgetGesamt, float budgetUebrig, float ausgaben, String currency, float[] chartData){
 
         loadHistoryPopupWindow = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup container = (ViewGroup) loadHistoryPopupWindow.inflate(R.layout.popup_summary, null);
@@ -205,7 +218,7 @@ public class HistoryFragment extends Fragment {
 
         });
 
-        setHistoryData();
+        setHistoryData(budgetGesamt, budgetUebrig, ausgaben, currency, chartData);
 
     }
 
@@ -213,16 +226,16 @@ public class HistoryFragment extends Fragment {
 /**----------------------------------------------------------------------------------------**/
 
 
-    public void setHistoryData(){
+    public void setHistoryData(float budgetGesamt, float budgetUebrig, float ausgaben, String currency, float[] chartData){
 
         textViewMonthHistory.setText("Month");
 
         styleHistoryChart();
-        setHistoryChartData();
+        setHistoryChartData(chartData);
 
-        textViewBudgetHistory.setText("Budget: " + "\n" + budgetGesamt + währung);
-        textViewRemainingBudgetHistory.setText("Monatsausgaben: " + "\n" + ausgaben + währung);
-        textViewDifferenceHistory.setText("Differenz: " + budgetUebrig + währung);
+        textViewBudgetHistory.setText("Budget: " + "\n" + budgetGesamt + currency);
+        textViewRemainingBudgetHistory.setText("Monatsausgaben: " + "\n" + ausgaben + currency);
+        textViewDifferenceHistory.setText("Differenz: " + budgetUebrig + currency);
 
 
         //Testeingaben für monatszusammenfassung
@@ -273,7 +286,7 @@ public class HistoryFragment extends Fragment {
 /**----------------------------------------------------------------------------------------**/
 
     //Daten in den Chart schreiben
-    private void setHistoryChartData(){
+    private void setHistoryChartData(float[] chartData){
         ArrayList<PieEntry> values = new ArrayList<>();
 
         for (int i = 0; i < chartData.length; i++){

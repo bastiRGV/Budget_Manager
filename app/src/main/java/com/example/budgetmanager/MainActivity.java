@@ -192,11 +192,11 @@ public class MainActivity extends AppCompatActivity {
         referenceEditor.putFloat("Budget", 2000.00f);
         referenceEditor.putString("Currency", "€");
         referenceEditor.putBoolean("SetupDone", true);
-        referenceEditor.putString("LastLogin", getCurrentMonth("MMMM_yy"));
+        referenceEditor.putString("LastLogin", getCurrentMonth("MMMM_yyyy"));
         referenceEditor.commit();
 
         //erstellen der Dateien für den jetzigen Monat und für die Fixkosten in den privaten Appspeicher
-        FileOutputStream fOut = openFileOutput(getCurrentMonth("MMMM_yy") + ".xml", Context.MODE_PRIVATE);
+        FileOutputStream fOut = openFileOutput(getCurrentMonth("MMMM_yyyy") + ".xml", Context.MODE_PRIVATE);
         fOut = openFileOutput("fixedCosts.xml", Context.MODE_PRIVATE);
 
         Button setupButton = popupWindowSetup.getContentView().findViewById(R.id.popup_setup_button);

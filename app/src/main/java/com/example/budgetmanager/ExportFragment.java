@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class ExportFragment extends Fragment {
@@ -23,14 +24,9 @@ public class ExportFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_export, container, false);
 
 
-        //Testliste
+        //erstellt Monatsliste
         ArrayList<String> export = new ArrayList<String>();
-
-        export.add("May 2023");
-        export.add("June 2023");
-        export.add("July 2023");
-        export.add("August 2023");
-        export.add("September 2023");
+        export = getExportList();
 
         //befüllen Exportliste
         ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_multiple_choice, export);
@@ -61,5 +57,33 @@ public class ExportFragment extends Fragment {
 
 
         return view;
+    }
+
+
+/**-------------------------------------------------------------------------------------**/
+
+    //liest Dateien aus dem Appspeicher und passt den Namen an
+    public ArrayList<String> getExportList(){
+
+        ArrayList<String> exportList = new ArrayList<String>();
+
+        File fileList[] = getContext().getFilesDir().listFiles();
+        for(int i = 0; i < fileList.length; i++){
+
+            //Filtert die Fixkostendatei aus den Ergebnissen
+            if(!(fileList[i].getName()).equals("fixedCosts.xml")){
+
+                //Anpassung des Namens der Datei auf den Anzeigenamen
+                String name = fileList[i].getName();
+                name = name.replace("_", " ");
+                name = name.replace(".xml", "");
+                exportList.add(name);
+
+            }
+
+        }
+
+        return exportList;
+
     }
 }

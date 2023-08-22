@@ -142,7 +142,7 @@ public class HomeFragment extends Fragment {
         //abgleich lastLogin aus sharedPreferneces mit jetzigem Datum
         //wenn neuer monat, dann läd Monatszusammenfassung vom letzten monat
         //check, ob setup abgeschlossen, um zu verhindern, das vor dem setup die leere Monatszusammenfassung geladen wird
-        if (!getCurrentMonth("MMMM_yy").equals(sharedPreferences.getString("LastLogin", null))
+        if (!getCurrentMonth("MMMM_yyyy").equals(sharedPreferences.getString("LastLogin", null))
                 && sharedPreferences.contains("SetupDone")){
 
             float fixausgabenGesamt = 900.00f;
@@ -199,7 +199,7 @@ public class HomeFragment extends Fragment {
             //speichert letzten monat und legt neue datei mit jetzigem monat an
             String lastMonth = sharedPreferences.getString("LastLogin", null);
             try {
-                FileOutputStream fOut = getContext().openFileOutput(getCurrentMonth("MMMM_yy") + ".xml", Context.MODE_PRIVATE);
+                FileOutputStream fOut = getContext().openFileOutput(getCurrentMonth("MMMM_yyyy") + ".xml", Context.MODE_PRIVATE);
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -207,7 +207,7 @@ public class HomeFragment extends Fragment {
         }
 
         //setze LastLogin auf jetzigen Monat
-        referenceEditor.putString("LastLogin", getCurrentMonth("MMMM_yy"));
+        referenceEditor.putString("LastLogin", getCurrentMonth("MMMM_yyyy"));
         referenceEditor.commit();
 
 

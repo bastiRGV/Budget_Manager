@@ -27,6 +27,8 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -137,14 +139,9 @@ public class HistoryFragment extends Fragment {
 
         historyFragment = view.findViewById(R.id.history_fragment);
 
-
-        ArrayList <String> history = new ArrayList<String>();
-
-        history.add("May 2023");
-        history.add("June 2023");
-        history.add("July 2023");
-        history.add("August 2023");
-        history.add("September 2023");
+        //erstellt Liste von Monaten
+        ArrayList <String> history;
+        history = getHistoryList();
 
 
         //befüllen Historyliste
@@ -309,6 +306,33 @@ public class HistoryFragment extends Fragment {
 
         //refresh des Graphen
         chartHistory.invalidate();
+
+    }
+
+/**---------------------------------------------------------------------------------------**/
+
+    //liest Dateien aus dem Appspeicher und passt den Namen an
+    public ArrayList<String> getHistoryList(){
+
+        ArrayList<String> historyList = new ArrayList<String>();
+
+        File fileList[] = getContext().getFilesDir().listFiles();
+        for(int i = 0; i < fileList.length; i++){
+
+            //Filtert die Fixkostendatei aus den Ergebnissen
+            if(!(fileList[i].getName()).equals("fixedCosts.xml")){
+
+                //Anpassung des Namens der Datei auf den Anzeigenamen
+                String name = fileList[i].getName();
+                name = name.replace("_", " ");
+                name = name.replace(".xml", "");
+                historyList.add(name);
+
+            }
+
+        }
+
+        return historyList;
 
     }
 

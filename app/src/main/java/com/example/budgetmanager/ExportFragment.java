@@ -40,12 +40,18 @@ public class ExportFragment extends Fragment {
             public void onClick(View v) {
 
                 String selected = "selected: \n";
+                String file;
 
                 //Exportliste wird durchlaufen und ausgewählte Items werden gespeichert
                 for(int i = 0; i < listExport.getCount(); i++){
 
                     if(listExport.isItemChecked(i)){
-                        selected += listExport.getItemAtPosition(i) + "\n";
+
+                        //stellt zugehörigen Dateinamen wieder her
+                        file = listExport.getItemAtPosition(i).toString();
+                        file = file.replace(" ", "_");
+                        file = file + ".xml";
+                        selected += file + "\n";
                     }
 
                 }

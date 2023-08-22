@@ -13,6 +13,12 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+
+
+//Adapter, der das Listview der Homepage befüllt
+//für jeden Eintrag wird das Layout list_layout_double_line_delete_button geladen, die übergebenen Daten aus der Arrayliste in die
+//jeweiligen felder geschrieben und die funktionalität des löschen knopfes hinzugefügt
+
 public class BudgetListAdapter extends ArrayAdapter<Expense> {
 
     public BudgetListAdapter(@NonNull Context context, ArrayList<Expense> arraylist){

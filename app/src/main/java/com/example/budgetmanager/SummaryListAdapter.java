@@ -12,6 +12,11 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+
+//Adapter, der das Listview der Monatszusammenfassungen befüllt
+//für jeden Eintrag wird das Layout list_layout_double_line geladen, die übergebenen Daten aus der Arrayliste in die
+//jeweiligen felder geschrieben
+//Unterschied zu BudgetListAdapter ist der fehlende Löschenknopf
 public class SummaryListAdapter extends ArrayAdapter<Expense> {
 
     public SummaryListAdapter(@NonNull Context context, ArrayList<Expense> arraylist){

@@ -167,7 +167,7 @@ public class HomeFragment extends Fragment {
             budgetUebrigGraph = 0;
         }
 
-        //Variablen mit fragment_ids verknüpfen
+        //Views mit fragment_ids verknüpfen
         textViewMonth = view.findViewById(R.id.header_home);
         chartHome = view.findViewById(R.id.chart);
 
@@ -257,7 +257,8 @@ public class HomeFragment extends Fragment {
 
 
 
-
+/**------------------------------------------------------------------------------------------
+ ------------------------------------------------------------------------------------------**/
 
 
 
@@ -290,7 +291,7 @@ public class HomeFragment extends Fragment {
 
 
 
-
+/**-------------------------------------------------------------------**/
 
 
 
@@ -307,7 +308,7 @@ public class HomeFragment extends Fragment {
 
 
 
-
+/**-------------------------------------------------------------------**/
 
 
 
@@ -335,7 +336,7 @@ public class HomeFragment extends Fragment {
 
 
 
-
+/**-------------------------------------------------------------------**/
 
 
 
@@ -353,7 +354,7 @@ public class HomeFragment extends Fragment {
         chart.setRotationAngle(180);
         chart.setRotationEnabled(false);
 
-        chartHome.animateY(1500, Easing.EaseInOutCubic);
+        chart.animateY(1500, Easing.EaseInOutCubic);
 
         //Anpassung Legende
         Legend legend = chart.getLegend();
@@ -369,7 +370,7 @@ public class HomeFragment extends Fragment {
 
 
 
-
+/**---------------------------------------------------------------------------------**/
 
 
 
@@ -466,6 +467,7 @@ public class HomeFragment extends Fragment {
     }
 
 
+/**-------------------------------------------------------------------------------**/
 
 
     private void loadPopupSummary(){
@@ -534,7 +536,7 @@ public class HomeFragment extends Fragment {
     }
 
 
-
+/**----------------------------------------------------------------**/
 
 
     //Daten der Monatszusammenfassung aktualisieren
@@ -549,6 +551,8 @@ public class HomeFragment extends Fragment {
         textViewRemainingBudgetSummary.setText("Monatsausgaben: " + "\n" + ausgaben + währung);
         textViewDifferenceSummary.setText("Differenz: " + budgetUebrig + währung);
 
+
+        //Test Liste Ausgaben Zusammenfassung
         ArrayList <Expense> summaryHomeExpenses = new ArrayList<Expense>();
 
         summaryHomeExpenses.add(new Expense(1, "Rewe", "Lebensmittel", "2. 5. 2023", 12));
@@ -557,6 +561,7 @@ public class HomeFragment extends Fragment {
         summaryHomeExpenses.add(new Expense(4, "Bus", "Transport", "8. 6. 2023", 2));
         summaryHomeExpenses.add(new Expense(5, "Kino", "Unterhaltung", "6. 5. 2023", 30));
 
+        //läd Custom adapter, welcher die liste im Popup erstellt
         SummaryListAdapter summaryAdapter = new SummaryListAdapter(getContext(), summaryHomeExpenses);
         listSummary.setAdapter(summaryAdapter);
 

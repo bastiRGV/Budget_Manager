@@ -6,15 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+
+
+//Adapter, der das Listview der Fixausgaben der Settingspage befüllt
+//für jeden Eintrag wird das Layout list_layout_single_line_delete_button geladen, die übergebenen Daten aus der Arrayliste in die
+//jeweiligen felder geschrieben und die funktionalität des löschen knopfes hinzugefügt
 
 public class FixedListAdapter extends ArrayAdapter<FixedExpense> {
 

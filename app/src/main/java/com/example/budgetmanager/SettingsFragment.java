@@ -1,6 +1,5 @@
 package com.example.budgetmanager;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,13 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -25,7 +21,6 @@ import java.util.ArrayList;
 public class SettingsFragment extends Fragment {
 
     String[] dropdownCurrency = new String[] {"€  Euro", "$  Dollar", "￡  Pfund"};
-    //String[] fixedInput = new String[] {"Miete: 900€", "Auto: 200€"};
 
     String fixedIdentifier = "";
     float fixedAmount = 0;

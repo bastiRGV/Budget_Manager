@@ -27,7 +27,6 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class HistoryFragment extends Fragment {
 
@@ -139,11 +138,12 @@ public class HistoryFragment extends Fragment {
     }
 
 
+/**---------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------**/
 
 
 
-
-
+    //läd das Popup fenster, welches die Monatszusammenfassung anzeigt
     private void loadPopupHistory(){
 
         loadHistoryPopupWindow = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -210,7 +210,7 @@ public class HistoryFragment extends Fragment {
     }
 
 
-
+/**----------------------------------------------------------------------------------------**/
 
 
     public void setHistoryData(){
@@ -224,6 +224,8 @@ public class HistoryFragment extends Fragment {
         textViewRemainingBudgetHistory.setText("Monatsausgaben: " + "\n" + ausgaben + währung);
         textViewDifferenceHistory.setText("Differenz: " + budgetUebrig + währung);
 
+
+        //Testeingaben für monatszusammenfassung
         ArrayList <Expense> summaryHistoryExpenses = new ArrayList<Expense>();
 
         summaryHistoryExpenses.add(new Expense(1, "Rewe", "Lebensmittel", "2. 5. 2023", 12));
@@ -239,10 +241,10 @@ public class HistoryFragment extends Fragment {
 
 
 
+/**----------------------------------------------------------**/
 
 
-
-
+    //Anpassung Aussehen des Charts in der Zusammenfassung
     private void styleHistoryChart(){
 
         chartHistory.setBackgroundColor(Color.WHITE);
@@ -268,7 +270,9 @@ public class HistoryFragment extends Fragment {
 
 
 
+/**----------------------------------------------------------------------------------------**/
 
+    //Daten in den Chart schreiben
     private void setHistoryChartData(){
         ArrayList<PieEntry> values = new ArrayList<>();
 

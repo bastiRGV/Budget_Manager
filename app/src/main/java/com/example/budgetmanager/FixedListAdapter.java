@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
@@ -24,6 +25,10 @@ public class FixedListAdapter extends ArrayAdapter<FixedExpense> {
 
     private static SharedPreferences sharedPreferences;
     private final Context context;
+
+    //formater, um floats auf zwei nachkommastellen zu runden
+    private static final DecimalFormat decimalFormat = new DecimalFormat("0.00");
+
 
     public FixedListAdapter(@NonNull Context context, ArrayList<FixedExpense> arrayList){
 
@@ -54,7 +59,7 @@ public class FixedListAdapter extends ArrayAdapter<FixedExpense> {
         name.setText(currentPosition.getName());
 
         TextView amount = currentItemView.findViewById(R.id.fixed_list_item_amount);
-        amount.setText(currentPosition.getAmount() + sharedPreferences.getString("Currency", null));
+        amount.setText(decimalFormat.format(currentPosition.getAmount()) + sharedPreferences.getString("Currency", null));
 
         ImageButton delete = currentItemView.findViewById(R.id.fixed_list_delete_button);
         delete.setOnClickListener(new View.OnClickListener() {

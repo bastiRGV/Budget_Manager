@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
@@ -24,6 +25,10 @@ public class BudgetListAdapter extends ArrayAdapter<Expense> {
 
     private static SharedPreferences sharedPreferences;
     private final Context context;
+
+    //formater, um floats auf zwei nachkommastellen zu runden
+    private static final DecimalFormat decimalFormat = new DecimalFormat("0.00");
+
 
     public BudgetListAdapter(@NonNull Context context, ArrayList<Expense> arraylist){
 
@@ -56,7 +61,7 @@ public class BudgetListAdapter extends ArrayAdapter<Expense> {
         category.setText(currentPosition.getCategory());
 
         TextView amount = currentItemView.findViewById(R.id.budget_list_item_amount);
-        amount.setText(currentPosition.getAmount() + sharedPreferences.getString("Currency", null));
+        amount.setText(decimalFormat.format(currentPosition.getAmount()) + sharedPreferences.getString("Currency", null));
 
         TextView date = currentItemView.findViewById(R.id.budget_list_item_date);
         date.setText(currentPosition.getDate());

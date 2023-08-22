@@ -33,6 +33,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -115,6 +116,9 @@ public class HomeFragment extends Fragment {
     private TextView textViewRemainingBudgetSummary;
     private TextView textViewDifferenceSummary;
     private Spinner dropdownMenuSummary;
+
+    //formater, um floats auf zwei nachkommastellen zu runden
+    private static final DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
 
 
@@ -266,9 +270,11 @@ public class HomeFragment extends Fragment {
         styleChart(chartHome);
         setChartData(chartHome, chartData);
 
-        textViewBudget.setText("Budget: " + "\n" + budgetGesamt + currency);
-        textViewRemainingBudget.setText("Monatsausgaben: " + "\n" + ausgaben + currency);
-        textViewDifference.setText("Differenz: " + budgetUebrig + currency);
+
+        //Daten formatieren und darstellen
+        textViewBudget.setText("Budget: " + "\n" + decimalFormat.format(budgetGesamt) + currency);
+        textViewRemainingBudget.setText("Monatsausgaben: " + "\n" + decimalFormat.format(ausgaben) + currency);
+        textViewDifference.setText("Differenz: " + decimalFormat.format(budgetUebrig) + currency);
 
 
         ArrayList <Expense> homeExpenses = new ArrayList<Expense>();
@@ -403,7 +409,7 @@ public class HomeFragment extends Fragment {
 
 
                     //schreibt Eintrag und schließt Popup Window
-                    Toast.makeText(getActivity().getBaseContext(), chosenCategory + " " + chosenIdentifier + " " + chosenAmount +  " " + chosenDate, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getBaseContext(), chosenCategory + " " + chosenIdentifier + " " + decimalFormat.format(chosenAmount) +  " " + chosenDate, Toast.LENGTH_SHORT).show();
                     popupWindowAddEntries.dismiss();
 
                 }
@@ -542,9 +548,10 @@ public class HomeFragment extends Fragment {
         styleChart(chartSummary);
         setChartData(chartSummary, chartData);
 
-        textViewBudgetSummary.setText("Budget: " + "\n" + budgetGesamt + currency);
-        textViewRemainingBudgetSummary.setText("Monatsausgaben: " + "\n" + ausgaben + currency);
-        textViewDifferenceSummary.setText("Differenz: " + budgetUebrig + currency);
+        //Daten formatieren und darstellen
+        textViewBudgetSummary.setText("Budget: " + "\n" + decimalFormat.format(budgetGesamt) + currency);
+        textViewRemainingBudgetSummary.setText("Monatsausgaben: " + "\n" + decimalFormat.format(ausgaben) + currency);
+        textViewDifferenceSummary.setText("Differenz: " + decimalFormat.format(budgetUebrig) + currency);
 
 
         //Test Liste Ausgaben Zusammenfassung

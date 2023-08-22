@@ -27,6 +27,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class HistoryFragment extends Fragment {
@@ -73,6 +74,10 @@ public class HistoryFragment extends Fragment {
     private TextView textViewRemainingBudgetHistory;
     private TextView textViewDifferenceHistory;
     private Spinner dropdownMenuHistory;
+
+
+    //formater, um floats auf zwei nachkommastellen zu runden
+    private static final DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
 
 
@@ -233,9 +238,9 @@ public class HistoryFragment extends Fragment {
         styleHistoryChart();
         setHistoryChartData(chartData);
 
-        textViewBudgetHistory.setText("Budget: " + "\n" + budgetGesamt + currency);
-        textViewRemainingBudgetHistory.setText("Monatsausgaben: " + "\n" + ausgaben + currency);
-        textViewDifferenceHistory.setText("Differenz: " + budgetUebrig + currency);
+        textViewBudgetHistory.setText("Budget: " + "\n" + decimalFormat.format(budgetGesamt) + currency);
+        textViewRemainingBudgetHistory.setText("Monatsausgaben: " + "\n" + decimalFormat.format(ausgaben) + currency);
+        textViewDifferenceHistory.setText("Differenz: " + decimalFormat.format(budgetUebrig) + currency);
 
 
         //Testeingaben für monatszusammenfassung

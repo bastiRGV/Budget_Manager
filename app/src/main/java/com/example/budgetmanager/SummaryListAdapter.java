@@ -43,7 +43,7 @@ public class SummaryListAdapter extends ArrayAdapter<Expense> {
         }
 
         //initialisiert sharedReferences um Persistente Daten zu lesen
-        sharedPreferences = context.getSharedPreferences("prefBudgetManager", 0)
+        sharedPreferences = context.getSharedPreferences("prefBudgetManager", 0);
 
         Expense currentPosition = getItem(position);
 

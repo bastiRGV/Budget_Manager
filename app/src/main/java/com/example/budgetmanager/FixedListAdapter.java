@@ -46,7 +46,7 @@ public class FixedListAdapter extends ArrayAdapter<FixedExpense> {
         }
 
         //initialisiert sharedReferences um Persistente Daten zu lesen
-        sharedPreferences = context.getSharedPreferences("prefBudgetManager", 0)
+        sharedPreferences = context.getSharedPreferences("prefBudgetManager", 0);
 
         FixedExpense currentPosition = getItem(position);
 

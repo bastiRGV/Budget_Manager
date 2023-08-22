@@ -141,7 +141,9 @@ public class HomeFragment extends Fragment {
         //Test, ob neuer Monat begonnen hat
         //abgleich lastLogin aus sharedPreferneces mit jetzigem Datum
         //wenn neuer monat, dann läd Monatszusammenfassung vom letzten monat
-        if (!getCurrentMonth("MMMM_yy").equals(sharedPreferences.getString("LastLogin", null))){
+        //check, ob setup abgeschlossen, um zu verhindern, das vor dem setup die leere Monatszusammenfassung geladen wird
+        if (!getCurrentMonth("MMMM_yy").equals(sharedPreferences.getString("LastLogin", null))
+                && sharedPreferences.contains("SetupDone")){
 
             float fixausgabenGesamt = 900.00f;
             float lebensmittelGesamt = 300.00f;

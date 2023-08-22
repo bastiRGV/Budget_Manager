@@ -42,9 +42,6 @@ public class SettingsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
-
-
-
         Spinner dropdownMenuSettings = view.findViewById(R.id.currency_dropdown);
 
         //läd items aus Array in das Dropdown Menü
@@ -66,14 +63,17 @@ public class SettingsFragment extends Fragment {
                     case 0:
                         //Setzt Appwährung in den sharedPreferences zu Euro
                         referenceEditor.putString("Currency", "€");
+                        referenceEditor.commit();
                         break;
                     case 1:
                         //Setzt Appwährung in den sharedPreferences zu Dollar
                         referenceEditor.putString("Currency", "$");
+                        referenceEditor.commit();
                         break;
                     case 2:
                         //Setzt Appwährung in den sharedPreferences zu Pfund
                         referenceEditor.putString("Currency", "£");
+                        referenceEditor.commit();
                         break;
                 }
 
@@ -89,7 +89,7 @@ public class SettingsFragment extends Fragment {
 
 
 
-        //Eingabe Name
+        //Eingabe Name in sharedPrefferences
         nameButton = view.findViewById(R.id.name_button);
         nameButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,9 +104,9 @@ public class SettingsFragment extends Fragment {
 
                 }else{
 
-                    name = nameInput.getText().toString();
+                    referenceEditor.putString("Username", nameInput.getText().toString());
+                    referenceEditor.commit();
                     nameInput.setText("");
-                    Toast.makeText(getActivity().getBaseContext(), name, Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -116,7 +116,7 @@ public class SettingsFragment extends Fragment {
 
 
 
-        //Eingabe Budget
+        //Eingabe Budget in sharedPrefferences
         budgetButton = view.findViewById(R.id.budget_button);
         budgetButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,9 +131,9 @@ public class SettingsFragment extends Fragment {
 
                 }else{
 
-                    budget = Float.valueOf(budgetInput.getText().toString());
+                    referenceEditor.putFloat("Budget", Float.valueOf(budgetInput.getText().toString()));
+                    referenceEditor.commit();
                     budgetInput.setText("");
-                    Toast.makeText(getActivity().getBaseContext(), String.valueOf(budget), Toast.LENGTH_SHORT).show();
 
                 }
 

@@ -294,10 +294,10 @@ public class HomeFragment extends Fragment {
     public String getMonth(){
 
         //abfrage und formatierung des Datums
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
 
-        return df.format(c);
+        return dateFormat.format(date);
     }
 
 

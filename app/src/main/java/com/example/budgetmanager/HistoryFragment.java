@@ -95,11 +95,11 @@ public class HistoryFragment extends Fragment {
         float sonstigesGesamt = 69.00f;
         float budgetGesamt = sharedPreferences.getFloat("Budget", 0.00f);
         float ausgaben =    fixausgabenGesamt
-                + lebensmittelGesamt
-                + gebrauchsgegenstaendeGesamt
-                + unterhaltungGesamt
-                + transportGesamt
-                + sonstigesGesamt;
+                            + lebensmittelGesamt
+                            + gebrauchsgegenstaendeGesamt
+                            + unterhaltungGesamt
+                            + transportGesamt
+                            + sonstigesGesamt;
 
         float budgetUebrigGraph = budgetGesamt - ausgaben;
 
@@ -110,12 +110,12 @@ public class HistoryFragment extends Fragment {
         float budgetUebrig = budgetGesamt - ausgaben;
 
         float[] chartData = new float[] {   fixausgabenGesamt,
-                lebensmittelGesamt,
-                gebrauchsgegenstaendeGesamt,
-                unterhaltungGesamt,
-                transportGesamt,
-                sonstigesGesamt,
-                budgetUebrigGraph};
+                                            lebensmittelGesamt,
+                                            gebrauchsgegenstaendeGesamt,
+                                            unterhaltungGesamt,
+                                            transportGesamt,
+                                            sonstigesGesamt,
+                                            budgetUebrigGraph};
 
         String currency =  sharedPreferences.getString("Currency", null);
 

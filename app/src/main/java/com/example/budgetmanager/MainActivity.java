@@ -196,8 +196,8 @@ public class MainActivity extends AppCompatActivity {
         referenceEditor.commit();
 
         //erstellen der Dateien für den jetzigen Monat und für die Fixkosten in den privaten Appspeicher
-        FileOutputStream fOut = openFileOutput(getCurrentMonth("MMMM_yyyy") + ".xml", Context.MODE_PRIVATE);
-        fOut = openFileOutput("fixedCosts.xml", Context.MODE_PRIVATE);
+        FileOutputStream fOut = openFileOutput(getCurrentMonth("MMMM_yyyy") + ".json", Context.MODE_PRIVATE);
+        fOut = openFileOutput("fixedCosts.json", Context.MODE_PRIVATE);
 
         Button setupButton = popupWindowSetup.getContentView().findViewById(R.id.popup_setup_button);
 

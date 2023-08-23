@@ -25,8 +25,6 @@ public class SettingsFragment extends Fragment {
 
     String fixedIdentifier = "";
     float fixedAmount = 0;
-    String name = "";
-    float budget = 0;
 
     private ListView listFixedInput;
     private Button fixedInputButton;

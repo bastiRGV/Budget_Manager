@@ -320,12 +320,12 @@ public class HistoryFragment extends Fragment {
         for(int i = 0; i < fileList.length; i++){
 
             //Filtert die Fixkostendatei aus den Ergebnissen
-            if(!(fileList[i].getName()).equals("fixedCosts.xml")){
+            if(!(fileList[i].getName()).equals("fixedCosts.json")){
 
                 //Anpassung des Namens der Datei auf den Anzeigenamen
                 String name = fileList[i].getName();
                 name = name.replace("_", " ");
-                name = name.replace(".xml", "");
+                name = name.replace(".json", "");
                 historyList.add(name);
 
             }

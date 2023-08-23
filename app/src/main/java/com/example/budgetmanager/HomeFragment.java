@@ -199,7 +199,7 @@ public class HomeFragment extends Fragment {
             //speichert letzten monat und legt neue datei mit jetzigem monat an
             String lastMonth = sharedPreferences.getString("LastLogin", null);
             try {
-                FileOutputStream fOut = getContext().openFileOutput(getCurrentMonth("MMMM_yyyy") + ".xml", Context.MODE_PRIVATE);
+                FileOutputStream fOut = getContext().openFileOutput(getCurrentMonth("MMMM_yyyy") + ".json", Context.MODE_PRIVATE);
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }

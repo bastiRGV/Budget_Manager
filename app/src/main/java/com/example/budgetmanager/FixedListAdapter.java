@@ -65,7 +65,7 @@ public class FixedListAdapter extends ArrayAdapter<FixedExpense> {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                name.setText("deleted");
+                name.setText(currentPosition.getId() + " deleted");
             }
         });
 

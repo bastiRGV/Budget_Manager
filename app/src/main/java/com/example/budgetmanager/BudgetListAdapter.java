@@ -70,7 +70,7 @@ public class BudgetListAdapter extends ArrayAdapter<Expense> {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                name.setText("deleted");
+                name.setText(currentPosition.getId() + " deleted");
             }
         });
 

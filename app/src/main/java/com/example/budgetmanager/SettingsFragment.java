@@ -1,5 +1,6 @@
 package com.example.budgetmanager;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -15,8 +16,30 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class SettingsFragment extends Fragment {
@@ -34,6 +57,7 @@ public class SettingsFragment extends Fragment {
     private EditText fixedInputAmount;
     private EditText nameInput;
     private EditText budgetInput;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -106,6 +130,9 @@ public class SettingsFragment extends Fragment {
                     referenceEditor.commit();
                     nameInput.setText("");
 
+                    //ruft function in Mainactivity zum ändern des Nutzernamens auf
+                    ((MainActivity)getActivity()).setUsername();
+
                 }
 
             }
@@ -138,15 +165,15 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-
         //Test Liste
         ArrayList <FixedExpense> fixedInput = new ArrayList<FixedExpense>();
-        fixedInput.add(new FixedExpense(1, "Miete", 300));
-        fixedInput.add(new FixedExpense(2, "Auto", 70));
+        fixedInput.add(new FixedExpense(1, "Miete", 300.99F));
+        fixedInput.add(new FixedExpense(2, "Auto", 70.99F));
+        fixedInput.add(new FixedExpense(3, "Zeug", 20.99F));
 
-        FixedListAdapter fixedListAdapter = new FixedListAdapter(getContext(), fixedInput);
         listFixedInput = view.findViewById(R.id.list_fixed_input);
-        listFixedInput.setAdapter(fixedListAdapter);
+
+        setListData(fixedInput);
 
         fixedInputButton = view.findViewById(R.id.fixed_button);
 
@@ -173,7 +200,18 @@ public class SettingsFragment extends Fragment {
                     fixedAmount = Float.valueOf(fixedInputAmount.getText().toString());
                     fixedInputAmount.setText("");
 
-                    Toast.makeText(getActivity().getBaseContext(), fixedIdentifier + " " + fixedAmount, Toast.LENGTH_SHORT).show();
+                    //neues FixedExpense objekt in die Arraylist eintragen
+                    fixedInput.add(new FixedExpense(2, fixedIdentifier, fixedAmount));
+
+                    //Schreibt Eingegebene Daten in Datei
+                    try {
+                        writeFixedInputFile(fixedInput);
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    //aktualisiert Liste
+                    setListData(fixedInput);
 
                 }
 
@@ -182,5 +220,47 @@ public class SettingsFragment extends Fragment {
 
         return view;
     }
+
+
+/**--------------------------------------------------------------------------------------------**/
+
+    private void setListData(ArrayList<FixedExpense> fixedInput) {
+
+
+        try {
+            writeFixedInputFile(fixedInput);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        FixedListAdapter fixedListAdapter = new FixedListAdapter(getContext(), fixedInput);
+        listFixedInput.setAdapter(fixedListAdapter);
+
+    }
+
+
+/**---------------------------------------------------------------------------------------------**/
+
+    //Schreibt übergeben Arraylist in die angegebene JSON Datei
+    public void writeFixedInputFile(ArrayList<FixedExpense> arrayList) throws JSONException {
+
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<FixedExpense>>() {}.getType();
+        JSONArray jsonArray = new JSONArray(gson.toJson(arrayList,type));
+
+        try {
+            String filePath = getContext().getFilesDir() + "/" + "fixedCosts.json";
+            File file = new File(filePath);
+            FileWriter writer = new FileWriter(file);
+            writer.write(jsonArray.toString(4));
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
 
 }

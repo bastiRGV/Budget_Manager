@@ -76,12 +76,12 @@ public class SettingsFragment extends Fragment {
         SharedPreferences.Editor referenceEditor = sharedPreferences.edit();
 
         //änderung Währung, je nachdem, welcher Menüpunkt im Dropdown ausgewählt wurde
-        dropdownMenuSettings.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        dropdownMenuSettings.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
-            public void onItemSelected(AdapterView<?> adapterView,View view,int position, long id){
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 
-                switch (position){
+                switch (position) {
                     case 0:
                         //Setzt Appwährung in den sharedPreferences zu Euro
                         referenceEditor.putString("Currency", "€");
@@ -102,13 +102,12 @@ public class SettingsFragment extends Fragment {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView){
+            public void onNothingSelected(AdapterView<?> adapterView) {
                 //default Euro
                 return;
             }
 
         });
-
 
 
         //Eingabe Name in sharedPrefferences
@@ -120,25 +119,23 @@ public class SettingsFragment extends Fragment {
                 nameInput = view.findViewById(R.id.name_input);
 
                 //check, ob Feld leer
-                if(TextUtils.isEmpty(nameInput.getText().toString())){
+                if (TextUtils.isEmpty(nameInput.getText().toString())) {
 
                     Toast.makeText(getActivity().getBaseContext(), "Bitte Feld ausfüllen", Toast.LENGTH_SHORT).show();
 
-                }else{
+                } else {
 
                     referenceEditor.putString("Username", nameInput.getText().toString());
                     referenceEditor.commit();
                     nameInput.setText("");
 
                     //ruft function in Mainactivity zum ändern des Nutzernamens auf
-                    ((MainActivity)getActivity()).setUsername();
+                    ((MainActivity) getActivity()).setUsername();
 
                 }
 
             }
         });
-
-
 
 
         //Eingabe Budget in sharedPrefferences
@@ -150,11 +147,11 @@ public class SettingsFragment extends Fragment {
                 budgetInput = view.findViewById(R.id.budget_input);
 
                 //check, ob Feld leer
-                if(TextUtils.isEmpty(budgetInput.getText().toString())){
+                if (TextUtils.isEmpty(budgetInput.getText().toString())) {
 
                     Toast.makeText(getActivity().getBaseContext(), "Bitte Feld ausfüllen", Toast.LENGTH_SHORT).show();
 
-                }else{
+                } else {
 
                     referenceEditor.putFloat("Budget", Float.valueOf(budgetInput.getText().toString()));
                     referenceEditor.commit();
@@ -165,32 +162,30 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        //Test Liste
-        ArrayList <FixedExpense> fixedInput = new ArrayList<FixedExpense>();
-        fixedInput.add(new FixedExpense(1, "Miete", 300.99F));
-        fixedInput.add(new FixedExpense(2, "Auto", 70.99F));
-        fixedInput.add(new FixedExpense(3, "Zeug", 20.99F));
+
+        ArrayList<FixedExpense> fixedInput = new ArrayList<>();
 
         listFixedInput = view.findViewById(R.id.list_fixed_input);
 
         setListData(fixedInput);
+
 
         fixedInputButton = view.findViewById(R.id.fixed_button);
 
         //Eingabe Fixkosten
         fixedInputButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
 
                 fixedInputIdentifier = view.findViewById(R.id.fixed_name_input);
                 fixedInputAmount = view.findViewById(R.id.fixed_amount_input);
 
                 //check,ob alle felder ausgefüllt sind
-                if(TextUtils.isEmpty(fixedInputIdentifier.getText().toString()) || TextUtils.isEmpty(fixedInputAmount.getText().toString())){
+                if (TextUtils.isEmpty(fixedInputIdentifier.getText().toString()) || TextUtils.isEmpty(fixedInputAmount.getText().toString())) {
 
                     Toast.makeText(getActivity().getBaseContext(), "Bitte alle benötigten Felder ausfüllen", Toast.LENGTH_SHORT).show();
 
-                }else{
+                } else {
 
                     //liest Eingabe name aus Namensfeld und löscht eingabe
                     fixedIdentifier = fixedInputIdentifier.getText().toString();
@@ -213,6 +208,7 @@ public class SettingsFragment extends Fragment {
                     //aktualisiert Liste
                     setListData(fixedInput);
 
+
                 }
 
             }
@@ -224,17 +220,9 @@ public class SettingsFragment extends Fragment {
 
 /**--------------------------------------------------------------------------------------------**/
 
-    private void setListData(ArrayList<FixedExpense> fixedInput) {
+    private void setListData(ArrayList<FixedExpense> list){
 
-
-        try {
-            writeFixedInputFile(fixedInput);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        FixedListAdapter fixedListAdapter = new FixedListAdapter(getContext(), fixedInput);
+        FixedListAdapter fixedListAdapter = new FixedListAdapter(getContext(), list);
         listFixedInput.setAdapter(fixedListAdapter);
 
     }
@@ -261,6 +249,36 @@ public class SettingsFragment extends Fragment {
 
     }
 
+    //Liest Arraylist aus JSON Datei
+    public ArrayList<FixedExpense> readFixedInputFile() throws IOException{
 
+        String returnString = "";
+
+        InputStream inputStream = getContext().openFileInput("fixedCosts.json");
+
+        if ( inputStream != null ) {
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            String receiveString = "";
+            StringBuilder stringBuilder = new StringBuilder();
+
+            while ( (receiveString = bufferedReader.readLine()) != null ) {
+                stringBuilder.append("\n").append(receiveString);
+            }
+
+            inputStream.close();
+            returnString = stringBuilder.toString();
+        }
+
+        Toast.makeText(getActivity().getBaseContext(), returnString, Toast.LENGTH_LONG).show();
+
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<FixedExpense>>() {}.getType();
+
+        ArrayList<FixedExpense> list = gson.fromJson(returnString, type);
+
+        return list;
+
+    }
 
 }

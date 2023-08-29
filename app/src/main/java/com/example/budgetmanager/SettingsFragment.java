@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.core.content.res.TypedArrayUtils;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
@@ -41,6 +42,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SettingsFragment extends Fragment {
 
@@ -162,11 +164,17 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-
+        //lesen der Datei aus dem internal storage
         ArrayList<FixedExpense> fixedInput = new ArrayList<>();
+        try {
+            fixedInput = readFixedInputFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         listFixedInput = view.findViewById(R.id.list_fixed_input);
 
+        //schreiben der daten aus dem speicher in die liste
         setListData(fixedInput);
 
 
@@ -177,8 +185,19 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                //lesen der Datei aus dem internal storage
+                ArrayList<FixedExpense> fixedInputAdd = new ArrayList<>();
+                try {
+                    fixedInputAdd = readFixedInputFile();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
                 fixedInputIdentifier = view.findViewById(R.id.fixed_name_input);
                 fixedInputAmount = view.findViewById(R.id.fixed_amount_input);
+
+                //durchläuft die Arraylist und gibt die erste freie id zurück
+                int availableId = getFirstAvailableId(fixedInputAdd);
 
                 //check,ob alle felder ausgefüllt sind
                 if (TextUtils.isEmpty(fixedInputIdentifier.getText().toString()) || TextUtils.isEmpty(fixedInputAmount.getText().toString())) {
@@ -196,17 +215,17 @@ public class SettingsFragment extends Fragment {
                     fixedInputAmount.setText("");
 
                     //neues FixedExpense objekt in die Arraylist eintragen
-                    fixedInput.add(new FixedExpense(2, fixedIdentifier, fixedAmount));
+                    fixedInputAdd.add(new FixedExpense(availableId, fixedIdentifier, fixedAmount));
 
                     //Schreibt Eingegebene Daten in Datei
                     try {
-                        writeFixedInputFile(fixedInput);
+                        writeFixedInputFile(fixedInputAdd);
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
 
                     //aktualisiert Liste
-                    setListData(fixedInput);
+                    setListData(fixedInputAdd);
 
 
                 }
@@ -249,6 +268,9 @@ public class SettingsFragment extends Fragment {
 
     }
 
+
+
+
     //Liest Arraylist aus JSON Datei
     public ArrayList<FixedExpense> readFixedInputFile() throws IOException{
 
@@ -270,14 +292,44 @@ public class SettingsFragment extends Fragment {
             returnString = stringBuilder.toString();
         }
 
-        Toast.makeText(getActivity().getBaseContext(), returnString, Toast.LENGTH_LONG).show();
-
         Gson gson = new Gson();
         Type type = new TypeToken<ArrayList<FixedExpense>>() {}.getType();
 
         ArrayList<FixedExpense> list = gson.fromJson(returnString, type);
 
         return list;
+
+    }
+
+
+/**------------------------------------------------------------------------------------------**/
+
+    //liest die erste verfügbare id aus der Arraylist
+    public int getFirstAvailableId(ArrayList<FixedExpense> list){
+
+        int[] usedIds = new int[list.size()];
+
+        for(int i = 0; i < list.size(); i++){
+
+            usedIds[i] = list.get(i).getId();
+
+        }
+
+        Arrays.sort(usedIds, 0, usedIds.length);
+
+        int unusedId = 1;
+
+        for(int i = 0; i < usedIds.length; i++){
+
+            if(usedIds[i] == unusedId){
+                unusedId++;
+            }else{
+                return unusedId;
+            }
+
+        }
+
+        return unusedId;
 
     }
 

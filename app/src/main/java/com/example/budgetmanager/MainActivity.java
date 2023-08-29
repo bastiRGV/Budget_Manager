@@ -30,8 +30,11 @@ import com.google.android.material.navigation.NavigationView;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -120,6 +123,8 @@ public class MainActivity extends AppCompatActivity {
                         runSetup();
                     } catch (FileNotFoundException e) {
                         throw new RuntimeException(e);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
 
                 }
@@ -173,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     //läd Setup, nur wenn setupDone flag in sharedPreferneces nicht existiert
-    public void runSetup() throws FileNotFoundException {
+    public void runSetup() throws IOException {
 
         LayoutInflater loadSetupPopupWindow = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup containerSetup = (ViewGroup) loadSetupPopupWindow.inflate(R.layout.popup_setup, null);
@@ -198,6 +203,20 @@ public class MainActivity extends AppCompatActivity {
         //erstellen der Dateien für den jetzigen Monat und für die Fixkosten in den privaten Appspeicher
         FileOutputStream fOut = openFileOutput(getCurrentMonth("MMMM_yyyy") + ".json", Context.MODE_PRIVATE);
         fOut = openFileOutput("fixedCosts.json", Context.MODE_PRIVATE);
+
+        //schreibt leeres JsonArray in die Datei fixedCosts.json
+        String filePathFixed = getFilesDir() + "/" + "fixedCosts.json";
+        File fileFixed = new File(filePathFixed);
+        FileWriter writerFixed = new FileWriter(fileFixed);
+        writerFixed.write("[]");
+        writerFixed.close();
+
+        //schreibt leeres JsonArray in die Datei des jetzigen Monats
+        String filePathMonth = getFilesDir() + "/" + getCurrentMonth("MMMM_yyyy") + ".json";
+        File fileMonth = new File(filePathMonth);
+        FileWriter writerMonth = new FileWriter(fileMonth);
+        writerMonth.write("[]");
+        writerMonth.close();
 
         Button setupButton = popupWindowSetup.getContentView().findViewById(R.id.popup_setup_button);
 

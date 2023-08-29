@@ -35,8 +35,11 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -200,7 +203,17 @@ public class HomeFragment extends Fragment {
             String lastMonth = sharedPreferences.getString("LastLogin", null);
             try {
                 FileOutputStream fOut = getContext().openFileOutput(getCurrentMonth("MMMM_yyyy") + ".json", Context.MODE_PRIVATE);
+
+                //schreibt leeres JsonArray in die Datei des jetzigen Monats
+                String filePathMonth = getContext().getFilesDir() + "/" + getCurrentMonth("MMMM_yyyy") + ".json";
+                File fileMonth = new File(filePathMonth);
+                FileWriter writer= new FileWriter(fileMonth);
+                writer.write("[]");
+                writer.close();
+
             } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 

@@ -154,15 +154,15 @@ public class HomeFragment extends Fragment {
         textViewMonth = view.findViewById(R.id.header_home);
         textViewMonth.setText(getCurrentMonth("MMMM yyyy"));
 
+
+
         //verhinder Ladeversuch aus dateien, solange das setup noch nicht beendet ist
         if(sharedPreferences.contains("SetupDone")){
 
             //Test, ob neuer Monat begonnen hat
             //abgleich lastLogin aus sharedPreferneces mit jetzigem Datum
             //wenn neuer monat, dann läd Monatszusammenfassung vom letzten monat
-            //check, ob setup abgeschlossen, um zu verhindern, das vor dem setup die leere Monatszusammenfassung geladen wird
-            if (!getCurrentMonth("MMMM_yyyy").equals(sharedPreferences.getString("LastLogin", null))
-                    && sharedPreferences.contains("SetupDone")){
+            if (!getCurrentMonth("MMMM_yyyy").equals(sharedPreferences.getString("LastLogin", null))){
 
                 //liest Daten aus der Monatsdatei
                 ArrayList <Expense> expenses = new ArrayList<Expense>();
@@ -209,6 +209,14 @@ public class HomeFragment extends Fragment {
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                try {
+                    writeFixedCostsInMonthFile(lastMonth + ".json");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
 
@@ -328,12 +336,6 @@ public class HomeFragment extends Fragment {
         return view;
 
     }
-
-
-
-
-
-
 
 /**------------------------------------------------------------------------------------------
  ------------------------------------------------------------------------------------------**/
@@ -492,7 +494,7 @@ public class HomeFragment extends Fragment {
 
                     //schreibt Daten in Datei
                     try {
-                        writeMonthlyExpenseFile(expensesAdd);
+                        writeMonthlyExpenseFile(expensesAdd, getCurrentMonth("MMMM_yyyy") + ".json");
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
@@ -846,20 +848,51 @@ public class HomeFragment extends Fragment {
 
 
     //Schreibt übergeben Arraylist in die angegebene JSON Datei
-    public void writeMonthlyExpenseFile(ArrayList<Expense> arrayList) throws JSONException {
+    public void writeMonthlyExpenseFile(ArrayList<Expense> arrayList, String fileToWrite) throws JSONException {
 
         Gson gson = new Gson();
         Type type = new TypeToken<ArrayList<Expense>>() {}.getType();
         JSONArray jsonArray = new JSONArray(gson.toJson(arrayList,type));
 
         try {
-            String filePath = getContext().getFilesDir() + "/" + getCurrentMonth("MMMM_yyyy") + ".json";
+            String filePath = getContext().getFilesDir() + "/" + fileToWrite;
             File file = new File(filePath);
             FileWriter writer = new FileWriter(file);
             writer.write(jsonArray.toString(4));
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+    }
+
+
+
+/**-------------------------------------------------------------------------------------------------**/
+
+    //Schreibt am Monatsende die Fixkosten in die Normale Monatsdatei
+    private void writeFixedCostsInMonthFile(String lastMonth) throws IOException, JSONException {
+
+        ArrayList<Expense> expenses = new ArrayList<>();
+        expenses = readMonthlyExpenseFile(lastMonth);
+
+        ArrayList<FixedExpense> fixedExpenses = new ArrayList<>();
+        fixedExpenses = readFixedExpensesFile();
+
+        for(int i = 0; i < fixedExpenses.size(); i++){
+
+            int id = 0;
+            String name = fixedExpenses.get(i).getName();
+            float amount = fixedExpenses.get(i).getAmount();
+
+            expenses.add(new Expense(id, name, "Fixkosten", "Monatsanfang", amount));
+
+        }
+
+        try {
+            writeMonthlyExpenseFile(expenses, lastMonth);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
         }
 
     }

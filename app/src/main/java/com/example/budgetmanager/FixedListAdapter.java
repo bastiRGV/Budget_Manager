@@ -13,6 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.json.JSONException;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -65,7 +67,11 @@ public class FixedListAdapter extends ArrayAdapter<FixedExpense> {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                name.setText(currentPosition.getId() + " deleted");
+                try {
+                    SettingsFragment.getInstance().deleteItem(currentPosition.getId());
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 

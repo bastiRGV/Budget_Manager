@@ -64,11 +64,16 @@ public class SettingsFragment extends Fragment {
     private EditText nameInput;
     private EditText budgetInput;
 
+    private static SettingsFragment instance;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
+
+        instance = this;
 
         Spinner dropdownMenuSettings = view.findViewById(R.id.currency_dropdown);
 
@@ -241,6 +246,13 @@ public class SettingsFragment extends Fragment {
     }
 
 
+
+    public static SettingsFragment getInstance() {
+        return instance;
+    }
+
+
+
 /**--------------------------------------------------------------------------------------------**/
 
     private void setListData(ArrayList<FixedExpense> list){
@@ -334,6 +346,36 @@ public class SettingsFragment extends Fragment {
         }
 
         return unusedId;
+
+    }
+
+
+
+/**------------------------------------------------------------------------------------**/
+
+    //wird aus dem Listadapter aufgerufen und übergibt die ID des zu löschenden Eintrags
+    public void deleteItem(int id) throws JSONException {
+
+        ArrayList<FixedExpense> deleteFixedExpense = new ArrayList<>();
+        try {
+            deleteFixedExpense = readFixedInputFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        for(int i = 0; i < deleteFixedExpense.size(); i++){
+
+            if(deleteFixedExpense.get(i).getId() == id){
+
+                deleteFixedExpense.remove(i);
+
+            }
+
+        }
+
+        writeFixedInputFile(deleteFixedExpense);
+
+        setListData(deleteFixedExpense);
 
     }
 

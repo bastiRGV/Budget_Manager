@@ -134,7 +134,7 @@ public class HomeFragment extends Fragment {
     private TextView textViewBudgetSummary;
     private TextView textViewRemainingBudgetSummary;
     private TextView textViewDifferenceSummary;
-    private Spinner dropdownMenuSummary;
+    private static HomeFragment instance;
 
     //formater, um floats auf zwei nachkommastellen zu runden
     private static final DecimalFormat decimalFormat = new DecimalFormat("0.00");
@@ -147,6 +147,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        instance = this;
 
         //initialisiert sharedReferences um Persistente Daten zu lesen
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("prefBudgetManager", Context.MODE_PRIVATE);
@@ -359,6 +361,11 @@ public class HomeFragment extends Fragment {
 
         return view;
 
+    }
+
+
+    public static HomeFragment getInstance() {
+        return instance;
     }
 
 /**------------------------------------------------------------------------------------------
@@ -910,6 +917,47 @@ public class HomeFragment extends Fragment {
     public static void sortByCategory(ArrayList<Expense> list) {
 
         list.sort(Comparator.comparing(Expense::getCategory));
+
+    }
+
+
+/**------------------------------------------------------------------------------------**/
+
+    //wird aus dem Listadapter aufgerufen und übergibt die ID des zu löschenden Eintrags
+    public void deleteItem(int id) throws JSONException {
+
+        ArrayList<Expense> deleteExpense = new ArrayList<>();
+        try {
+            deleteExpense = readMonthlyExpenseFile(getCurrentMonth("MMMM_yyyy") + ".json");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        for(int i = 0; i < deleteExpense.size(); i++){
+
+            if(deleteExpense.get(i).getId() == id){
+
+                deleteExpense.remove(i);
+
+            }
+
+        }
+
+        writeMonthlyExpenseFile(deleteExpense, getCurrentMonth("MMMM_yyyy") + ".json");
+
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("prefBudgetManager", Context.MODE_PRIVATE);
+
+        float budgetGesamt = sharedPreferences.getFloat("Budget", 0.00f);
+        String currency =  sharedPreferences.getString("Currency", null);
+
+        //daten aus der Arraylist in ein Objekt gespeichert
+        ReturnValues returnValues = getValues(deleteExpense, budgetGesamt, currency);
+
+        //Standardsotierung nach Datum
+        sortByDate(deleteExpense);
+        Collections.reverse(deleteExpense);
+
+        setData(returnValues, deleteExpense);
 
     }
 

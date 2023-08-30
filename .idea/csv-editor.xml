@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CsvFileAttributes">
+    <option name="attributeMap">
+      <map>
+        <entry key="$USER_HOME$/.cache/Google/AndroidStudio2022.3/device-explorer/Pixel 7 Pro API 30/data/data/com.example.budgetmanager/files/August_2023.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/.cache/Google/AndroidStudio2022.3/device-explorer/Pixel 7 Pro API 30/data/data/com.example.budgetmanager/files/September_2023.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/.cache/Google/AndroidStudio2022.3/device-explorer/Pixel 7 Pro API 30/storage/emulated/0/Download/August_2023.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

@@ -19,7 +19,7 @@
             android:gravity="center"
             android:text="@string/header_settings"
             android:textStyle="bold"
-            android:textSize="30sp"/>
+            android:textSize="30dp"/>
 
         <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/name_headline"
                     android:text="@string/settings_name_headline"
-                    android:textSize="20sp"
+                    android:textSize="20dp"
                     android:textStyle="bold"/>
 
                 <LinearLayout
@@ -76,7 +76,7 @@
                         android:backgroundTint="@color/lightgreen"
                         android:text="@string/settings_fixed_button"
                         android:textStyle="bold"
-                        android:textSize="28sp"
+                        android:textSize="28dp"
                         android:layout_marginRight="10dp"/>
 
                 </LinearLayout>
@@ -98,7 +98,7 @@
                     android:layout_below="@+id/settings_divider_one"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="5dp"
-                    android:textSize="20sp"
+                    android:textSize="20dp"
                     android:textStyle="bold"/>
 
                 <Spinner
@@ -125,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/budget_headline"
                     android:text="@string/settings_income_headline"
-                    android:textSize="20sp"
+                    android:textSize="20dp"
                     android:textStyle="bold"
                     android:layout_below="@+id/settings_divider_two"/>
 
@@ -165,7 +165,7 @@
                         android:backgroundTint="@color/lightgreen"
                         android:text="@string/settings_fixed_button"
                         android:textStyle="bold"
-                        android:textSize="28sp"
+                        android:textSize="28dp"
                         android:layout_marginRight="10dp"/>
 
                 </LinearLayout>
@@ -187,7 +187,7 @@
                     android:layout_below="@+id/settings_divider_three"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="5dp"
-                    android:textSize="20sp"
+                    android:textSize="20dp"
                     android:textStyle="bold"/>
 
                 <LinearLayout
@@ -242,7 +242,7 @@
                         android:backgroundTint="@color/lightgreen"
                         android:text="@string/settings_fixed_button"
                         android:textStyle="bold"
-                        android:textSize="28sp"
+                        android:textSize="28dp"
                         android:layout_marginRight="10dp"/>
 
                 </LinearLayout>

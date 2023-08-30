@@ -178,7 +178,7 @@ public class HistoryFragment extends Fragment {
 
         //läd oben erstellten Container in ein Popup Window
         //true lässt  es zu, das Fenster zu schliessen, wenn auserhalb des Fensters gedrückt wird
-        popupWindowHistory = new PopupWindow(container, 1200, 2500, true);
+        popupWindowHistory = new PopupWindow(container, 900, 2000, true);
         popupWindowHistory.showAtLocation(historyFragment, Gravity.CENTER, 0, 0);
 
 

@@ -11,7 +11,7 @@
         android:id="@+id/popup_setup_header"
         android:gravity="center_horizontal"
         android:text="@string/setup_header"
-        android:textSize="20sp"
+        android:textSize="30dp"
         android:textStyle="bold"/>
 
     <TextView
@@ -21,11 +21,11 @@
         android:layout_below="@+id/popup_setup_header"
         android:text="@string/setup_username"
         android:layout_marginTop="20dp"
-        android:textSize="15sp"/>
+        android:textSize="20dp"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:id="@+id/popup_setup_name_input_container"
         app:hintAnimationEnabled="true"
         android:layout_below="@+id/popup_setup_name_header"
@@ -50,11 +50,11 @@
         android:layout_below="@+id/popup_setup_name_input_container"
         android:text="@string/setup_budget"
         android:layout_marginTop="20dp"
-        android:textSize="15sp"/>
+        android:textSize="20dp"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:id="@+id/popup_setup_budget_input_container"
         app:hintAnimationEnabled="true"
         android:layout_below="@+id/popup_setup_budget_header"
@@ -79,7 +79,7 @@
         android:id="@+id/popup_setup_button"
         android:layout_below="@+id/popup_setup_budget_input_container"
         android:text="@string/setup_button"
-        android:textSize="15sp"
+        android:textSize="15dp"
         android:layout_marginTop="20dp"
         android:backgroundTint="@color/lightgreen"/>
 

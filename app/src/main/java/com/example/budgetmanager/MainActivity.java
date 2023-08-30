@@ -2,6 +2,7 @@ package com.example.budgetmanager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -54,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Zwingt app in den Light mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         //initialisierung
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -182,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
         LayoutInflater loadSetupPopupWindow = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup containerSetup = (ViewGroup) loadSetupPopupWindow.inflate(R.layout.popup_setup, null);
 
-        PopupWindow popupWindowSetup = new PopupWindow(containerSetup, 1200, 1200, true);
+        PopupWindow popupWindowSetup = new PopupWindow(containerSetup, 900, 1000, true);
         popupWindowSetup.showAtLocation(drawerLayout, Gravity.CENTER, 0, 0);
 
 

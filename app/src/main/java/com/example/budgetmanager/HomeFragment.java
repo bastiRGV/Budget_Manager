@@ -334,7 +334,7 @@ public class HomeFragment extends Fragment {
 
                     //läd oben erstellten Container in ein Popup Window
                     //true lässt  es zu, das Fenster zu schliessen, wenn auserhalb des Fensters gedrückt wird
-                    popupWindowAddEntries = new PopupWindow(container, 1200, 2200, true);
+                    popupWindowAddEntries = new PopupWindow(container, 900, 1700, true);
                     popupWindowAddEntries.showAtLocation(homeFragment, Gravity.CENTER, 0, 0);
 
                     //fenster Schliesst, wenn außerhalb des Fensters berührt wird
@@ -611,7 +611,7 @@ public class HomeFragment extends Fragment {
 
         //läd oben erstellten Container in ein Popup Window
         //true lässt  es zu, das Fenster zu schliessen, wenn auserhalb des Fensters gedrückt wird
-        popupWindowSummary = new PopupWindow(container, 1200, 2500, true);
+        popupWindowSummary = new PopupWindow(container, 900, 2000, true);
         popupWindowSummary.showAtLocation(homeFragment, Gravity.CENTER, 0, 0);
 
 

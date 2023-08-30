@@ -15,7 +15,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:textStyle="bold"
-        android:textSize="30sp"/>
+        android:textSize="30dp"/>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -64,7 +64,7 @@
                     android:layout_marginRight="10dp"
                     android:gravity="center"
                     android:text="Budget here"
-                    android:textSize="20sp"
+                    android:textSize="20dp"
                     android:textStyle="bold"/>
 
                 <TextView
@@ -76,7 +76,7 @@
                     android:layout_marginRight="20dp"
                     android:gravity="center"
                     android:text="remaining here"
-                    android:textSize="20sp"
+                    android:textSize="20dp"
                     android:textStyle="bold"/>
 
             </LinearLayout>
@@ -91,7 +91,7 @@
                 android:layout_marginRight="20dp"
                 android:text="difference here"
                 android:gravity="center"
-                android:textSize="20sp"
+                android:textSize="20dp"
                 android:textStyle="bold"/>
 
             <View

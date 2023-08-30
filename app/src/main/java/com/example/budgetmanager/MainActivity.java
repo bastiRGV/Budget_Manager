@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         LayoutInflater loadSetupPopupWindow = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup containerSetup = (ViewGroup) loadSetupPopupWindow.inflate(R.layout.popup_setup, null);
 
-        PopupWindow popupWindowSetup = new PopupWindow(containerSetup, 900, 1200, true);
+        PopupWindow popupWindowSetup = new PopupWindow(containerSetup, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         popupWindowSetup.showAtLocation(drawerLayout, Gravity.CENTER, 0, 0);
 
 

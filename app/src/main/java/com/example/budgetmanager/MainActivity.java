@@ -60,6 +60,31 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
 
+        //lädt Setupcheck verspätet, um zeit zum laden zu geben
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+
+                //initialisiert sharedReferences um Persistente Daten zu lesen
+                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("prefBudgetManager", 0);
+
+                //läd setup nur, wenn flag nicht gesetzt ist
+                if(sharedPreferences.contains("SetupDone") == false){
+
+                    try {
+                        runSetup();
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }
+
+            }
+        }, 300);
+
 
         //setzen des Standardfragments
         replaceFragment(new HomeFragment());
@@ -105,32 +130,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Änderund des Nutzernamens
         setUsername();
-
-
-        //lädt Setupcheck verspätet, um zeit zum laden zu geben
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-
-                //initialisiert sharedReferences um Persistente Daten zu lesen
-                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("prefBudgetManager", 0);
-
-                //läd setup nur, wenn flag nicht gesetzt ist
-                if(sharedPreferences.contains("SetupDone") == false){
-
-                    try {
-                        runSetup();
-                    } catch (FileNotFoundException e) {
-                        throw new RuntimeException(e);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                }
-
-            }
-        }, 300);
 
     }
 

@@ -37,6 +37,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -49,6 +52,7 @@ import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -146,198 +150,187 @@ public class HomeFragment extends Fragment {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("prefBudgetManager", Context.MODE_PRIVATE);
         SharedPreferences.Editor referenceEditor = sharedPreferences.edit();
 
+        //jetzigen Monat mit Überschriftsformatierung laden
+        textViewMonth = view.findViewById(R.id.header_home);
+        textViewMonth.setText(getCurrentMonth("MMMM yyyy"));
 
-        //Test, ob neuer Monat begonnen hat
-        //abgleich lastLogin aus sharedPreferneces mit jetzigem Datum
-        //wenn neuer monat, dann läd Monatszusammenfassung vom letzten monat
-        //check, ob setup abgeschlossen, um zu verhindern, das vor dem setup die leere Monatszusammenfassung geladen wird
-        if (!getCurrentMonth("MMMM_yyyy").equals(sharedPreferences.getString("LastLogin", null))
-                && sharedPreferences.contains("SetupDone")){
+        //verhinder Ladeversuch aus dateien, solange das setup noch nicht beendet ist
+        if(sharedPreferences.contains("SetupDone")){
 
-            float fixausgabenGesamt = 900.00f;
-            float lebensmittelGesamt = 300.00f;
-            float gebrauchsgegenstaendeGesamt = 150.00f;
-            float unterhaltungGesamt = 199.00f;
-            float transportGesamt = 47.00f;
-            float sonstigesGesamt = 69.00f;
-            float budgetGesamt = sharedPreferences.getFloat("Budget", 0.00f);
-            float ausgaben =    fixausgabenGesamt
-                    + lebensmittelGesamt
-                    + gebrauchsgegenstaendeGesamt
-                    + unterhaltungGesamt
-                    + transportGesamt
-                    + sonstigesGesamt;
+            //Test, ob neuer Monat begonnen hat
+            //abgleich lastLogin aus sharedPreferneces mit jetzigem Datum
+            //wenn neuer monat, dann läd Monatszusammenfassung vom letzten monat
+            //check, ob setup abgeschlossen, um zu verhindern, das vor dem setup die leere Monatszusammenfassung geladen wird
+            if (!getCurrentMonth("MMMM_yyyy").equals(sharedPreferences.getString("LastLogin", null))
+                    && sharedPreferences.contains("SetupDone")){
 
-            float budgetUebrigGraph = budgetGesamt - ausgaben;
+                //liest Daten aus der Monatsdatei
+                ArrayList <Expense> expenses = new ArrayList<Expense>();
+                try {
+                    expenses = readMonthlyExpenseFile(sharedPreferences.getString("LastLogin", null) + ".json");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
 
-            if(budgetUebrigGraph < 0){
-                budgetUebrigGraph = 0.00f;
+
+                float budgetGesamt = sharedPreferences.getFloat("Budget", 0.00f);
+                String currency =  sharedPreferences.getString("Currency", null);
+
+                //daten aus der Arraylist in ein Objekt gespeichert
+                ReturnValues returnValues = getValues(expenses, budgetGesamt, currency);
+
+                //läd Monatszusammenfassung verspätet, um Zeit zum laden zu geben
+                ArrayList<Expense> finalExpenses = expenses;
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        loadPopupSummary(returnValues, finalExpenses);
+
+                    }
+                }, 300);
+
+                //speichert das Budget, welches für den letzten Monat eingegeben wurde für die Monatszusammenfassung in den shared Preferences
+                referenceEditor.putFloat(sharedPreferences.getString("LastLogin", null), returnValues.getBudgetGesamt());
+
+                //speichert letzten monat und legt neue datei mit jetzigem monat an
+                String lastMonth = sharedPreferences.getString("LastLogin", null);
+                try {
+                    FileOutputStream fOut = getContext().openFileOutput(getCurrentMonth("MMMM_yyyy") + ".json", Context.MODE_PRIVATE);
+
+                    //schreibt leeres JsonArray in die Datei des jetzigen Monats
+                    String filePathMonth = getContext().getFilesDir() + "/" + getCurrentMonth("MMMM_yyyy") + ".json";
+                    File fileMonth = new File(filePathMonth);
+                    FileWriter writer= new FileWriter(fileMonth);
+                    writer.write("[]");
+                    writer.close();
+
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
             }
 
-            float budgetUebrig = budgetGesamt - ausgaben;
 
-            float[] chartData = new float[] {   fixausgabenGesamt,
-                    lebensmittelGesamt,
-                    gebrauchsgegenstaendeGesamt,
-                    unterhaltungGesamt,
-                    transportGesamt,
-                    sonstigesGesamt,
-                    budgetUebrigGraph};
 
-            String currency =  sharedPreferences.getString("Currency", null);
 
+
+
+
+            //setze LastLogin auf jetzigen Monat
+            referenceEditor.putString("LastLogin", getCurrentMonth("MMMM_yyyy"));
+            referenceEditor.commit();
+
+
+            //liest Daten aus der Monatsdatei
             ArrayList <Expense> expenses = new ArrayList<Expense>();
-
-            expenses.add(new Expense(1, "Rewe", "Lebensmittel", "2. 5. 2023", 12.00f));
-            expenses.add(new Expense(2, "Edeka", "Lebensmittel", "7. 5. 2023", 19.00f));
-            expenses.add(new Expense(3, "GPU", "Gebrauchsgegenstände", "9. 8. 2023", 499.00f));
-            expenses.add(new Expense(4, "Bus", "Transport", "8. 6. 2023", 2.00f));
-            expenses.add(new Expense(5, "Kino", "Unterhaltung", "6. 5. 2023", 30.00f));
-
-            //läd Monatszusammenfassung verspätet, um Zeit zum laden zu geben
-            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-
-                    //loadPopupSummary(budgetGesamt, budgetUebrig, ausgaben, currency, chartData, expenses);
-
-                }
-            }, 300);
-
-            //speichert letzten monat und legt neue datei mit jetzigem monat an
-            String lastMonth = sharedPreferences.getString("LastLogin", null);
             try {
-                FileOutputStream fOut = getContext().openFileOutput(getCurrentMonth("MMMM_yyyy") + ".json", Context.MODE_PRIVATE);
-
-                //schreibt leeres JsonArray in die Datei des jetzigen Monats
-                String filePathMonth = getContext().getFilesDir() + "/" + getCurrentMonth("MMMM_yyyy") + ".json";
-                File fileMonth = new File(filePathMonth);
-                FileWriter writer= new FileWriter(fileMonth);
-                writer.write("[]");
-                writer.close();
-
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
+                expenses = readMonthlyExpenseFile(getCurrentMonth("MMMM_yyyy") + ".json");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
-        }
 
-        //setze LastLogin auf jetzigen Monat
-        referenceEditor.putString("LastLogin", getCurrentMonth("MMMM_yyyy"));
-        referenceEditor.commit();
+            float budgetGesamt = sharedPreferences.getFloat("Budget", 0.00f);
+            String currency =  sharedPreferences.getString("Currency", null);
 
-
-        //liest Daten aus der Monatsdatei
-        ArrayList <Expense> expenses = new ArrayList<Expense>();
-        try {
-            expenses = readMonthlyExpenseFile(getCurrentMonth("MMMM_yyyy") + ".json");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        expenses.add(new Expense(1, "Rewe", "Lebensmittel", "2. 5. 2023", 12.00f));
-        expenses.add(new Expense(2, "Edeka", "Lebensmittel", "7. 5. 2023", 19.00f));
-        expenses.add(new Expense(3, "GPU", "Gebrauchsgegenstände", "9. 8. 2023", 499.00f));
-        expenses.add(new Expense(4, "Bus", "Transport", "8. 6. 2023", 2.00f));
-        expenses.add(new Expense(5, "Kino", "Unterhaltung", "6. 5. 2023", 30.00f));
+            //daten aus der Arraylist in ein Objekt gespeichert
+            ReturnValues returnValues = getValues(expenses, budgetGesamt, currency);
 
 
+            //Views mit fragment_ids verknüpfen
+            chartHome = view.findViewById(R.id.chart);
 
-        float budgetGesamt = sharedPreferences.getFloat("Budget", 0.00f);
-        String currency =  sharedPreferences.getString("Currency", null);
+            textViewBudget = view.findViewById(R.id.home_budget);
+            textViewRemainingBudget = view.findViewById(R.id.home_remaining);
+            textViewDifference = view.findViewById(R.id.home_difference);
 
-        ReturnValues returnValues = getValues(expenses, budgetGesamt, currency);
-
-
-        //Views mit fragment_ids verknüpfen
-        textViewMonth = view.findViewById(R.id.header_home);
-        chartHome = view.findViewById(R.id.chart);
-
-        textViewBudget = view.findViewById(R.id.home_budget);
-        textViewRemainingBudget = view.findViewById(R.id.home_remaining);
-        textViewDifference = view.findViewById(R.id.home_difference);
-
-        listHome = view.findViewById(R.id.list_home);
+            listHome = view.findViewById(R.id.list_home);
 
 
-        //filtermenü befüllen
-        dropdownMenuHome = view.findViewById(R.id.ausgaben_sort);
+            //filtermenü befüllen
+            dropdownMenuHome = view.findViewById(R.id.ausgaben_sort);
 
-        //läd items aus Array in das Dropdown Menü
-        ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, dropdownFilter);
-        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dropdownMenuHome.setAdapter(filterAdapter);
+            //läd items aus Array in das Dropdown Menü
+            ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, dropdownFilter);
+            filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            dropdownMenuHome.setAdapter(filterAdapter);
 
-        //änderung Sortierung, je nachdem, welcher menüpunkt ausgewählt
-        dropdownMenuHome.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            //änderung Sortierung, je nachdem, welcher menüpunkt ausgewählt
+            dropdownMenuHome.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 
-                switch (position) {
-                    case 0:
-                        //Datum
-                        break;
-                    case 1:
-                        //Name
-                        //loadPopupSummary(returnValues, expenses);
-                        break;
-                    case 2:
-                        //Betrag
-                        break;
-                    case 3:
-                        //Kategorie
-                        break;
+                    switch (position) {
+                        case 0:
+                            //Datum
+                            break;
+                        case 1:
+                            //Name
+                            break;
+                        case 2:
+                            //Betrag
+                            break;
+                        case 3:
+                            //Kategorie
+                            break;
+                    }
+
                 }
 
-            }
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                    //default nach Datum sotiert
+                    return;
+                }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                //default nach Datum sotiert
-                return;
-            }
-
-        });
+            });
 
 
 
-        actionButton = view.findViewById(R.id.action_button);
-        homeFragment = view.findViewById(R.id.home_fragment);
-        actionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            actionButton = view.findViewById(R.id.action_button);
+            homeFragment = view.findViewById(R.id.home_fragment);
+            actionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                //läd die popup_add_text in einen Container
-                loadAddPopupWindow = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                ViewGroup container = (ViewGroup) loadAddPopupWindow.inflate(R.layout.popup_add_entries, null);
+                    //läd die popup_add_text in einen Container
+                    loadAddPopupWindow = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    ViewGroup container = (ViewGroup) loadAddPopupWindow.inflate(R.layout.popup_add_entries, null);
 
-                //läd oben erstellten Container in ein Popup Window
-                //true lässt  es zu, das Fenster zu schliessen, wenn auserhalb des Fensters gedrückt wird
-                popupWindowAddEntries = new PopupWindow(container, 1200, 2200, true);
-                popupWindowAddEntries.showAtLocation(homeFragment, Gravity.CENTER, 0, 0);
+                    //läd oben erstellten Container in ein Popup Window
+                    //true lässt  es zu, das Fenster zu schliessen, wenn auserhalb des Fensters gedrückt wird
+                    popupWindowAddEntries = new PopupWindow(container, 1200, 2200, true);
+                    popupWindowAddEntries.showAtLocation(homeFragment, Gravity.CENTER, 0, 0);
 
-                //fenster Schliesst, wenn außerhalb des Fensters berührt wird
-                container.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        popupWindowAddEntries.dismiss();
-                        return true;
-                    }
-                });
+                    //fenster Schliesst, wenn außerhalb des Fensters berührt wird
+                    container.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            popupWindowAddEntries.dismiss();
+                            return true;
+                        }
+                    });
 
-                logicPopupWindow();
+                    logicPopupWindow();
 
-            }
-        });
+                }
+            });
 
-        setData(returnValues, expenses);
+            setData(returnValues, expenses);
+
+        }
 
         return view;
+
     }
+
+
+
 
 
 
@@ -350,9 +343,6 @@ public class HomeFragment extends Fragment {
 
     //Daten des Homefragments aktualisieren
     public void setData(ReturnValues returnValues, ArrayList<Expense> arrayList){
-
-        //letzigen Monat mit Überschriftsformatierung laden
-        textViewMonth.setText(getCurrentMonth("MMMM yyyy"));
 
         styleChart(chartHome);
         setChartData(chartHome, returnValues.getChartData());
@@ -463,9 +453,20 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                ArrayList<Expense> expensesAdd = new ArrayList<>();
+                expensesAdd.clear();
+                try {
+                    expensesAdd = readMonthlyExpenseFile(getCurrentMonth("MMMM_yyyy") + ".json");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
                 popupAddIdentifier = popupWindowAddEntries.getContentView().findViewById(R.id.popup_add_bezeichnung_input);
                 popupAddAmount = popupWindowAddEntries.getContentView().findViewById(R.id.popup_add_betrag_input);
                 popupAddDate = popupWindowAddEntries.getContentView().findViewById(R.id.popup_add_datum_input);
+
+                //liest sich die nächste freie ID aus der liste
+                int availableId = getFirstAvailableId(expensesAdd);
 
                 //check, ob Eingabefelder leer sind
                 if(TextUtils.isEmpty(popupAddIdentifier.getText().toString()) || TextUtils.isEmpty(popupAddAmount.getText().toString())){
@@ -483,11 +484,31 @@ public class HomeFragment extends Fragment {
 
 
                     //Liest Datum aus dem Datepicker im Popup window un konvertiert zu String
-                    chosenDate = popupAddDate.getDayOfMonth() +  "." + popupAddDate.getMonth() +  "." + popupAddDate.getYear();
+                    chosenDate = popupAddDate.getDayOfMonth() +  "." + (popupAddDate.getMonth() + 1) +  "." + popupAddDate.getYear();
 
 
                     //schreibt Eintrag und schließt Popup Window
-                    Toast.makeText(getActivity().getBaseContext(), chosenCategory + " " + chosenIdentifier + " " + decimalFormat.format(chosenAmount) +  " " + chosenDate, Toast.LENGTH_SHORT).show();
+                    expensesAdd.add(new Expense(availableId, chosenIdentifier, chosenCategory, chosenDate, chosenAmount));
+
+                    //schreibt Daten in Datei
+                    try {
+                        writeMonthlyExpenseFile(expensesAdd);
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    //Daten aktualisieren
+                    //initialisiert sharedReferences um Persistente Daten zu lesen
+                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences("prefBudgetManager", Context.MODE_PRIVATE);
+
+                    float budgetGesamt = sharedPreferences.getFloat("Budget", 0.00f);
+                    String currency =  sharedPreferences.getString("Currency", null);
+
+                    //daten aus der Arraylist in ein Objekt gespeichert
+                    ReturnValues returnValues = getValues(expensesAdd, budgetGesamt, currency);
+
+                    setData(returnValues, expensesAdd);
+
                     popupWindowAddEntries.dismiss();
 
                 }
@@ -786,8 +807,62 @@ public class HomeFragment extends Fragment {
     }
 
 
+/**------------------------------------------------------------------------------------------**/
+
+    //liest die erste verfügbare id aus der Arraylist
+    public int getFirstAvailableId(ArrayList<Expense> list){
+
+        int[] usedIds = new int[list.size()];
+
+        for(int i = 0; i < list.size(); i++){
+
+            usedIds[i] = list.get(i).getId();
+
+        }
+
+        Arrays.sort(usedIds, 0, usedIds.length);
+
+        int unusedId = 1;
+
+        for(int i = 0; i < usedIds.length; i++){
+
+            if(usedIds[i] == unusedId){
+                unusedId++;
+            }else{
+                return unusedId;
+            }
+
+        }
+
+        return unusedId;
+
+    }
 
 
+
+
+/**---------------------------------------------------------------------------------------------**/
+
+
+
+    //Schreibt übergeben Arraylist in die angegebene JSON Datei
+    public void writeMonthlyExpenseFile(ArrayList<Expense> arrayList) throws JSONException {
+
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<Expense>>() {}.getType();
+        JSONArray jsonArray = new JSONArray(gson.toJson(arrayList,type));
+
+        try {
+            String filePath = getContext().getFilesDir() + "/" + getCurrentMonth("MMMM_yyyy") + ".json";
+            File file = new File(filePath);
+            FileWriter writer = new FileWriter(file);
+            writer.write(jsonArray.toString(4));
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
 }

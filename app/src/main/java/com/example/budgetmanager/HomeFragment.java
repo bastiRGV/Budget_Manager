@@ -34,12 +34,18 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -194,7 +200,7 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void run() {
 
-                    loadPopupSummary(budgetGesamt, budgetUebrig, ausgaben, currency, chartData, expenses);
+                    //loadPopupSummary(budgetGesamt, budgetUebrig, ausgaben, currency, chartData, expenses);
 
                 }
             }, 300);
@@ -224,48 +230,26 @@ public class HomeFragment extends Fragment {
         referenceEditor.commit();
 
 
-
-
-
-        float fixausgabenGesamt = 900.00f;
-        float lebensmittelGesamt = 300.00f;
-        float gebrauchsgegenstaendeGesamt = 150.00f;
-        float unterhaltungGesamt = 199.00f;
-        float transportGesamt = 47.00f;
-        float sonstigesGesamt = 69.00f;
-        float budgetGesamt = sharedPreferences.getFloat("Budget", 0.00f);
-        float ausgaben =    fixausgabenGesamt
-                            + lebensmittelGesamt
-                            + gebrauchsgegenstaendeGesamt
-                            + unterhaltungGesamt
-                            + transportGesamt
-                            + sonstigesGesamt;
-
-        float budgetUebrigGraph = budgetGesamt - ausgaben;
-
-        if(budgetUebrigGraph < 0){
-            budgetUebrigGraph = 0.00f;
-        }
-
-        float budgetUebrig = budgetGesamt - ausgaben;
-
-        float[] chartData = new float[] {   fixausgabenGesamt,
-                                            lebensmittelGesamt,
-                                            gebrauchsgegenstaendeGesamt,
-                                            unterhaltungGesamt,
-                                            transportGesamt,
-                                            sonstigesGesamt,
-                                            budgetUebrigGraph};
-
-        String currency =  sharedPreferences.getString("Currency", null);
-
+        //liest Daten aus der Monatsdatei
         ArrayList <Expense> expenses = new ArrayList<Expense>();
+        try {
+            expenses = readMonthlyExpenseFile(getCurrentMonth("MMMM_yyyy") + ".json");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         expenses.add(new Expense(1, "Rewe", "Lebensmittel", "2. 5. 2023", 12.00f));
         expenses.add(new Expense(2, "Edeka", "Lebensmittel", "7. 5. 2023", 19.00f));
         expenses.add(new Expense(3, "GPU", "Gebrauchsgegenstände", "9. 8. 2023", 499.00f));
         expenses.add(new Expense(4, "Bus", "Transport", "8. 6. 2023", 2.00f));
         expenses.add(new Expense(5, "Kino", "Unterhaltung", "6. 5. 2023", 30.00f));
+
+
+
+        float budgetGesamt = sharedPreferences.getFloat("Budget", 0.00f);
+        String currency =  sharedPreferences.getString("Currency", null);
+
+        ReturnValues returnValues = getValues(expenses, budgetGesamt, currency);
 
 
         //Views mit fragment_ids verknüpfen
@@ -299,7 +283,7 @@ public class HomeFragment extends Fragment {
                         break;
                     case 1:
                         //Name
-                        loadPopupSummary(budgetGesamt, budgetUebrig, ausgaben, currency, chartData, expenses);
+                        //loadPopupSummary(returnValues, expenses);
                         break;
                     case 2:
                         //Betrag
@@ -350,7 +334,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        setData(budgetGesamt, budgetUebrig, ausgaben, currency, chartData, expenses);
+        setData(returnValues, expenses);
 
         return view;
     }
@@ -365,19 +349,19 @@ public class HomeFragment extends Fragment {
 
 
     //Daten des Homefragments aktualisieren
-    public void setData(float budgetGesamt, float budgetUebrig, float ausgaben, String currency, float[] chartData, ArrayList<Expense> arrayList){
+    public void setData(ReturnValues returnValues, ArrayList<Expense> arrayList){
 
         //letzigen Monat mit Überschriftsformatierung laden
         textViewMonth.setText(getCurrentMonth("MMMM yyyy"));
 
         styleChart(chartHome);
-        setChartData(chartHome, chartData);
+        setChartData(chartHome, returnValues.getChartData());
 
 
         //Daten formatieren und darstellen
-        textViewBudget.setText("Budget: " + "\n" + decimalFormat.format(budgetGesamt) + currency);
-        textViewRemainingBudget.setText("Monatsausgaben: " + "\n" + decimalFormat.format(ausgaben) + currency);
-        textViewDifference.setText("Differenz: " + decimalFormat.format(budgetUebrig) + currency);
+        textViewBudget.setText("Budget: " + "\n" + decimalFormat.format(returnValues.getBudgetGesamt()) + returnValues.getCurency());
+        textViewRemainingBudget.setText("Monatsausgaben: " + "\n" + decimalFormat.format(returnValues.getAusgaben()) + returnValues.getCurency());
+        textViewDifference.setText("Differenz: " + decimalFormat.format(returnValues.getBudgetUebrig()) + returnValues.getCurency());
 
         BudgetListAdapter budgetAdapter = new BudgetListAdapter(getContext(), arrayList);
         listHome.setAdapter(budgetAdapter);
@@ -565,7 +549,7 @@ public class HomeFragment extends Fragment {
 /**-------------------------------------------------------------------------------**/
 
 
-    private void loadPopupSummary(float budgetGesamt, float budgetUebrig, float ausgaben, String currency, float[] chartData, ArrayList<Expense> arraylist){
+    private void loadPopupSummary(ReturnValues returnValues, ArrayList<Expense> arraylist){
 
         loadSummaryPopupWindow = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup container = (ViewGroup) loadSummaryPopupWindow.inflate(R.layout.popup_summary, null);
@@ -626,7 +610,7 @@ public class HomeFragment extends Fragment {
 
         });
 
-        setSummaryData(budgetGesamt, budgetUebrig, ausgaben, currency, chartData, arraylist);
+        setSummaryData(returnValues, arraylist);
 
     }
 
@@ -635,22 +619,175 @@ public class HomeFragment extends Fragment {
 
 
     //Daten der Monatszusammenfassung aktualisieren
-    public void setSummaryData(float budgetGesamt, float budgetUebrig, float ausgaben, String currency, float[] chartData, ArrayList<Expense> arraylist){
+    public void setSummaryData(ReturnValues returnValues, ArrayList<Expense> arraylist){
 
         textViewMonthSummary.setText("letzter Monat");
 
         styleChart(chartSummary);
-        setChartData(chartSummary, chartData);
+        setChartData(chartSummary, returnValues.getChartData());
 
         //Daten formatieren und darstellen
-        textViewBudgetSummary.setText("Budget: " + "\n" + decimalFormat.format(budgetGesamt) + currency);
-        textViewRemainingBudgetSummary.setText("Monatsausgaben: " + "\n" + decimalFormat.format(ausgaben) + currency);
-        textViewDifferenceSummary.setText("Differenz: " + decimalFormat.format(budgetUebrig) + currency);
+        textViewBudgetSummary.setText("Budget: " + "\n" + decimalFormat.format(returnValues.getBudgetGesamt()) + returnValues.getCurency());
+        textViewRemainingBudgetSummary.setText("Monatsausgaben: " + "\n" + decimalFormat.format(returnValues.getAusgaben()) + returnValues.getCurency());
+        textViewDifferenceSummary.setText("Differenz: " + decimalFormat.format(returnValues.getBudgetUebrig()) + returnValues.getCurency());
 
         //läd Custom adapter, welcher die liste im Popup erstellt
         SummaryListAdapter summaryAdapter = new SummaryListAdapter(getContext(), arraylist);
         listSummary.setAdapter(summaryAdapter);
 
     }
+
+
+
+/**------------------------------------------------------------------------------------------------------**/
+
+
+
+    //Liest Arraylist Expenses aus JSON Datei für jetzigen/vergangenen Monat
+    public ArrayList<Expense> readMonthlyExpenseFile(String file) throws IOException{
+
+        String returnString = "";
+
+        InputStream inputStream = getContext().openFileInput(file);
+
+        if ( inputStream != null ) {
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            String receiveString = "";
+            StringBuilder stringBuilder = new StringBuilder();
+
+            while ( (receiveString = bufferedReader.readLine()) != null ) {
+                stringBuilder.append("\n").append(receiveString);
+            }
+
+            inputStream.close();
+            returnString = stringBuilder.toString();
+        }
+
+        Gson gson = new Gson();
+
+        Type type = new TypeToken<ArrayList<Expense>>(){}.getType();
+
+        ArrayList<Expense> list = gson.fromJson(returnString, type);
+
+        return list;
+
+    }
+
+
+
+    //Liest Arraylist FixedExpenses aus JSON Datei
+    public ArrayList<FixedExpense> readFixedExpensesFile() throws IOException{
+
+        String returnString = "";
+
+        InputStream inputStream = getContext().openFileInput("fixedCosts.json");
+
+        if ( inputStream != null ) {
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            String receiveString = "";
+            StringBuilder stringBuilder = new StringBuilder();
+
+            while ( (receiveString = bufferedReader.readLine()) != null ) {
+                stringBuilder.append("\n").append(receiveString);
+            }
+
+            inputStream.close();
+            returnString = stringBuilder.toString();
+        }
+
+        Gson gson = new Gson();
+
+        Type type = new TypeToken<ArrayList<FixedExpense>>(){}.getType();
+
+        ArrayList<FixedExpense> list = gson.fromJson(returnString, type);
+
+        return list;
+
+    }
+
+
+/**------------------------------------------------------------------------------------------**/
+
+
+
+    //Extrahiert Budgetwerte der verschiedenen Kategorien aus der Arraylist
+    public ReturnValues getValues(ArrayList<Expense> list, float budgetGesamt, String currency){
+
+        float fixausgabenGesamt = 0F;
+        float lebensmittelGesamt = 0F;
+        float gebrauchsgegenstaendeGesamt = 0F;
+        float unterhaltungGesamt = 0F;
+        float transportGesamt = 0F;
+        float sonstigesGesamt = 0F;
+
+        for(int i = 0; i < list.size(); i++){
+
+            switch (list.get(i).getCategory()){
+                case "Lebensmittel":
+                    lebensmittelGesamt = lebensmittelGesamt + list.get(i).getAmount();
+                    break;
+                case "Gebrauchsgegenstände":
+                    gebrauchsgegenstaendeGesamt = gebrauchsgegenstaendeGesamt + list.get(i).getAmount();
+                    break;
+                case "Unterhaltung":
+                    unterhaltungGesamt = unterhaltungGesamt + list.get(i).getAmount();
+                    break;
+                case "Transport":
+                    transportGesamt = transportGesamt + list.get(i).getAmount();
+                    break;
+                case "Sonstiges":
+                    sonstigesGesamt = sonstigesGesamt + list.get(i).getAmount();
+                    break;
+            }
+
+        }
+
+        ArrayList<FixedExpense> fixedExpenses = new ArrayList<>();
+        try {
+            fixedExpenses = readFixedExpensesFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        for(int i = 0; i < fixedExpenses.size(); i++){
+
+            fixausgabenGesamt = fixausgabenGesamt + fixedExpenses.get(i).getAmount();
+
+        }
+
+
+        float ausgaben =    fixausgabenGesamt
+                            + lebensmittelGesamt
+                            + gebrauchsgegenstaendeGesamt
+                            + unterhaltungGesamt
+                            + transportGesamt
+                            + sonstigesGesamt;
+
+        float budgetUebrigGraph = budgetGesamt - ausgaben;
+
+        if(budgetUebrigGraph < 0){
+            budgetUebrigGraph = 0.00f;
+        }
+
+        float budgetUebrig = budgetGesamt - ausgaben;
+
+        float[] chartData = new float[] {   fixausgabenGesamt,
+                lebensmittelGesamt,
+                gebrauchsgegenstaendeGesamt,
+                unterhaltungGesamt,
+                transportGesamt,
+                sonstigesGesamt,
+                budgetUebrigGraph};
+
+        return new ReturnValues(budgetGesamt, budgetUebrig, ausgaben, currency, chartData);
+
+    }
+
+
+
+
+
 
 }

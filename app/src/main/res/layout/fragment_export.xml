@@ -35,6 +35,7 @@
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:textSize="15dp"
             android:backgroundTint="@color/lightgreen"
             android:text="@string/export_button"/>
 

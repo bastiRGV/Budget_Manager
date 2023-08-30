@@ -56,9 +56,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Zwingt app in den Light mode
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
         //initialisierung
         Toolbar toolbar = findViewById(R.id.toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -186,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         LayoutInflater loadSetupPopupWindow = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup containerSetup = (ViewGroup) loadSetupPopupWindow.inflate(R.layout.popup_setup, null);
 
-        PopupWindow popupWindowSetup = new PopupWindow(containerSetup, 900, 1000, true);
+        PopupWindow popupWindowSetup = new PopupWindow(containerSetup, 900, 1200, true);
         popupWindowSetup.showAtLocation(drawerLayout, Gravity.CENTER, 0, 0);
 
 

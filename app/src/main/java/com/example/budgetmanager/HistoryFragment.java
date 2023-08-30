@@ -40,6 +40,8 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
@@ -125,8 +127,6 @@ public class HistoryFragment extends Fragment {
                 String selectedItem = (String) parent.getItemAtPosition(position);
                 selectedItem = selectedItem.replace(" ", "_");
 
-                Toast.makeText(getActivity().getBaseContext(), selectedItem, Toast.LENGTH_SHORT).show();
-
 
                 //checkt, ob die zusammenfassung die des jetzigen oder eines zurückliegenden monats ist und wählt je nachdem die
                 //die quelle für das Monatsbudget aus
@@ -156,7 +156,7 @@ public class HistoryFragment extends Fragment {
                 //daten aus der Arraylist in ein Objekt gespeichert
                 ReturnValues returnValues = getValues(expenses, budgetGesamt, currency);
 
-                loadPopupHistory(returnValues, expenses);
+                loadPopupHistory(returnValues, expenses, selectedItem);
             }
         });
 
@@ -170,7 +170,7 @@ public class HistoryFragment extends Fragment {
 
 
     //läd das Popup fenster, welches die Monatszusammenfassung anzeigt
-    private void loadPopupHistory(ReturnValues returnValues, ArrayList<Expense> arrayList){
+    private void loadPopupHistory(ReturnValues returnValues, ArrayList<Expense> arrayList, String month){
 
         loadHistoryPopupWindow = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup container = (ViewGroup) loadHistoryPopupWindow.inflate(R.layout.popup_summary, null);
@@ -193,45 +193,10 @@ public class HistoryFragment extends Fragment {
 
         listHistoryPopup = popupWindowHistory.getContentView().findViewById(R.id.list_summary);
 
-        dropdownMenuHistory = popupWindowHistory.getContentView().findViewById(R.id.summary_ausgaben_sort);
+        //Standardsotierung nach Datum
+        sortByDate(arrayList);
 
-        //läd items aus Array in das Dropdown Menü
-        ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, dropdownFilter);
-        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dropdownMenuHistory.setAdapter(filterAdapter);
-
-        //änderung Sortierung, je nachdem, welcher menüpunkt ausgewählt
-        dropdownMenuHistory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-
-                switch (position) {
-                    case 0:
-                        //Datum
-                        break;
-                    case 1:
-                        //Name
-                        break;
-                    case 2:
-                        //Betrag
-                        break;
-                    case 3:
-                        //Kategorie
-                        break;
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                //default nach Datum sotiert
-                return;
-            }
-
-        });
-
-        setHistoryData(returnValues, arrayList);
+        setHistoryData(returnValues, arrayList, month);
 
     }
 
@@ -239,9 +204,10 @@ public class HistoryFragment extends Fragment {
 /**----------------------------------------------------------------------------------------**/
 
 
-    public void setHistoryData(ReturnValues returnValues, ArrayList<Expense> arraylist){
+    public void setHistoryData(ReturnValues returnValues, ArrayList<Expense> arraylist, String month){
 
-        textViewMonthHistory.setText("Month");
+        month = month.replace("_", " ");
+        textViewMonthHistory.setText(month);
 
         styleHistoryChart();
         setHistoryChartData(returnValues.getChartData());
@@ -450,6 +416,16 @@ public class HistoryFragment extends Fragment {
         SimpleDateFormat dateFormat = new SimpleDateFormat(patern, Locale.getDefault());
 
         return dateFormat.format(date);
+    }
+
+
+/**-----------------------------------------------------------------------------------------------**/
+
+    //Sotiert Liste nach Datum
+    public static void sortByDate(ArrayList<Expense> list) {
+
+        list.sort(Comparator.comparing(Expense::getDate));
+
     }
 
 

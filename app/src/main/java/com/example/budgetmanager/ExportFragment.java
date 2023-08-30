@@ -65,7 +65,6 @@ public class ExportFragment extends Fragment {
                         file = listExport.getItemAtPosition(i).toString();
                         file = file.replace(" ", "_");
                         file = file + ".json";
-                        selected += file + "\n";
                         checkedItems.add(file);
 
                     }
@@ -79,7 +78,6 @@ public class ExportFragment extends Fragment {
                 }
                 checkedItems.clear();
 
-                Toast.makeText(getActivity().getBaseContext(), selected, Toast.LENGTH_SHORT).show();
             }
         });
 

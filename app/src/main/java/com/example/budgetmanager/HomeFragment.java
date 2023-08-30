@@ -54,6 +54,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
@@ -273,26 +275,44 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 
+                    ArrayList <Expense> expensesSorted = new ArrayList<Expense>();
+                    try {
+                        expensesSorted = readMonthlyExpenseFile(getCurrentMonth("MMMM_yyyy") + ".json");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+
+                    float budgetGesamt = sharedPreferences.getFloat("Budget", 0.00f);
+                    String currency =  sharedPreferences.getString("Currency", null);
+
+                    //daten aus der Arraylist in ein Objekt gespeichert
+                    ReturnValues returnValues = getValues(expensesSorted, budgetGesamt, currency);
+
                     switch (position) {
                         case 0:
-                            //Datum
+                            sortByDate(expensesSorted);
+                            Collections.reverse(expensesSorted);
                             break;
                         case 1:
-                            //Name
+                            sortByName(expensesSorted);
                             break;
                         case 2:
-                            //Betrag
+                            sortByAmount(expensesSorted);
+                            Collections.reverse(expensesSorted);
                             break;
                         case 3:
-                            //Kategorie
+                            sortByCategory(expensesSorted);
                             break;
                     }
+
+                    //aktualisieren der Daten
+                    setData(returnValues, expensesSorted);
 
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) {
-                    //default nach Datum sotiert
                     return;
                 }
 
@@ -328,6 +348,10 @@ public class HomeFragment extends Fragment {
 
                 }
             });
+
+            //Standardsotierung nach Datum
+            sortByDate(expenses);
+            Collections.reverse(expenses);
 
             setData(returnValues, expenses);
 
@@ -595,43 +619,8 @@ public class HomeFragment extends Fragment {
 
         listSummary = popupWindowSummary.getContentView().findViewById(R.id.list_summary);
 
-        dropdownMenuSummary = popupWindowSummary.getContentView().findViewById(R.id.summary_ausgaben_sort);
-
-        //läd items aus Array in das Dropdown Menü
-        ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, dropdownFilter);
-        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dropdownMenuSummary.setAdapter(filterAdapter);
-
-        //änderung Sortierung, je nachdem, welcher menüpunkt ausgewählt
-        dropdownMenuSummary.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-
-                switch (position) {
-                    case 0:
-                        //Datum
-                        break;
-                    case 1:
-                        //Name
-                        break;
-                    case 2:
-                        //Betrag
-                        break;
-                    case 3:
-                        //Kategorie
-                        break;
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                //default nach Datum sotiert
-                return;
-            }
-
-        });
+        //Standardsotierung nach Datum
+        sortByDate(arraylist);
 
         setSummaryData(returnValues, arraylist);
 
@@ -894,6 +883,33 @@ public class HomeFragment extends Fragment {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+
+    }
+
+/**-----------------------------------------------------------------------------------------------**/
+
+    //Sortierungsfunktionen für übergebene Liste
+    public static void sortByDate(ArrayList<Expense> list) {
+
+        list.sort(Comparator.comparing(Expense::getDate));
+
+    }
+
+    public static void sortByName(ArrayList<Expense> list) {
+
+        list.sort(Comparator.comparing(Expense::getName));
+
+    }
+
+    public static void sortByAmount(ArrayList<Expense> list) {
+
+        list.sort(Comparator.comparing(Expense::getAmount));
+
+    }
+
+    public static void sortByCategory(ArrayList<Expense> list) {
+
+        list.sort(Comparator.comparing(Expense::getCategory));
 
     }
 

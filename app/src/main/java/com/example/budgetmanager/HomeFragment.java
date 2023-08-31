@@ -176,12 +176,8 @@ public class HomeFragment extends Fragment {
                     throw new RuntimeException(e);
                 }
 
-
-                float budgetGesamt = sharedPreferences.getFloat("Budget", 0.00f);
-                String currency =  sharedPreferences.getString("Currency", null);
-
                 //daten aus der Arraylist in ein Objekt gespeichert
-                ReturnValues returnValues = getValues(expenses, budgetGesamt, currency);
+                ReturnValues returnValues = getValues(expenses);
 
                 //läd Monatszusammenfassung verspätet, um Zeit zum laden zu geben
                 ArrayList<Expense> finalExpenses = expenses;
@@ -245,12 +241,8 @@ public class HomeFragment extends Fragment {
                 throw new RuntimeException(e);
             }
 
-
-            float budgetGesamt = sharedPreferences.getFloat("Budget", 0.00f);
-            String currency =  sharedPreferences.getString("Currency", null);
-
             //daten aus der Arraylist in ein Objekt gespeichert
-            ReturnValues returnValues = getValues(expenses, budgetGesamt, currency);
+            ReturnValues returnValues = getValues(expenses);
 
 
             //Views mit fragment_ids verknüpfen
@@ -284,12 +276,8 @@ public class HomeFragment extends Fragment {
                         throw new RuntimeException(e);
                     }
 
-
-                    float budgetGesamt = sharedPreferences.getFloat("Budget", 0.00f);
-                    String currency =  sharedPreferences.getString("Currency", null);
-
                     //daten aus der Arraylist in ein Objekt gespeichert
-                    ReturnValues returnValues = getValues(expensesSorted, budgetGesamt, currency);
+                    ReturnValues returnValues = getValues(expensesSorted);
 
                     switch (position) {
                         case 0:
@@ -486,6 +474,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+
+                //liest Daten aus der Datei des jetzigen Monats und speichert sie in die Liste
                 ArrayList<Expense> expensesAdd = new ArrayList<>();
                 expensesAdd.clear();
                 try {
@@ -530,15 +520,8 @@ public class HomeFragment extends Fragment {
                         throw new RuntimeException(e);
                     }
 
-                    //Daten aktualisieren
-                    //initialisiert sharedReferences um Persistente Daten zu lesen
-                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences("prefBudgetManager", Context.MODE_PRIVATE);
-
-                    float budgetGesamt = sharedPreferences.getFloat("Budget", 0.00f);
-                    String currency =  sharedPreferences.getString("Currency", null);
-
                     //daten aus der Arraylist in ein Objekt gespeichert
-                    ReturnValues returnValues = getValues(expensesAdd, budgetGesamt, currency);
+                    ReturnValues returnValues = getValues(expensesAdd);
 
                     setData(returnValues, expensesAdd);
 
@@ -732,7 +715,12 @@ public class HomeFragment extends Fragment {
 
 
     //Extrahiert Budgetwerte der verschiedenen Kategorien aus der Arraylist
-    public ReturnValues getValues(ArrayList<Expense> list, float budgetGesamt, String currency){
+    public ReturnValues getValues(ArrayList<Expense> list){
+
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("prefBudgetManager", Context.MODE_PRIVATE);
+
+        float budgetGesamt = sharedPreferences.getFloat("Budget", 0.00f);
+        String currency =  sharedPreferences.getString("Currency", null);
 
         float fixausgabenGesamt = 0F;
         float lebensmittelGesamt = 0F;
@@ -945,13 +933,8 @@ public class HomeFragment extends Fragment {
 
         writeMonthlyExpenseFile(deleteExpense, getCurrentMonth("MMMM_yyyy") + ".json");
 
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("prefBudgetManager", Context.MODE_PRIVATE);
-
-        float budgetGesamt = sharedPreferences.getFloat("Budget", 0.00f);
-        String currency =  sharedPreferences.getString("Currency", null);
-
         //daten aus der Arraylist in ein Objekt gespeichert
-        ReturnValues returnValues = getValues(deleteExpense, budgetGesamt, currency);
+        ReturnValues returnValues = getValues(deleteExpense);
 
         //Standardsotierung nach Datum
         sortByDate(deleteExpense);

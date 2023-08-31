@@ -142,9 +142,6 @@ public class HistoryFragment extends Fragment {
                 }
 
 
-                String currency =  sharedPreferences.getString("Currency", null);
-
-
                 //liest Daten aus der Monatsdatei
                 ArrayList <Expense> expenses = new ArrayList<Expense>();
                 try {
@@ -154,7 +151,7 @@ public class HistoryFragment extends Fragment {
                 }
 
                 //daten aus der Arraylist in ein Objekt gespeichert
-                ReturnValues returnValues = getValues(expenses, budgetGesamt, currency);
+                ReturnValues returnValues = getValues(expenses, budgetGesamt);
 
                 loadPopupHistory(returnValues, expenses, selectedItem);
             }
@@ -347,7 +344,11 @@ public class HistoryFragment extends Fragment {
 
 
     //Extrahiert Budgetwerte der verschiedenen Kategorien aus der Arraylist
-    public ReturnValues getValues(ArrayList<Expense> list, float budgetGesamt, String currency){
+    public ReturnValues getValues(ArrayList<Expense> list, float budgetGesamt){
+
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("prefBudgetManager", Context.MODE_PRIVATE);
+
+        String currency =  sharedPreferences.getString("Currency", null);
 
         float fixausgabenGesamt = 0F;
         float lebensmittelGesamt = 0F;

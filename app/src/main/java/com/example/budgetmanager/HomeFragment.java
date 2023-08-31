@@ -71,7 +71,7 @@ public class HomeFragment extends Fragment {
                                         "übriges Budget"};
 
     //Farbcodes, welche für Graphen nutzbar sind (nicht aus color.xml in bibliothek importierbar)
-     int graph_red = 0xFFE60049;
+    int graph_red = 0xFFE60049;
     int graph_blue = 0xFF0BB4FF;
     int graph_green = 0xFF50E991;
     int graph_orange = 0xFFFFA300;

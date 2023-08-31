@@ -54,7 +54,6 @@ public class ExportFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                String selected = "selected: \n";
                 String file;
 
                 //Exportliste wird durchlaufen und ausgewählte Items werden gespeichert

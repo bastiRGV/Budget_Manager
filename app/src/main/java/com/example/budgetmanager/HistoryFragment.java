@@ -47,13 +47,6 @@ import java.util.Locale;
 
 public class HistoryFragment extends Fragment {
 
-    //Menüeinträge für Filter der Ausgaben auf Homepage
-    String[] dropdownFilter = new String[] {"Datum",
-                                            "Bezeichnung",
-                                            "Betrag",
-                                            "Kategorie"};
-
-
 
     //Farbcodes, welche für Graphen nutzbar sind (nicht aus color.xml in bibliothek importierbar)
     int graph_red = 0xFFE60049;

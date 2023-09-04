@@ -11,12 +11,12 @@
     <string name="export_button">Export ausgewählter Daten</string>
 
     <string name="settings_name_headline">Nutzername:</string>
-    <string name="settings_name_hint">Nutzernamen eingeben</string>
+    <string name="settings_name_hint">Nutzernamen ändern</string>
 
     <string name="settings_currency_headline">Währung:</string>
 
     <string name="settings_income_headline">monatliches Budget:</string>
-    <string name="settings_income_hint">monatliches Budget eingeben</string>
+    <string name="settings_income_hint">monatliches Budget ändern</string>
 
     <string name="settings_fixed_headline">monatliche Fixkosten:</string>
     <string name="settings_fixed_name_hint">Bezeichnung</string>

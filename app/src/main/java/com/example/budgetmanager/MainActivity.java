@@ -148,21 +148,31 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            return;
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if(!(fragment instanceof HomeFragment)){
+
+            replaceFragment(new HomeFragment());
+
+        }else{
+
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "zum Verlassen ZURÜCK erneut drücken", Toast.LENGTH_SHORT).show();
+
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce=false;
+                }
+            }, 2000);
+
         }
 
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "zum Verlassen ZURÜCK erneut drücken", Toast.LENGTH_SHORT).show();
-
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce=false;
-            }
-        }, 2000);
     }
 
 

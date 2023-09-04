@@ -64,7 +64,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/name_input"
-                            android:singleLine="true"/>
+                            android:singleLine="true"
+                            android:layout_marginBottom="1dp"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -153,7 +154,8 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/budget_input"
                             android:singleLine="true"
-                            android:inputType="numberDecimal|numberSigned"/>
+                            android:inputType="numberDecimal|numberSigned"
+                            android:layout_marginBottom="1dp"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -212,7 +214,8 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/fixed_name_input"
                             android:singleLine="true"
-                            android:inputType="text"/>
+                            android:inputType="text"
+                            android:layout_marginBottom="1dp"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -230,7 +233,8 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/fixed_amount_input"
                             android:singleLine="true"
-                            android:inputType="numberDecimal|numberSigned"/>
+                            android:inputType="numberDecimal|numberSigned"
+                            android:layout_marginBottom="1dp"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 

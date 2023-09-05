@@ -92,6 +92,14 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 
+                //lesen der Datei aus dem internal storage
+                ArrayList<FixedExpense> fixedInputRefresh = new ArrayList<>();
+                try {
+                    fixedInputRefresh = readFixedInputFile();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
                 switch (position) {
                     case 0:
                         //Setzt Appwährung in den sharedPreferences zu Euro
@@ -109,6 +117,8 @@ public class SettingsFragment extends Fragment {
                         referenceEditor.commit();
                         break;
                 }
+
+                setListData(fixedInputRefresh);
 
             }
 

@@ -325,15 +325,6 @@ public class HomeFragment extends Fragment {
                     popupWindowAddEntries = new PopupWindow(container, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
                     popupWindowAddEntries.showAtLocation(homeFragment, Gravity.CENTER, 0, 0);
 
-                    //fenster Schliesst, wenn außerhalb des Fensters berührt wird
-                    container.setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View v, MotionEvent event) {
-                            popupWindowAddEntries.dismiss();
-                            return true;
-                        }
-                    });
-
                     logicPopupWindow();
 
                 }

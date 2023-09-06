@@ -22,7 +22,7 @@
                 android:id="@+id/budget_list_item_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_weight="0.45"
                 android:layout_marginLeft="5dp"
                 android:textSize="15dp"
                 android:textStyle="bold" />
@@ -31,7 +31,7 @@
                 android:id="@+id/budget_list_item_category"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_weight="0.55"
                 android:textSize="15dp"
                 android:textStyle="bold"
                 android:layout_marginLeft="5dp"/>

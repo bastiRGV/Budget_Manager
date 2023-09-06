@@ -514,6 +514,9 @@ public class HomeFragment extends Fragment {
                     //daten aus der Arraylist in ein Objekt gespeichert
                     ReturnValues returnValues = getValues(expensesAdd);
 
+                    sortByDate(expensesAdd);
+                    Collections.reverse(expensesAdd);
+
                     setData(returnValues, expensesAdd);
 
                     popupWindowAddEntries.dismiss();

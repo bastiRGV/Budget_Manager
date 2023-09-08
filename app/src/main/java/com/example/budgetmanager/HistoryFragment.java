@@ -279,12 +279,14 @@ public class HistoryFragment extends Fragment {
             //Filtert die Fixkostendatei aus den Ergebnissen
             if(!(fileList[i].getName()).equals("fixedCosts.json")){
                 if(!(fileList[i].getName()).equals("rList")) {
+                    if(!(fileList[i].getName()).contains(".csv")) {
 
-                    //Anpassung des Namens der Datei auf den Anzeigenamen
-                    String name = fileList[i].getName();
-                    name = name.replace("_", " ");
-                    name = name.replace(".json", "");
-                    historyList.add(name);
+                        //Anpassung des Namens der Datei auf den Anzeigenamen
+                        String name = fileList[i].getName();
+                        name = name.replace("_", " ");
+                        name = name.replace(".json", "");
+                        historyList.add(name);
+                    }
 
                 }
 

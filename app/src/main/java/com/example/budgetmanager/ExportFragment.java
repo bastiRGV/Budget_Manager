@@ -24,7 +24,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class ExportFragment extends Fragment {
 
@@ -99,12 +103,15 @@ public class ExportFragment extends Fragment {
             //Filtert die Fixkostendatei aus den Ergebnissen
             if(!(fileList[i].getName()).equals("fixedCosts.json")){
                 if(!(fileList[i].getName()).equals("rList")) {
+                    if(!(fileList[i].getName()).contains(".csv")){
 
-                    //Anpassung des Namens der Datei auf den Anzeigenamen
-                    String name = fileList[i].getName();
-                    name = name.replace("_", " ");
-                    name = name.replace(".json", "");
-                    exportList.add(name);
+                        //Anpassung des Namens der Datei auf den Anzeigenamen
+                        String name = fileList[i].getName();
+                        name = name.replace("_", " ");
+                        name = name.replace(".json", "");
+                        exportList.add(name);
+
+                    }
 
                 }
 
@@ -128,6 +135,9 @@ public class ExportFragment extends Fragment {
             ArrayList<Expense> items = new ArrayList<>();
             items = readSelectedExpenseFile(file);
 
+            ArrayList<FixedExpense> fixed = new ArrayList<>();
+            fixed = readFixedExpensesFile();
+
             //legt CSV datei an
             String target = file.replace(".json", ".csv");
             FileOutputStream fOut = getActivity().openFileOutput(target, Context.MODE_PRIVATE);
@@ -138,7 +148,7 @@ public class ExportFragment extends Fragment {
             File downloadFolder =  Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             File fileExport = new File(downloadFolder, target);
             FileWriter writer = new FileWriter(fileExport);
-            writer.write("Name,Category,Date,Amount\n");
+            writer.write("Name;Category;Date;Amount\n");
 
             for(int j = 0; j < items.size(); j++){
 
@@ -147,11 +157,39 @@ public class ExportFragment extends Fragment {
                 String date = items.get(j).getDate();
                 String amount = Float.toString(items.get(j).getAmount());
 
-                writer.write(name + "," + category + "," + date + "," + amount + "\n");
+                writer.write(name + ";" + category + ";" + date + ";" + amount + "\n");
+
+            }
+
+
+            //prüfen, ob der jetzige Monat exportiert wird gegebenenfalls die Fixkosten anhängen
+            String date = getCurrentDate("MMMM_yyyy");
+            date = date + ".json";
+
+            if(file == date){
+
+                for(int k = 0; k < fixed.size(); k++){
+
+                    String name = fixed.get(k).getName();
+                    float amount = fixed.get(k).getAmount();
+
+                    String month = getCurrentDate("MM");
+                    if(month.startsWith("0")){
+                        month = month.replace("0", "");
+                    }
+
+                    String year = getCurrentDate("yyyy");
+
+
+
+                    writer.write(name + ";Fixkosten;" + "1." + month + "." + year + ";" + amount + "\n");
+                }
 
             }
 
             writer.close();
+
+            Toast.makeText(getActivity().getBaseContext(), "Daten wurden exportiert", Toast.LENGTH_SHORT).show();
 
         }
 
@@ -191,6 +229,52 @@ public class ExportFragment extends Fragment {
 
         return list;
 
+    }
+
+/**------------------------------------------------------------------------------------**/
+
+    //Liest Arraylist FixedExpenses aus JSON Datei
+    public ArrayList<FixedExpense> readFixedExpensesFile() throws IOException{
+
+        String returnString = "";
+
+        InputStream inputStream = getContext().openFileInput("fixedCosts.json");
+
+        if ( inputStream != null ) {
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            String receiveString = "";
+            StringBuilder stringBuilder = new StringBuilder();
+
+            while ( (receiveString = bufferedReader.readLine()) != null ) {
+                stringBuilder.append("\n").append(receiveString);
+            }
+
+            inputStream.close();
+            returnString = stringBuilder.toString();
+        }
+
+        Gson gson = new Gson();
+
+        Type type = new TypeToken<ArrayList<FixedExpense>>(){}.getType();
+
+        ArrayList<FixedExpense> list = gson.fromJson(returnString, type);
+
+        return list;
+
+    }
+
+/**----------------------------------------------------------------------------------**/
+
+
+    //aktuellen Monat vom System abfragen
+    public String getCurrentDate(String patern){
+
+        //abfrage und formatierung des Datums
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(patern, Locale.getDefault());
+
+        return dateFormat.format(date);
     }
 
 

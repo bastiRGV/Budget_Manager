@@ -166,7 +166,7 @@ public class ExportFragment extends Fragment {
             String date = getCurrentDate("MMMM_yyyy");
             date = date + ".json";
 
-            if(file == date){
+            if(file.equals(date)){
 
                 for(int k = 0; k < fixed.size(); k++){
 
@@ -179,8 +179,6 @@ public class ExportFragment extends Fragment {
                     }
 
                     String year = getCurrentDate("yyyy");
-
-
 
                     writer.write(name + ";Fixkosten;" + "1." + month + "." + year + ";" + amount + "\n");
                 }

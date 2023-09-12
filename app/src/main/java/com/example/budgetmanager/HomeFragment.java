@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.os.LocaleList;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -51,6 +52,8 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -497,8 +500,25 @@ public class HomeFragment extends Fragment {
                     chosenAmount = Float.valueOf(popupAddAmount.getText().toString());
 
 
-                    //Liest Datum aus dem Datepicker im Popup window un konvertiert zu String
-                    chosenDate = popupAddDate.getDayOfMonth() +  "." + (popupAddDate.getMonth() + 1) +  "." + popupAddDate.getYear();
+                    //Liest Datum aus dem Datepicker im Popup window und konvertiert zu String
+                    int day = popupAddDate.getDayOfMonth();
+                    int month = popupAddDate.getMonth() + 1;
+                    String dayString = "";
+                    String monthString = "";
+
+                    if(day < 10){
+                        dayString  = "0" + String.valueOf(day);
+                    }else{
+                        dayString = String.valueOf(day);
+                    }
+
+                    if(month < 10){
+                        monthString  = "0" + String.valueOf(month);
+                    }else{
+                        monthString = String.valueOf(month);
+                    }
+
+                    chosenDate = dayString +  "." + monthString +  "." + popupAddDate.getYear();
 
 
                     //schreibt Eintrag und schließt Popup Window

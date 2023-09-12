@@ -906,7 +906,7 @@ public class HomeFragment extends Fragment {
 
     public static void sortByName(ArrayList<Expense> list) {
 
-        list.sort(Comparator.comparing(Expense::getName));
+        list.sort(Comparator.comparing(Expense::getName, String.CASE_INSENSITIVE_ORDER));
 
     }
 
